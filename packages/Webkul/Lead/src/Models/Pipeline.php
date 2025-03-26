@@ -2,6 +2,7 @@
 
 namespace Webkul\Lead\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Webkul\Lead\Contracts\Pipeline as PipelineContract;
 
@@ -34,5 +35,12 @@ class Pipeline extends Model implements PipelineContract
     public function stages()
     {
         return $this->hasMany(StageProxy::modelClass(), 'lead_pipeline_id')->orderBy('sort_order', 'ASC');
+    }
+    /**
+     *Get users
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'lead_pipeline_id');
     }
 }

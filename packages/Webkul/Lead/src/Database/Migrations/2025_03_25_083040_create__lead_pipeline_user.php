@@ -1,17 +1,17 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Webkul\Lead\Models\Pipeline;
 
 return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('lead_pipeline_user', function (Blueprint $table) {
             $table->increments('id');
@@ -26,11 +26,9 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('lead_pipelines');
+        Schema::dropIfExists('_lead_pipeline_user');
     }
 };
