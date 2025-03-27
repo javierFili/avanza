@@ -166,6 +166,8 @@ Route::prefix('settings')->group(function () {
         Route::post('mass-update', 'massUpdate')->name('admin.settings.users.mass_update');
 
         Route::post('mass-destroy', 'massDestroy')->name('admin.settings.users.mass_delete');
+
+        Route::get('test1', "getUserPepeline")->name("admin.settings.users.pipeline");
     });
 
     /**

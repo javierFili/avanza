@@ -39,8 +39,9 @@ class Pipeline extends Model implements PipelineContract
     /**
      *Get users
      */
+    // En el modelo Pipeline
     public function users()
     {
-        return $this->belongsToMany(User::class, 'lead_pipeline_id');
+        return $this->belongsToMany(User::class, 'lead_pipeline_user', 'lead_pipeline_id', 'user_id');
     }
 }

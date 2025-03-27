@@ -110,7 +110,7 @@ class UserController extends Controller
     public function update(int $id): JsonResponse
     {
         $this->validate(request(), [
-            'email'            => 'required|email|unique:users,email,'.$id,
+            'email'            => 'required|email|unique:users,email,' . $id,
             'name'             => 'required',
             'password'         => 'nullable',
             'confirm_password' => 'nullable|required_with:password|same:password',
@@ -256,5 +256,12 @@ class UserController extends Controller
         return response()->json([
             'message' => trans('admin::app.settings.users.index.mass-delete-success'),
         ]);
+    }
+
+    public function getUserPepeline(): JsonResponse
+    {
+        $pipelines = $this->userRepository->with("leadPipelines")->get();
+
+        return response()->json(["success" => true, "data" => $pipelines], 200);
     }
 }

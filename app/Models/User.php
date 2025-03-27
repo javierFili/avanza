@@ -40,12 +40,4 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    /**
-     *get pipelines
-     */
-
-    public function leadPipelines()
-    {
-        return $this->belongsToMany(Pipeline::class, "user_id");
-    }
 }
