@@ -307,6 +307,7 @@
                                         v-model="user.view_permission"
                                         :label="trans('admin::app.settings.users.index.create.view-permission')"
                                     >
+
                                         <!-- Default Option -->
                                         <option  value="global" selected>
                                             @lang('admin::app.settings.users.index.create.global')
