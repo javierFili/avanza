@@ -3,8 +3,10 @@
 namespace Webkul\Admin\DataGrids\Settings;
 
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Webkul\DataGrid\DataGrid;
+use Webkul\User\Models\User;
 
 class PipelineDataGrid extends DataGrid
 {
@@ -13,7 +15,16 @@ class PipelineDataGrid extends DataGrid
      */
     public function prepareQueryBuilder(): Builder
     {
-        $queryBuilder = DB::table('lead_pipelines')
+        $userId = Auth::user()->id;
+        $pipelines = User::where("id", $userId)
+            ->with("leadPipelines")
+            ->first();
+        $pipelinesIds = [];
+        foreach ($pipelines->leadPipelines as $pipeline) {
+            array_push($pipelinesIds, $pipeline->id);
+        }
+        //dd($pipelinesIds);
+        $queryBuilder = DB::table('lead_pipelines')->whereIn("id", $pipelinesIds)
             ->addSelect(
                 'lead_pipelines.id',
                 'lead_pipelines.name',
@@ -61,7 +72,7 @@ class PipelineDataGrid extends DataGrid
             'searchable' => true,
             'filterable' => true,
             'sortable'   => true,
-            'closure'    => fn ($value) => trans('admin::app.settings.pipelines.index.datagrid.'.($value->is_default ? 'yes' : 'no')),
+            'closure'    => fn($value) => trans('admin::app.settings.pipelines.index.datagrid.' . ($value->is_default ? 'yes' : 'no')),
         ]);
     }
 
@@ -76,7 +87,7 @@ class PipelineDataGrid extends DataGrid
                 'icon'   => 'icon-edit',
                 'title'  => trans('admin::app.settings.pipelines.index.datagrid.edit'),
                 'method' => 'GET',
-                'url'    => fn ($row) => route('admin.settings.pipelines.edit', $row->id),
+                'url'    => fn($row) => route('admin.settings.pipelines.edit', $row->id),
             ]);
         }
 
@@ -86,7 +97,7 @@ class PipelineDataGrid extends DataGrid
                 'icon'   => 'icon-delete',
                 'title'  => trans('admin::app.settings.pipelines.index.datagrid.delete'),
                 'method' => 'DELETE',
-                'url'    => fn ($row) => route('admin.settings.pipelines.delete', $row->id),
+                'url'    => fn($row) => route('admin.settings.pipelines.delete', $row->id),
             ]);
         }
     }
