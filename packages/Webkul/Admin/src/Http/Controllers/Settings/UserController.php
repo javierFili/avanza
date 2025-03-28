@@ -14,6 +14,7 @@ use Webkul\Admin\Http\Requests\MassDestroyRequest;
 use Webkul\Admin\Http\Requests\MassUpdateRequest;
 use Webkul\Admin\Http\Resources\UserResource;
 use Webkul\Admin\Notifications\User\Create as UserCreatedNotification;
+use Webkul\Lead\Repositories\PipelineRepository;
 use Webkul\User\Repositories\GroupRepository;
 use Webkul\User\Repositories\RoleRepository;
 use Webkul\User\Repositories\UserRepository;
@@ -28,7 +29,8 @@ class UserController extends Controller
     public function __construct(
         protected UserRepository $userRepository,
         protected GroupRepository $groupRepository,
-        protected RoleRepository $roleRepository
+        protected RoleRepository $roleRepository,
+        protected PipelineRepository $pipelineRepository,
     ) {}
 
     /**
@@ -43,8 +45,8 @@ class UserController extends Controller
         $roles = $this->roleRepository->all();
 
         $groups = $this->groupRepository->all();
-
-        return view('admin::settings.users.index', compact('roles', 'groups'));
+        $pipelines = $this->pipelineRepository->all();
+        return view('admin::settings.users.index', compact('roles', 'groups', "pipelines"));
     }
 
     /**
@@ -58,6 +60,7 @@ class UserController extends Controller
             'password'         => 'nullable',
             'confirm_password' => 'nullable|required_with:password|same:password',
             'role_id'          => 'required',
+            "pipeline_id"      => "nullable",
         ]);
 
         $data = request()->all();
@@ -77,6 +80,7 @@ class UserController extends Controller
         $admin->save();
 
         $admin->groups()->sync(request('groups') ?? []);
+        $admin->leadPipelines()->sync(request('pipeline_id') ?? []);
 
         try {
             Mail::queue(new UserCreatedNotification($admin));
@@ -97,7 +101,7 @@ class UserController extends Controller
      */
     public function edit(int $id): View|JsonResponse
     {
-        $admin = $this->userRepository->with(['role', 'groups'])->findOrFail($id);
+        $admin = $this->userRepository->with(['role', 'groups', "leadPipelines"])->findOrFail($id);
 
         return new JsonResponse([
             'data'   => $admin,
@@ -114,7 +118,7 @@ class UserController extends Controller
             'name'             => 'required',
             'password'         => 'nullable',
             'confirm_password' => 'nullable|required_with:password|same:password',
-            'role_id'          => 'required',
+            'role_id'          => 'required',   
         ]);
 
         $data = request()->all();
@@ -138,6 +142,7 @@ class UserController extends Controller
         $admin->save();
 
         $admin->groups()->sync(request()->input('groups') ?? []);
+        $admin->leadPipelines()->sync(request('pipeline_id') ?? []);
 
         Event::dispatch('settings.user.update.after', $admin);
 

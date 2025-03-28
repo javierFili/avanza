@@ -55,7 +55,7 @@ class LeadController extends Controller
         if (request()->ajax()) {
             return datagrid(LeadDataGrid::class)->process();
         }
-
+        
         if (request('pipeline_id')) {
             $pipeline = $this->pipelineRepository->find(request('pipeline_id'));
         } else {

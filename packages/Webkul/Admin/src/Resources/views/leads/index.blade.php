@@ -6,7 +6,8 @@
     <!-- Header -->
     {!! view_render_event('admin.leads.index.header.before') !!}
 
-    <div class="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300">
+    <div
+        class="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300">
         {!! view_render_event('admin.leads.index.header.left.before') !!}
 
         <div class="flex flex-col gap-2">
@@ -25,7 +26,7 @@
         {!! view_render_event('admin.leads.index.header.right.before') !!}
 
         <div class="flex items-center gap-x-2.5">
-            @if ((request()->view_type ?? "kanban") == "table")
+            @if ((request()->view_type ?? 'kanban') == 'table')
                 <!-- Export Modal -->
                 <x-admin::datagrid.export :src="route('admin.leads.index')" />
             @endif
@@ -33,10 +34,7 @@
             <!-- Create button for Leads -->
             <div class="flex items-center gap-x-2.5">
                 @if (bouncer()->hasPermission('leads.create'))
-                    <a
-                        href="{{ route('admin.leads.create') }}"
-                        class="primary-button"
-                    >
+                    <a href="{{ route('admin.leads.create') }}" class="primary-button">
                         @lang('admin::app.leads.index.create-btn')
                     </a>
                 @endif
@@ -52,7 +50,7 @@
 
     <!-- Content -->
     <div class="mt-3.5">
-        @if ((request()->view_type ?? "kanban") == "table")
+        @if ((request()->view_type ?? 'kanban') == 'table')
             @include('admin::leads.index.table')
         @else
             @include('admin::leads.index.kanban')

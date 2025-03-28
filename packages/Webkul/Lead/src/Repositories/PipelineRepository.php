@@ -3,6 +3,7 @@
 namespace Webkul\Lead\Repositories;
 
 use Illuminate\Container\Container;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Webkul\Core\Eloquent\Repository;
 
@@ -103,7 +104,12 @@ class PipelineRepository extends Repository
      */
     public function getDefaultPipeline()
     {
-        $pipeline = $this->findOneByField('is_default', 1);
+        $user = Auth::user()->id;
+        $pipelinesUsers = app('Webkul\User\Repositories\UserRepository')
+            ->where('id', $user)
+            ->with('leadPipelines')
+            ->get();
+        $pipeline = $pipelinesUsers->first()->leadPipelines->first();
 
         if (! $pipeline) {
             $pipeline = $this->first();
