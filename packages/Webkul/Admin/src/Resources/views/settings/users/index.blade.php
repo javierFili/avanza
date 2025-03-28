@@ -331,7 +331,7 @@
                             <!-- Pipeline-->
                                 <x-admin::form.control-group>
                                     <x-admin::form.control-group.label class="required">
-                                        @lang('admin::app.settings.users.index.create.role')
+                                    Pipeline
                                     </x-admin::form.control-group.label>
 
                                     <v-field
