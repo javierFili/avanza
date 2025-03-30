@@ -337,7 +337,6 @@
 
                                     <v-field
                                         name="pipeline_id"
-                                        rules="required"
                                         label="@lang('admin::app.settings.users.index.create.pipeline')"
                                         v-model="pipeline_id"
                                     >

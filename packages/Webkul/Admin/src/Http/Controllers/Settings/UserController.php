@@ -118,7 +118,7 @@ class UserController extends Controller
             'name'             => 'required',
             'password'         => 'nullable',
             'confirm_password' => 'nullable|required_with:password|same:password',
-            'role_id'          => 'required',   
+            'role_id'          => 'required',
         ]);
 
         $data = request()->all();

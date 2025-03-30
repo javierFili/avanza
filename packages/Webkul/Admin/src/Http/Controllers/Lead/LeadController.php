@@ -55,7 +55,7 @@ class LeadController extends Controller
         if (request()->ajax()) {
             return datagrid(LeadDataGrid::class)->process();
         }
-        
+
         if (request('pipeline_id')) {
             $pipeline = $this->pipelineRepository->find(request('pipeline_id'));
         } else {
@@ -76,6 +76,7 @@ class LeadController extends Controller
         if (request()->query('pipeline_id')) {
             $pipeline = $this->pipelineRepository->find(request()->query('pipeline_id'));
         } else {
+            // debe ser el predeterminado por el user. si es admin, debe poder ver el default.
             $pipeline = $this->pipelineRepository->getDefaultPipeline();
         }
 
@@ -96,10 +97,10 @@ class LeadController extends Controller
                     'lead_pipeline_id'       => $pipeline->id,
                     'lead_pipeline_stage_id' => $stage->id,
                 ]);
-
-            if ($userIds = bouncer()->getAuthorizedUserIds()) {
+            /* if ($userIds = bouncer()->getAuthorizedUserIds()) {
                 $query->whereIn('leads.user_id', $userIds);
-            }
+                //dd($userIds);
+            } */
 
             $stage->lead_value = (clone $query)->sum('lead_value');
 
@@ -149,7 +150,6 @@ class LeadController extends Controller
         Event::dispatch('lead.create.before');
 
         $data = $request->all();
-
         $data['status'] = 1;
 
         if (isset($data['lead_pipeline_stage_id'])) {
@@ -471,8 +471,8 @@ class LeadController extends Controller
          * Fetching on the basis of column options.
          */
         return app($column['filterable_options']['repository'])
-            ->select([$column['filterable_options']['column']['label'].' as label', $column['filterable_options']['column']['value'].' as value'])
-            ->where($column['filterable_options']['column']['label'], 'LIKE', '%'.$params['search'].'%')
+            ->select([$column['filterable_options']['column']['label'] . ' as label', $column['filterable_options']['column']['value'] . ' as value'])
+            ->where($column['filterable_options']['column']['label'], 'LIKE', '%' . $params['search'] . '%')
             ->get()
             ->map
             ->only('label', 'value');

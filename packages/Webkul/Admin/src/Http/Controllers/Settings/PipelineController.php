@@ -46,7 +46,6 @@ class PipelineController extends Controller
     public function store(PipelineForm $request): RedirectResponse
     {
         $request->validated();
-
         $request->merge([
             'is_default' => request()->has('is_default') ? 1 : 0,
         ]);
