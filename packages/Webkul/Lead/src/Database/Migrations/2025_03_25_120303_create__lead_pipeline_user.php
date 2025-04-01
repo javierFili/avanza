@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('_lead_pipeline_user');
+        Schema::dropIfExists('lead_pipeline_user');
     }
 };
