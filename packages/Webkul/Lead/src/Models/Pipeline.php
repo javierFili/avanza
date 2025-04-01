@@ -36,6 +36,7 @@ class Pipeline extends Model implements PipelineContract
     {
         return $this->hasMany(StageProxy::modelClass(), 'lead_pipeline_id')->orderBy('sort_order', 'ASC');
     }
+
     /**
      *Get users
      */

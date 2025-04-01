@@ -46,7 +46,8 @@ class UserController extends Controller
 
         $groups = $this->groupRepository->all();
         $pipelines = $this->pipelineRepository->all();
-        return view('admin::settings.users.index', compact('roles', 'groups', "pipelines"));
+
+        return view('admin::settings.users.index', compact('roles', 'groups', 'pipelines'));
     }
 
     /**
@@ -60,7 +61,7 @@ class UserController extends Controller
             'password'         => 'nullable',
             'confirm_password' => 'nullable|required_with:password|same:password',
             'role_id'          => 'required',
-            "pipeline_id"      => "nullable",
+            'pipeline_id'      => 'nullable',
         ]);
 
         $data = request()->all();
@@ -101,7 +102,7 @@ class UserController extends Controller
      */
     public function edit(int $id): View|JsonResponse
     {
-        $admin = $this->userRepository->with(['role', 'groups', "leadPipelines"])->findOrFail($id);
+        $admin = $this->userRepository->with(['role', 'groups', 'leadPipelines'])->findOrFail($id);
 
         return new JsonResponse([
             'data'   => $admin,
@@ -114,7 +115,7 @@ class UserController extends Controller
     public function update(int $id): JsonResponse
     {
         $this->validate(request(), [
-            'email'            => 'required|email|unique:users,email,' . $id,
+            'email'            => 'required|email|unique:users,email,'.$id,
             'name'             => 'required',
             'password'         => 'nullable',
             'confirm_password' => 'nullable|required_with:password|same:password',
@@ -265,8 +266,8 @@ class UserController extends Controller
 
     public function getUserPepeline(): JsonResponse
     {
-        $pipelines = $this->userRepository->with("leadPipelines")->get();
+        $pipelines = $this->userRepository->with('leadPipelines')->get();
 
-        return response()->json(["success" => true, "data" => $pipelines], 200);
+        return response()->json(['success' => true, 'data' => $pipelines], 200);
     }
 }
