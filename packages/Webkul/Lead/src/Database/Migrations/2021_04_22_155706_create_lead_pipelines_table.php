@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('lead_pipeline_user', function (Blueprint $table) {
+        Schema::create('lead_pipelines', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('lead_pipeline_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('lead_pipeline_id')->references('id')->on('lead_pipelines')->onDelete('cascade');
+            $table->string('name');
+            $table->boolean('is_default')->default(0);
             $table->timestamps();
         });
     }
