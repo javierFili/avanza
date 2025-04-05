@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use Webkul\Goals\Http\Controllers\GoalsController;
 
-Route::prefix('goals')->group(function () {
-    Route::get('', [GoalsController::class, 'index'])->name('admin.goals.index');
+//Route::prefix('goals')->group(function () {});
+Route::group([
+    'middleware' => ['web', 'admin_locale'],
+    'prefix'     => config('app.admin_path')
+], function () {
+    Route::get('goals', [GoalsController::class, 'index'])->name('admin.goals.index');
 });

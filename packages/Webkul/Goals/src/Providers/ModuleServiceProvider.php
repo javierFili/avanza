@@ -12,6 +12,6 @@ class ModuleServiceProvider extends BaseModuleServiceProvider
      * @var array
      */
     protected $models = [
-        //
+        \Webkul\Goals\Models\Goals::class,
     ];
 }

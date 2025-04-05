@@ -1,31 +1,10 @@
 <x-admin::layouts>
-    <!-- Title -->
     <x-slot:title>
-        Package Goals
+        @lang('category::app.categories.index.title')
     </x-slot>
 
-    <!-- Body -->
-    <div class="flex flex-col gap-4">
-        {{--  <div
-            class="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300">
-            <div class="flex flex-col gap-2">
-                <div class="flex cursor-pointer items-center">
-                    <!-- Breadcrumbs -->
-                </div>
-
-                <div class="text-xl font-bold dark:text-white">
-                    Package Goals
-                </div>
-            </div>
-        </div> --}}
-
-    </div>
-    <div>
-        <div>
-            @foreach ($users as $user)
-                <ul> {{ $user->name }}</ul>
-            @endforeach
-        </div>
+    <!-- Content -->
+    <div class="flex gap-4">
 
     </div>
 </x-admin::layouts>

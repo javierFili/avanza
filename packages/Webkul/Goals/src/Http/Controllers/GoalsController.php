@@ -6,11 +6,16 @@ use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
+use Webkul\Goals\Contracts\Goals;
+use Webkul\Goals\Repositories\GoalsRepository;
 use Webkul\User\Models\User;
+use Webkul\User\Repositories\UserRepository;
 
 class GoalsController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    public function __construct(protected  GoalsRepository $goals_repository, protected UserRepository $user_repository) {}
 
     /**
      * Display a listing of the resource.
@@ -19,7 +24,8 @@ class GoalsController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = $this->user_repository->all();;
+        //dd(Auth::user());
         return view('goals::index', compact("users"));
     }
 
