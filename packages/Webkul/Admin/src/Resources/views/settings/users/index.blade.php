@@ -465,16 +465,6 @@
                                     :value="0"
                                 />
 
-                                <label class="relative inline-flex cursor-pointer items-center">
-                                    <input
-                                        type="checkbox"
-                                        name="status"
-                                        :value="1"
-                                        id="status"
-                                        class="peer sr-only"
-                                        :checked="parseInt(user.status || 0)"
-                                    >
-
                                 <x-admin::form.control-group.control
                                     type="switch"
                                     name="status"
