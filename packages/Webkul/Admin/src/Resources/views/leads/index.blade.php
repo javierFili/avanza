@@ -11,10 +11,8 @@
         {!! view_render_event('admin.leads.index.header.left.before') !!}
 
         <div class="flex flex-col gap-2">
-            <div class="flex cursor-pointer items-center">
-                <!-- Breadcrumb's -->
-                <x-admin::breadcrumbs name="leads" />
-            </div>
+            <!-- Breadcrumb's -->
+            <x-admin::breadcrumbs name="leads" />
 
             <div class="text-xl font-bold dark:text-white">
                 @lang('admin::app.leads.index.title')
@@ -27,18 +25,24 @@
 
         <div class="flex items-center gap-x-2.5">
             @if ((request()->view_type ?? 'kanban') == 'table')
-                <!-- Export Modal -->
-                <x-admin::datagrid.export :src="route('admin.leads.index')" />
-            @endif
-
-            <!-- Create button for Leads -->
-            <div class="flex items-center gap-x-2.5">
-                @if (bouncer()->hasPermission('leads.create'))
-                    <a href="{{ route('admin.leads.create') }}" class="primary-button">
-                        @lang('admin::app.leads.index.create-btn')
-                    </a>
+                <!-- Upload File for Lead Creation -->
+                @if (core()->getConfigData('general.magic_ai.pdf_generation.enabled'))
+                    @include('admin::leads.index.upload')
                 @endif
-            </div>
+
+                @if ((request()->view_type ?? 'kanban') == 'table')
+                    <!-- Export Modal -->
+                    <x-admin::datagrid.export :src="route('admin.leads.index')" />
+                @endif
+
+                <!-- Create button for Leads -->
+                <div class="flex items-center gap-x-2.5">
+                    @if (bouncer()->hasPermission('leads.create'))
+                        <a href="{{ route('admin.leads.create') }}" class="primary-button">
+                            @lang('admin::app.leads.index.create-btn')
+                        </a>
+                    @endif
+                </div>
         </div>
 
         {!! view_render_event('admin.leads.index.header.right.after') !!}
@@ -51,11 +55,14 @@
     <!-- Content -->
     <div class="mt-3.5">
         @if ((request()->view_type ?? 'kanban') == 'table')
-            @include('admin::leads.index.table')
-        @else
-            @include('admin::leads.index.kanban')
-        @endif
-    </div>
+            <div
+                class="[&>*>*>*.toolbarRight]:max-lg:w-full [&>*>*>*.toolbarRight]:max-lg:justify-between [&>*>*>*.toolbarRight]:max-md:gap-y-2 [&>*>*>*.toolbarRight]:max-md:flex-wrap mt-3.5 [&>*>*:nth-child(1)]:max-lg:!flex-wrap">
+                @if ((request()->view_type ?? 'kanban') == 'table')
+                    @include('admin::leads.index.table')
+                @else
+                    @include('admin::leads.index.kanban')
+                @endif
+            </div>
 
-    {!! view_render_event('admin.leads.index.content.after') !!}
+            {!! view_render_event('admin.leads.index.content.after') !!}
 </x-admin::layouts>

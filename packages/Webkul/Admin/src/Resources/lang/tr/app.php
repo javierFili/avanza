@@ -32,6 +32,8 @@ return [
         'other-settings'  => 'Diğer Ayarlar',
         'tags'            => 'Etiketler',
         'configuration'   => 'Yapılandırma',
+        'campaigns'       => 'Kampanyalar',
+        'event'           => 'Etkinlik',
         'create'          => 'Oluştur',
         'edit'            => 'Düzenle',
         'view'            => 'Görüntüle',
@@ -39,6 +41,9 @@ return [
         'delete'          => 'Sil',
         'export'          => 'Dışa Aktar',
         'mass-delete'     => 'Toplu Sil',
+        'data-transfer'   => 'Veri Transferi',
+        'imports'         => 'İthalatlar',
+        'import'          => 'İthalat',
     ],
 
     'users' => [
@@ -1092,6 +1097,78 @@ return [
             ],
         ],
 
+        'marketing' => [
+            'events' => [
+                'index' => [
+                    'create-btn'          => 'Etkinlik Oluştur',
+                    'title'               => 'Etkinlikler',
+                    'create-success'      => 'Etkinlik başarıyla oluşturuldu.',
+                    'update-success'      => 'Etkinlik başarıyla güncellendi.',
+                    'delete-success'      => 'Etkinlik başarıyla silindi.',
+                    'delete-failed'       => 'Etkinlik silinemedi.',
+                    'mass-delete-success' => 'Etkinlikler başarıyla silindi',
+
+                    'datagrid'   => [
+                        'delete'       => 'Sil',
+                        'edit'         => 'Düzenle',
+                        'id'           => 'ID',
+                        'name'         => 'Ad',
+                        'description'  => 'Açıklama',
+                        'date'         => 'Tarih',
+                    ],
+
+                    'create'     => [
+                        'title'       => 'Etkinlik Oluştur',
+                        'name'        => 'Ad',
+                        'date'        => 'Tarih',
+                        'description' => 'Açıklama',
+                        'save-btn'    => 'Etkinliği Kaydet',
+                    ],
+
+                    'edit' => [
+                        'title' => 'Etkinliği Düzenle',
+                    ],
+                ],
+            ],
+
+            'campaigns' => [
+                'index' => [
+                    'create-btn'          => 'Kampanya Oluştur',
+                    'title'               => 'Kampanyalar',
+                    'create-success'      => 'Kampanya başarıyla oluşturuldu.',
+                    'update-success'      => 'Kampanya başarıyla güncellendi.',
+                    'delete-success'      => 'Kampanya başarıyla silindi.',
+                    'delete-failed'       => 'Kampanya silinemedi.',
+                    'mass-delete-success' => 'Kampanyalar başarıyla silindi',
+
+                    'datagrid'   => [
+                        'id'       => 'ID',
+                        'name'     => 'Ad',
+                        'subject'  => 'Konu',
+                        'status'   => 'Durum',
+                        'active'   => 'Aktif',
+                        'inactive' => 'Pasif',
+                        'edit'     => 'Düzenle',
+                        'delete'   => 'Sil',
+                    ],
+
+                    'create'     => [
+                        'title'          => 'Kampanya Oluştur',
+                        'name'           => 'Ad',
+                        'type'           => 'Tür',
+                        'subject'        => 'Konu',
+                        'event'          => 'Etkinlik',
+                        'email-template' => 'E-posta Şablonu',
+                        'status'         => 'Durum',
+                    ],
+
+                    'edit' => [
+                        'title' => 'Kampanyayı Düzenle',
+                    ],
+                ],
+            ],
+        ],
+
         'tags' => [
             'index' => [
                 'create-btn'     => 'Etiket Oluştur',
@@ -1519,6 +1596,109 @@ return [
                 'actions'               => 'İşlemler',
             ],
         ],
+
+        'data-transfer' => [
+            'imports' => [
+                'create' => [
+                    'action'              => 'Eylem',
+                    'allowed-errors'      => 'İzin Verilen Hatalar',
+                    'back-btn'            => 'Geri',
+                    'create-update'       => 'Oluştur/Güncelle',
+                    'delete'              => 'Sil',
+                    'download-sample'     => 'Örneği İndir',
+                    'field-separator'     => 'Alan Ayırıcı',
+                    'file'                => 'Dosya',
+                    'general'             => 'Genel',
+                    'images-directory'    => 'Resim Dizini Yolu',
+                    'process-in-queue'    => 'Kuyrukta İşle',
+                    'results'             => 'Sonuçlar',
+                    'save-btn'            => 'İthalatı Kaydet',
+                    'settings'            => 'Ayarlar',
+                    'skip-errors'         => 'Hataları Atla',
+                    'stop-on-errors'      => 'Hatalarda Durdur',
+                    'title'               => 'İthalat Oluştur',
+                    'type'                => 'Tür',
+                    'validation-strategy' => 'Doğrulama Stratejisi',
+                ],
+
+                'edit' => [
+                    'action'              => 'Eylem',
+                    'allowed-errors'      => 'İzin Verilen Hatalar',
+                    'back-btn'            => 'Geri',
+                    'create-update'       => 'Oluştur/Güncelle',
+                    'delete'              => 'Sil',
+                    'download-sample'     => 'Örneği İndir',
+                    'field-separator'     => 'Alan Ayırıcı',
+                    'file'                => 'Dosya',
+                    'general'             => 'Genel',
+                    'images-directory'    => 'Resim Dizini Yolu',
+                    'process-in-queue'    => 'Kuyrukta İşle',
+                    'results'             => 'Sonuçlar',
+                    'save-btn'            => 'İthalatı Kaydet',
+                    'settings'            => 'Ayarlar',
+                    'skip-errors'         => 'Hataları Atla',
+                    'stop-on-errors'      => 'Hatalarda Durdur',
+                    'title'               => 'İthalatı Düzenle',
+                    'type'                => 'Tür',
+                    'validation-strategy' => 'Doğrulama Stratejisi',
+                ],
+
+                'index' => [
+                    'button-title' => 'İthalat Oluştur',
+                    'title'        => 'İthalatlar',
+
+                    'datagrid' => [
+                        'actions'       => 'Eylemler',
+                        'completed-at'  => 'Tamamlandığı Zaman',
+                        'created'       => 'Oluşturuldu',
+                        'delete'        => 'Sil',
+                        'deleted'       => 'Silindi',
+                        'edit'          => 'Düzenle',
+                        'error-file'    => 'Hata Dosyası',
+                        'id'            => 'Kimlik',
+                        'started-at'    => 'Başlama Zamanı',
+                        'state'         => 'Durum',
+                        'summary'       => 'Özet',
+                        'type'          => 'Tür',
+                        'updated'       => 'Güncellendi',
+                        'uploaded-file' => 'Yüklenen Dosya',
+                    ],
+                ],
+
+                'import' => [
+                    'back-btn'                => 'Geri',
+                    'completed-batches'       => 'Tamamlanan Toplam Gruplar:',
+                    'download-error-report'   => 'Tam Raporu İndir',
+                    'edit-btn'                => 'Düzenle',
+                    'imported-info'           => 'Tebrikler! İthalatınız başarılı oldu.',
+                    'importing-info'          => 'İthalat İşlemde',
+                    'indexing-info'           => 'Kaynaklar İndeksleniyor (Fiyat, Stok ve Elastic Search) İlerliyor',
+                    'linking-info'            => 'Kaynaklar Bağlanıyor',
+                    'progress'                => 'İlerleme:',
+                    'title'                   => 'İthalat',
+                    'total-batches'           => 'Toplam Gruplar:',
+                    'total-created'           => 'Oluşturulan Toplam Kayıtlar:',
+                    'total-deleted'           => 'Silinen Toplam Kayıtlar:',
+                    'total-errors'            => 'Toplam Hatalar:',
+                    'total-invalid-rows'      => 'Geçersiz Satırların Toplamı:',
+                    'total-rows-processed'    => 'İşlenen Toplam Satırlar:',
+                    'total-updated'           => 'Güncellenen Toplam Kayıtlar:',
+                    'validate'                => 'Doğrula',
+                    'validate-info'           => 'İthalatınızı kontrol etmek için Verileri Doğrula\'ya tıklayın.',
+                    'validating-info'         => 'Veriler okunmaya ve doğrulanmaya başlandı',
+                    'validation-failed-info'  => 'İthalatınız geçersiz. Lütfen aşağıdaki hataları düzeltin ve tekrar deneyin.',
+                    'validation-success-info' => 'İthalatınız geçerli. İthalat işlemini başlatmak için İthalat\'a tıklayın.',
+                ],
+
+                'create-success'    => 'İthalat başarıyla oluşturuldu.',
+                'delete-failed'     => 'İthalatı silme beklenmedik bir şekilde başarısız oldu.',
+                'delete-success'    => 'İthalat başarıyla silindi.',
+                'not-valid'         => 'İthalat geçersiz',
+                'nothing-to-import' => 'İthal edilecek kaynak yok.',
+                'setup-queue-error' => 'İthalat işlemini başlatmak için kuyruk sürücünüzü "veritabanı" veya "redis" olarak değiştirin.',
+                'update-success'    => 'İthalat başarıyla güncellendi.',
+            ],
+        ],
     ],
 
     'activities' => [
@@ -1697,6 +1877,20 @@ return [
         'destroy-success'   => 'Lead başarıyla silindi.',
         'destroy-failed'    => 'Lead silinemedi.',
 
+        'file' => [
+            'data-not-found'         => 'Veri bulunamadı.',
+            'empty-content'          => 'PDF içeriği boş veya çıkarılamadı.',
+            'failed-extract'         => 'Dosyadan metin çıkarılamadı.',
+            'insufficient-info'      => 'Yetersiz veri nedeniyle, şu anda isteğinizi işleyemiyoruz.',
+            'invalid-base64'         => 'Geçersiz base64 formatı.',
+            'invalid-format'         => 'Geçersiz JSON formatı.',
+            'invalid-response'       => 'Geçersiz AI yanıt formatı.',
+            'missing-api-key'        => 'API anahtarı veya model yapılandırması eksik.',
+            'not-found'              => 'Dosya bulunamadı.',
+            'recursive-call'         => 'Özyinelemeli çağrı tespit edildi.',
+            'text-generation-failed' => 'Metin çıkarma başarısız oldu. Dosya boş veya okunamaz olabilir.',
+        ],
+
         'index' => [
             'title'      => 'Leads',
             'create-btn' => 'Lead Oluştur',
@@ -1760,6 +1954,16 @@ return [
             'view-switcher' => [
                 'all-pipelines'       => 'Tüm Boru Hatları',
                 'create-new-pipeline' => 'Yeni Boru Hattı Oluştur',
+            ],
+
+            'upload' => [
+                'create-lead'   => 'AI Kullanarak Lead Oluştur',
+                'file'          => 'Dosya yükleme',
+                'file-info'     => 'Yalnızca pdf, bmp, jpg, jpeg, png formatındaki dosyalar kabul edilir.',
+                'file-required' => 'Devam etmek için lütfen en az bir geçerli dosya seçin.',
+                'sample-pdf'    => 'Örnek PDF',
+                'save-btn'      => 'Kaydet',
+                'upload-file'   => 'Dosya yükle',
             ],
         ],
 
@@ -1941,6 +2145,54 @@ return [
                     ],
                 ],
             ],
+
+            'email' => [
+                'title' => 'Email Settings',
+                'info'  => 'Email configuration for the application.',
+
+                'imap' => [
+                    'title' => 'IMAP Settings',
+                    'info'  => 'IMAP email configuration for receiving emails.',
+
+                    'account' => [
+                        'title'         => 'IMAP Account',
+                        'title-info'    => 'Configure your IMAP account settings here.',
+                        'host'          => 'Host',
+                        'port'          => 'Port',
+                        'encryption'    => 'Encryption Type',
+                        'validate-cert' => 'Validate SSL Certificate',
+                        'username'      => 'IMAP Username',
+                        'password'      => 'IMAP Password',
+                    ],
+                ],
+            ],
+
+            'magic-ai' => [
+                'title' => 'Sihirli AI',
+                'info'  => 'Uygulama için Sihirli AI yapılandırması.',
+
+                'settings' => [
+                    'api-key'             => 'API Anahtarı',
+                    'api-key-info'        => 'Her model için bir OpenRouter API anahtarı kullanmayı unutmayın. Bu, güvenliği ve performansı artırmak için basit bir adımdır.',
+                    'enable'              => 'Etkinleştir',
+                    'info'                => 'OpenRouter API Anahtarınız ile Magic AI deneyiminizi geliştirin. Şimdi entegre edin ve size özel, sorunsuz bir AI macerası yaşayın! Ayarları kolayca özelleştirin ve AI yolculuğunuzun kontrolünü elinize alın.',
+                    'other'               => 'Diğer Model',
+                    'other-model'         => 'Diğer modeller için OpenRouter\'dan Model ID kullanın.',
+                    'pdf-generation'      => 'PDF Oluşturma',
+                    'pdf-generation-info' => 'PDF dosyalarından otomatik olarak veri çıkarmak ve bunları metin formatına dönüştürmek için PDF Oluşturma özelliğini etkinleştirin. Bu özelliği etkinleştirerek iş akışınızı kolaylaştırın ve verimliliğinizi artırın.',
+                    'title'               => 'Genel Ayarlar',
+
+                    'models'     => [
+                        'deepseek-r1'           => 'Deepseek R1 Distill-llama-8b',
+                        'gemini-2-0-flash-001'  => 'Gemini 2.0 flash-001',
+                        'gpt-4o'                => 'GPT-4.0',
+                        'gpt-4o-mini'           => 'GPT-4.0 mini',
+                        'grok-2-1212'           => 'Grok 2.12',
+                        'llama-3-2-3b-instruct' => 'Llama 3.2 3b Instruct',
+                        'title'                 => 'Modeller',
+                    ],
+                ],
+            ],
         ],
     ],
 
@@ -2051,6 +2303,10 @@ return [
         'email-templates'      => 'E-posta Şablonları',
         'email'                => 'E-posta',
         'email-templates-info' => 'CRM’den e-posta şablonları ekleyin, düzenleyin veya silin',
+        'events'               => 'Etkinlikler',
+        'events-info'          => 'CRM üzerinden etkinlikleri ekleyin, düzenleyin veya silin',
+        'campaigns'            => 'Kampanyalar',
+        'campaigns-info'       => 'CRM üzerinden kampanyaları ekleyin, düzenleyin veya silin',
         'workflows'            => 'İş Akışları',
         'workflows-info'       => 'CRM’den iş akışlarını ekleyin, düzenleyin veya silin',
         'webhooks'             => 'Webhooklar',
@@ -2069,6 +2325,8 @@ return [
         'warehouses'           => 'Depolar',
         'warehouse'            => 'Depo',
         'warehouses-info'      => 'CRM’den depoları ekleyin, düzenleyin veya silin',
+        'data_transfer'        => 'Veri Transferi',
+        'data_transfer_info'   => 'CRM’de kişiler, ürünler ve potansiyel müşterilere ilişkin veri transferi ayarlarını yönetin',
     ],
 
     'user' => [
@@ -2109,6 +2367,12 @@ return [
                     'thanks'            => 'Teşekkürler!',
                 ],
             ],
+        ],
+    ],
+
+    'validations' => [
+        'message' => [
+            'decimal' => ':attribute ondalıklı bir sayı olmalıdır.',
         ],
     ],
 

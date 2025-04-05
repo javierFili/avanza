@@ -32,6 +32,8 @@ return [
         'other-settings'  => 'إعدادات أخرى',
         'tags'            => 'العلامات',
         'configuration'   => 'التكوين',
+        'campaigns'       => 'الحملات',
+        'event'           => 'الحدث',
         'create'          => 'إنشاء',
         'edit'            => 'تعديل',
         'view'            => 'عرض',
@@ -39,6 +41,9 @@ return [
         'delete'          => 'حذف',
         'export'          => 'تصدير',
         'mass-delete'     => 'حذف جماعي',
+        'data-transfer'   => 'نقل البيانات',
+        'imports'         => 'الواردات',
+        'import'          => 'استيراد',
     ],
 
     'users' => [
@@ -1088,6 +1093,78 @@ return [
             ],
         ],
 
+        'marketing' => [
+            'events' => [
+                'index' => [
+                    'create-btn'          => 'إنشاء حدث',
+                    'title'               => 'الأحداث',
+                    'create-success'      => 'تم إنشاء الحدث بنجاح.',
+                    'update-success'      => 'تم تحديث الحدث بنجاح.',
+                    'delete-success'      => 'تم حذف الحدث بنجاح.',
+                    'delete-failed'       => 'لا يمكن حذف الحدث.',
+                    'mass-delete-success' => 'تم حذف الأحداث بنجاح',
+
+                    'datagrid'   => [
+                        'delete'       => 'حذف',
+                        'edit'         => 'تحرير',
+                        'id'           => 'المعرف',
+                        'name'         => 'الاسم',
+                        'description'  => 'الوصف',
+                        'date'         => 'التاريخ',
+                    ],
+
+                    'create'     => [
+                        'title'       => 'إنشاء حدث',
+                        'name'        => 'الاسم',
+                        'date'        => 'التاريخ',
+                        'description' => 'الوصف',
+                        'save-btn'    => 'حفظ الحدث',
+                    ],
+
+                    'edit' => [
+                        'title' => 'تحرير الحدث',
+                    ],
+                ],
+            ],
+
+            'campaigns' => [
+                'index' => [
+                    'create-btn'          => 'إنشاء حملة',
+                    'title'               => 'الحملات',
+                    'create-success'      => 'تم إنشاء الحملة بنجاح.',
+                    'update-success'      => 'تم تحديث الحملة بنجاح.',
+                    'delete-success'      => 'تم حذف الحملة بنجاح.',
+                    'delete-failed'       => 'لا يمكن حذف الحملة.',
+                    'mass-delete-success' => 'تم حذف الحملات بنجاح.',
+
+                    'datagrid'   => [
+                        'id'       => 'المعرف',
+                        'name'     => 'الاسم',
+                        'subject'  => 'الموضوع',
+                        'status'   => 'الحالة',
+                        'active'   => 'نشط',
+                        'inactive' => 'غير نشط',
+                        'edit'     => 'تحرير',
+                        'delete'   => 'حذف',
+                    ],
+
+                    'create'     => [
+                        'title'          => 'إنشاء حملة',
+                        'name'           => 'الاسم',
+                        'type'           => 'النوع',
+                        'subject'        => 'الموضوع',
+                        'event'          => 'الحدث',
+                        'email-template' => 'نموذج البريد الإلكتروني',
+                        'status'         => 'الحالة',
+                    ],
+
+                    'edit' => [
+                        'title' => 'تحرير الحملة',
+                    ],
+                ],
+            ],
+        ],
+
         'tags' => [
             'index' => [
                 'create-btn'     => 'إنشاء وسم',
@@ -1515,6 +1592,109 @@ return [
                 'actions'               => 'الإجراءات',
             ],
         ],
+
+        'data-transfer' => [
+            'imports' => [
+                'create' => [
+                    'action'              => 'إجراء',
+                    'allowed-errors'      => 'الأخطاء المسموح بها',
+                    'back-btn'            => 'عودة',
+                    'create-update'       => 'إنشاء/تحديث',
+                    'delete'              => 'حذف',
+                    'download-sample'     => 'تنزيل العينة',
+                    'field-separator'     => 'فاصل الحقول',
+                    'file'                => 'ملف',
+                    'general'             => 'عام',
+                    'images-directory'    => 'مسار دليل الصور',
+                    'process-in-queue'    => 'معالجة في قائمة الانتظار',
+                    'results'             => 'النتائج',
+                    'save-btn'            => 'حفظ الاستيراد',
+                    'settings'            => 'الإعدادات',
+                    'skip-errors'         => 'تخطي الأخطاء',
+                    'stop-on-errors'      => 'التوقف عند الأخطاء',
+                    'title'               => 'إنشاء استيراد',
+                    'type'                => 'النوع',
+                    'validation-strategy' => 'استراتيجية التحقق',
+                ],
+
+                'edit' => [
+                    'action'              => 'إجراء',
+                    'allowed-errors'      => 'الأخطاء المسموح بها',
+                    'back-btn'            => 'عودة',
+                    'create-update'       => 'إنشاء/تحديث',
+                    'delete'              => 'حذف',
+                    'download-sample'     => 'تنزيل العينة',
+                    'field-separator'     => 'فاصل الحقول',
+                    'file'                => 'ملف',
+                    'general'             => 'عام',
+                    'images-directory'    => 'مسار دليل الصور',
+                    'process-in-queue'    => 'معالجة في قائمة الانتظار',
+                    'results'             => 'النتائج',
+                    'save-btn'            => 'حفظ الاستيراد',
+                    'settings'            => 'الإعدادات',
+                    'skip-errors'         => 'تخطي الأخطاء',
+                    'stop-on-errors'      => 'التوقف عند الأخطاء',
+                    'title'               => 'تحرير الاستيراد',
+                    'type'                => 'النوع',
+                    'validation-strategy' => 'استراتيجية التحقق',
+                ],
+
+                'index' => [
+                    'button-title' => 'إنشاء استيراد',
+                    'title'        => 'الاستيرادات',
+
+                    'datagrid' => [
+                        'actions'       => 'الإجراءات',
+                        'completed-at'  => 'اكتمل في',
+                        'created'       => 'تم الإنشاء',
+                        'delete'        => 'حذف',
+                        'deleted'       => 'تم الحذف',
+                        'edit'          => 'تحرير',
+                        'error-file'    => 'ملف الأخطاء',
+                        'id'            => 'الرقم التعريفي',
+                        'started-at'    => 'بدأ في',
+                        'state'         => 'الحالة',
+                        'summary'       => 'الملخص',
+                        'type'          => 'النوع',
+                        'updated'       => 'تم التحديث',
+                        'uploaded-file' => 'الملف المرفوع',
+                    ],
+                ],
+
+                'import' => [
+                    'back-btn'                => 'عودة',
+                    'completed-batches'       => 'إجمالي الدفعات المكتملة:',
+                    'download-error-report'   => 'تنزيل التقرير الكامل',
+                    'edit-btn'                => 'تحرير',
+                    'imported-info'           => 'تهانينا! تم استيرادك بنجاح.',
+                    'importing-info'          => 'الاستيراد قيد المعالجة',
+                    'indexing-info'           => 'تجميع الموارد (الأسعار، المخزون و Elastic Search) جارٍ',
+                    'linking-info'            => 'ربط الموارد جارٍ',
+                    'progress'                => 'التقدم:',
+                    'title'                   => 'استيراد',
+                    'total-batches'           => 'إجمالي الدفعات:',
+                    'total-created'           => 'إجمالي السجلات التي تم إنشاؤها:',
+                    'total-deleted'           => 'إجمالي السجلات المحذوفة:',
+                    'total-errors'            => 'إجمالي الأخطاء:',
+                    'total-invalid-rows'      => 'إجمالي الصفوف غير الصالحة:',
+                    'total-rows-processed'    => 'إجمالي الصفوف المعالجة:',
+                    'total-updated'           => 'إجمالي السجلات التي تم تحديثها:',
+                    'validate'                => 'التحقق',
+                    'validate-info'           => 'انقر على التحقق من البيانات لفحص الاستيراد.',
+                    'validating-info'         => 'بدأت قراءة البيانات والتحقق منها',
+                    'validation-failed-info'  => 'استيرادك غير صالح. يرجى إصلاح الأخطاء التالية والمحاولة مرة أخرى.',
+                    'validation-success-info' => 'استيرادك صالح. انقر على استيراد لبدء عملية الاستيراد.',
+                ],
+
+                'create-success'    => 'تم إنشاء الاستيراد بنجاح.',
+                'delete-failed'     => 'فشل حذف الاستيراد بشكل غير متوقع.',
+                'delete-success'    => 'تم حذف الاستيراد بنجاح.',
+                'not-valid'         => 'الاستيراد غير صالح',
+                'nothing-to-import' => 'لا توجد موارد لاستيرادها.',
+                'setup-queue-error' => 'يرجى تغيير برنامج تشغيل قائمة الانتظار إلى "قاعدة البيانات" أو "ريديس" لبدء عملية الاستيراد.',
+                'update-success'    => 'تم تحديث الاستيراد بنجاح.',
+            ],
+        ],
     ],
 
     'activities' => [
@@ -1693,6 +1873,20 @@ return [
         'destroy-success'   => 'تم حذف العميل المحتمل بنجاح.',
         'destroy-failed'    => 'لا يمكن حذف العميل المحتمل.',
 
+        'file' => [
+            'data-not-found'         => 'البيانات غير موجودة.',
+            'empty-content'          => 'محتوى PDF فارغ أو لم يتم استخراجه.',
+            'failed-extract'         => 'فشل في استخراج النص من الملف.',
+            'insufficient-info'      => 'بسبب نقص البيانات، لا يمكننا معالجة طلبك في الوقت الحالي.',
+            'invalid-base64'         => 'تنسيق base64 غير صالح.',
+            'invalid-format'         => 'تنسيق JSON غير صالح.',
+            'invalid-response'       => 'تنسيق استجابة الذكاء الاصطناعي غير صالح.',
+            'missing-api-key'        => 'مفتاح API أو تكوين النموذج مفقود.',
+            'not-found'              => 'الملف غير موجود.',
+            'recursive-call'         => 'تم الكشف عن استدعاء متكرر.',
+            'text-generation-failed' => 'فشل استخراج النص. قد يكون الملف فارغًا أو غير قابل للقراءة.',
+        ],
+
         'index' => [
             'title'      => 'العملاء المحتملون',
             'create-btn' => 'إنشاء عميل محتمل',
@@ -1756,6 +1950,16 @@ return [
             'view-switcher' => [
                 'all-pipelines'       => 'كل المسارات',
                 'create-new-pipeline' => 'إنشاء مسار جديد',
+            ],
+
+            'upload' => [
+                'create-lead'   => 'إنشاء عميل محتمل باستخدام الذكاء الاصطناعي',
+                'file'          => 'رفع ملف',
+                'file-info'     => 'يتم قبول الملفات بتنسيق pdf, bmp, jpg, jpeg, png فقط.',
+                'file-required' => 'يرجى اختيار ملف صالح واحد على الأقل للمتابعة.',
+                'sample-pdf'    => 'نموذج File',
+                'save-btn'      => 'حفظ',
+                'upload-file'   => 'رفع الملف',
             ],
         ],
 
@@ -1895,6 +2099,54 @@ return [
                         'logo-image' => 'صورة الشعار',
                         'title'      => 'شعار الإدارة',
                         'title-info' => 'تكوين صورة الشعار للوحة الإدارة الخاصة بك.',
+                    ],
+                ],
+            ],
+
+            'email' => [
+                'title' => 'إعدادات البريد الإلكتروني',
+                'info'  => 'تكوين البريد الإلكتروني للتطبيق.',
+
+                'imap' => [
+                    'title' => 'إعدادات IMAP',
+                    'info'  => 'تكوين البريد الإلكتروني IMAP لتلقي الرسائل.',
+
+                    'account' => [
+                        'title'         => 'حساب IMAP',
+                        'title-info'    => 'قم بتكوين إعدادات حساب IMAP هنا.',
+                        'host'          => 'المضيف',
+                        'port'          => 'المنفذ',
+                        'encryption'    => 'نوع التشفير',
+                        'validate-cert' => 'التحقق من شهادة SSL',
+                        'username'      => 'اسم مستخدم IMAP',
+                        'password'      => 'كلمة مرور IMAP',
+                    ],
+                ],
+            ],
+
+            'magic-ai' => [
+                'title' => 'الذكاء الاصطناعي السحري',
+                'info'  => 'تكوين الذكاء الاصطناعي السحري للتطبيق.',
+
+                'settings' => [
+                    'api-key'             => 'مفتاح API',
+                    'api-key-info'        => 'تذكر استخدام مفتاح API من OpenRouter لكل نموذج. إنها خطوة بسيطة لتعزيز الأمان والأداء.',
+                    'enable'              => 'تمكين',
+                    'info'                => 'عزز تجربتك مع الذكاء الاصطناعي السحري باستخدام مفتاح API من OpenRouter. قم بدمجه الآن لتجربة ذكاء اصطناعي سلسة ومخصصة لك! قم بتخصيص الإعدادات بسهولة وتحكم في رحلتك مع الذكاء الاصطناعي.',
+                    'other'               => 'نموذج آخر',
+                    'other-model'         => 'بالنسبة للنماذج الأخرى، استخدم معرف النموذج من OpenRouter.',
+                    'pdf-generation'      => 'إنشاء ملفات PDF',
+                    'pdf-generation-info' => 'قم بتمكين ميزة إنشاء ملفات PDF لاستخراج البيانات تلقائيًا من ملفات PDF وتحويلها إلى نص. عزز إنتاجيتك وكفاءتك بتمكين هذه الميزة لتبسيط سير العمل الخاص بك.',
+                    'title'               => 'الإعدادات العامة',
+
+                    'models'     => [
+                        'deepseek-r1'           => 'Deepseek R1 Distill-llama-8b',
+                        'gemini-2-0-flash-001'  => 'Gemini 2.0 flash-001',
+                        'gpt-4o'                => 'GPT-4.0',
+                        'gpt-4o-mini'           => 'GPT-4.0 mini',
+                        'grok-2-1212'           => 'Grok 2.12',
+                        'llama-3-2-3b-instruct' => 'Llama 3.2 3b Instruct',
+                        'title'                 => 'النماذج',
                     ],
                 ],
             ],
@@ -2048,6 +2300,10 @@ return [
         'email-templates'      => 'قوالب البريد الإلكتروني',
         'email'                => 'البريد الإلكتروني',
         'email-templates-info' => 'إضافة أو تعديل أو حذف قوالب البريد الإلكتروني من نظام CRM',
+        'events'               => 'الفعاليات',
+        'events-info'          => 'إضافة، تعديل أو حذف الفعاليات من إدارة العلاقات',
+        'campaigns'            => 'الحملات',
+        'campaigns-info'       => 'إضافة، تعديل أو حذف الحملات من إدارة العلاقات',
         'workflows'            => 'سير العمل',
         'workflows-info'       => 'إضافة أو تعديل أو حذف سير العمل من نظام CRM',
         'webhooks'             => 'الويب هوك',
@@ -2066,6 +2322,8 @@ return [
         'warehouses'           => 'المستودعات',
         'warehouse'            => 'مستودع',
         'warehouses-info'      => 'إضافة أو تعديل أو حذف المستودعات من نظام CRM',
+        'data_transfer'        => 'نقل البيانات',
+        'data_transfer_info'   => 'إدارة إعدادات نقل البيانات المتعلقة بالأشخاص والمنتجات والعملاء المحتملين في إدارة علاقات العملاء (CRM)',
     ],
 
     'user' => [
@@ -2106,6 +2364,12 @@ return [
                     'thanks'            => 'شكراً!',
                 ],
             ],
+        ],
+    ],
+
+    'validations' => [
+        'message' => [
+            'decimal' => ':attribute يجب أن يكون رقمًا عشريًا.',
         ],
     ],
 

@@ -32,6 +32,8 @@ return [
         'other-settings'  => 'سایر تنظیمات',
         'tags'            => 'برچسب‌ها',
         'configuration'   => 'پیکربندی',
+        'campaigns'       => 'کمپین‌ها',
+        'event'           => 'رویداد',
         'create'          => 'ایجاد',
         'edit'            => 'ویرایش',
         'view'            => 'نمایش',
@@ -39,6 +41,9 @@ return [
         'delete'          => 'حذف',
         'export'          => 'صادر کردن',
         'mass-delete'     => 'حذف انبوه',
+        'data-transfer'   => 'انتقال داده',
+        'imports'         => 'واردات',
+        'import'          => 'وارد کردن',
     ],
 
     'users' => [
@@ -1092,6 +1097,78 @@ return [
             ],
         ],
 
+        'marketing' => [
+            'events' => [
+                'index' => [
+                    'create-btn'          => 'ایجاد رویداد',
+                    'title'               => 'رویدادها',
+                    'create-success'      => 'رویداد با موفقیت ایجاد شد.',
+                    'update-success'      => 'رویداد با موفقیت به‌روزرسانی شد.',
+                    'delete-success'      => 'رویداد با موفقیت حذف شد.',
+                    'delete-failed'       => 'رویداد قابل حذف نیست.',
+                    'mass-delete-success' => 'رویدادها با موفقیت حذف شدند',
+
+                    'datagrid'   => [
+                        'delete'       => 'حذف',
+                        'edit'         => 'ویرایش',
+                        'id'           => 'شناسه',
+                        'name'         => 'نام',
+                        'description'  => 'توضیحات',
+                        'date'         => 'تاریخ',
+                    ],
+
+                    'create'     => [
+                        'title'       => 'ایجاد رویداد',
+                        'name'        => 'نام',
+                        'date'        => 'تاریخ',
+                        'description' => 'توضیحات',
+                        'save-btn'    => 'ذخیره رویداد',
+                    ],
+
+                    'edit' => [
+                        'title' => 'ویرایش رویداد',
+                    ],
+                ],
+            ],
+
+            'campaigns' => [
+                'index' => [
+                    'create-btn'          => 'ایجاد کمپین',
+                    'title'               => 'کمپین‌ها',
+                    'create-success'      => 'کمپین با موفقیت ایجاد شد.',
+                    'update-success'      => 'کمپین با موفقیت به‌روزرسانی شد.',
+                    'delete-success'      => 'کمپین با موفقیت حذف شد.',
+                    'delete-failed'       => 'کمپین قابل حذف نیست.',
+                    'mass-delete-success' => 'کمپین‌ها با موفقیت حذف شدند',
+
+                    'datagrid'   => [
+                        'id'       => 'شناسه',
+                        'name'     => 'نام',
+                        'subject'  => 'موضوع',
+                        'status'   => 'وضعیت',
+                        'active'   => 'فعال',
+                        'inactive' => 'غیرفعال',
+                        'edit'     => 'ویرایش',
+                        'delete'   => 'حذف',
+                    ],
+
+                    'create'     => [
+                        'title'          => 'ایجاد کمپین',
+                        'name'           => 'نام',
+                        'type'           => 'نوع',
+                        'subject'        => 'موضوع',
+                        'event'          => 'رویداد',
+                        'email-template' => 'قالب ایمیل',
+                        'status'         => 'وضعیت',
+                    ],
+
+                    'edit' => [
+                        'title' => 'ویرایش کمپین',
+                    ],
+                ],
+            ],
+        ],
+
         'tags' => [
             'index' => [
                 'create-btn'     => 'ایجاد برچسب',
@@ -1519,6 +1596,109 @@ return [
                 'actions'               => 'عملیات',
             ],
         ],
+
+        'data-transfer' => [
+            'imports' => [
+                'create' => [
+                    'action'              => 'عملیات',
+                    'allowed-errors'      => 'خطاهای مجاز',
+                    'back-btn'            => 'بازگشت',
+                    'create-update'       => 'ایجاد/به‌روزرسانی',
+                    'delete'              => 'حذف',
+                    'download-sample'     => 'دانلود نمونه',
+                    'field-separator'     => 'جداکننده فیلد',
+                    'file'                => 'فایل',
+                    'general'             => 'عمومی',
+                    'images-directory'    => 'مسیر پوشه تصاویر',
+                    'process-in-queue'    => 'پردازش در صف',
+                    'results'             => 'نتایج',
+                    'save-btn'            => 'ذخیره واردات',
+                    'settings'            => 'تنظیمات',
+                    'skip-errors'         => 'رد کردن خطاها',
+                    'stop-on-errors'      => 'توقف در صورت خطا',
+                    'title'               => 'ایجاد واردات',
+                    'type'                => 'نوع',
+                    'validation-strategy' => 'استراتژی اعتبارسنجی',
+                ],
+
+                'edit' => [
+                    'action'              => 'عملیات',
+                    'allowed-errors'      => 'خطاهای مجاز',
+                    'back-btn'            => 'بازگشت',
+                    'create-update'       => 'ایجاد/به‌روزرسانی',
+                    'delete'              => 'حذف',
+                    'download-sample'     => 'دانلود نمونه',
+                    'field-separator'     => 'جداکننده فیلد',
+                    'file'                => 'فایل',
+                    'general'             => 'عمومی',
+                    'images-directory'    => 'مسیر پوشه تصاویر',
+                    'process-in-queue'    => 'پردازش در صف',
+                    'results'             => 'نتایج',
+                    'save-btn'            => 'ذخیره واردات',
+                    'settings'            => 'تنظیمات',
+                    'skip-errors'         => 'رد کردن خطاها',
+                    'stop-on-errors'      => 'توقف در صورت خطا',
+                    'title'               => 'ویرایش واردات',
+                    'type'                => 'نوع',
+                    'validation-strategy' => 'استراتژی اعتبارسنجی',
+                ],
+
+                'index' => [
+                    'button-title' => 'ایجاد واردات',
+                    'title'        => 'واردات‌ها',
+
+                    'datagrid' => [
+                        'actions'       => 'عملیات',
+                        'completed-at'  => 'تکمیل شده در',
+                        'created'       => 'ایجاد شده',
+                        'delete'        => 'حذف',
+                        'deleted'       => 'حذف شده',
+                        'edit'          => 'ویرایش',
+                        'error-file'    => 'فایل خطا',
+                        'id'            => 'شناسه',
+                        'started-at'    => 'شروع شده در',
+                        'state'         => 'وضعیت',
+                        'summary'       => 'خلاصه',
+                        'type'          => 'نوع',
+                        'updated'       => 'به‌روزرسانی شده',
+                        'uploaded-file' => 'فایل آپلود شده',
+                    ],
+                ],
+
+                'import' => [
+                    'back-btn'                => 'بازگشت',
+                    'completed-batches'       => 'کل دسته‌های تکمیل شده:',
+                    'download-error-report'   => 'دانلود گزارش کامل',
+                    'edit-btn'                => 'ویرایش',
+                    'imported-info'           => 'تبریک! واردات شما با موفقیت انجام شد.',
+                    'importing-info'          => 'واردات در حال انجام است',
+                    'indexing-info'           => 'ایندکس‌گذاری منابع (قیمت، موجودی و Elastic Search) در حال پیشرفت است',
+                    'linking-info'            => 'پیونددهی منابع در حال انجام است',
+                    'progress'                => 'پیشرفت:',
+                    'title'                   => 'واردات',
+                    'total-batches'           => 'کل دسته‌ها:',
+                    'total-created'           => 'کل رکوردهای ایجاد شده:',
+                    'total-deleted'           => 'کل رکوردهای حذف شده:',
+                    'total-errors'            => 'کل خطاها:',
+                    'total-invalid-rows'      => 'کل ردیف‌های نامعتبر:',
+                    'total-rows-processed'    => 'کل ردیف‌های پردازش شده:',
+                    'total-updated'           => 'کل رکوردهای به‌روزرسانی شده:',
+                    'validate'                => 'اعتبارسنجی',
+                    'validate-info'           => 'برای بررسی واردات خود، روی "اعتبارسنجی داده‌ها" کلیک کنید.',
+                    'validating-info'         => 'خواندن و اعتبارسنجی داده‌ها آغاز شده است',
+                    'validation-failed-info'  => 'واردات شما نامعتبر است. لطفاً خطاهای زیر را رفع کرده و دوباره تلاش کنید.',
+                    'validation-success-info' => 'واردات شما معتبر است. برای شروع فرآیند واردات، روی "واردات" کلیک کنید.',
+                ],
+
+                'create-success'    => 'واردات با موفقیت ایجاد شد.',
+                'delete-failed'     => 'حذف واردات به طور غیرمنتظره‌ای ناکام ماند.',
+                'delete-success'    => 'واردات با موفقیت حذف شد.',
+                'not-valid'         => 'واردات نامعتبر است',
+                'nothing-to-import' => 'هیچ منبعی برای واردات وجود ندارد.',
+                'setup-queue-error' => 'لطفاً درایور صف خود را به "database" یا "redis" تغییر دهید تا فرآیند واردات شروع شود.',
+                'update-success'    => 'واردات با موفقیت به‌روزرسانی شد.',
+            ],
+        ],
     ],
 
     'activities' => [
@@ -1697,6 +1877,20 @@ return [
         'destroy-success'   => 'سرنخ با موفقیت حذف شد.',
         'destroy-failed'    => 'سرنخ قابل حذف نیست.',
 
+        'file' => [
+            'data-not-found'         => 'داده‌ای یافت نشد.',
+            'empty-content'          => 'محتوای PDF خالی است یا نمی‌توان آن را استخراج کرد.',
+            'failed-extract'         => 'استخراج متن از فایل ناموفق بود.',
+            'insufficient-info'      => 'به دلیل اطلاعات ناکافی، در حال حاضر نمی‌توانیم درخواست شما را پردازش کنیم.',
+            'invalid-base64'         => 'فرمت base64 نامعتبر است.',
+            'invalid-format'         => 'فرمت JSON نامعتبر است.',
+            'invalid-response'       => 'فرمت پاسخ هوش مصنوعی نامعتبر است.',
+            'missing-api-key'        => 'کلید API یا پیکربندی مدل مفقود است.',
+            'not-found'              => 'فایل یافت نشد.',
+            'recursive-call'         => 'تماس بازگشتی شناسایی شد.',
+            'text-generation-failed' => 'استخراج متن ناموفق بود. فایل ممکن است خالی یا غیرقابل خواندن باشد.',
+        ],
+
         'index' => [
             'title'      => 'سرنخ‌ها',
             'create-btn' => 'ایجاد سرنخ',
@@ -1760,6 +1954,16 @@ return [
             'view-switcher' => [
                 'all-pipelines'       => 'تمام خطوط تولید',
                 'create-new-pipeline' => 'ایجاد خط تولید جدید',
+            ],
+
+            'upload' => [
+                'create-lead'   => 'ایجاد سرنخ با استفاده از هوش مصنوعی',
+                'file'          => 'آپلود فایل',
+                'file-info'     => 'فقط فایل‌های با فرمت pdf, bmp, jpg, jpeg, png پذیرفته می‌شوند.',
+                'file-required' => 'لطفاً حداقل یک فایل معتبر برای ادامه انتخاب کنید.',
+                'sample-pdf'    => 'نمونه PDF',
+                'save-btn'      => 'ذخیره',
+                'upload-file'   => 'بارگذاری فایل',
             ],
         ],
 
@@ -1941,6 +2145,54 @@ return [
                     ],
                 ],
             ],
+
+            'email' => [
+                'title' => 'تنظیمات ایمیل',
+                'info'  => 'پیکربندی ایمیل برای برنامه.',
+
+                'imap' => [
+                    'title' => 'تنظیمات IMAP',
+                    'info'  => 'پیکربندی ایمیل IMAP برای دریافت ایمیل‌ها.',
+
+                    'account' => [
+                        'title'         => 'حساب IMAP',
+                        'title-info'    => 'تنظیمات حساب IMAP خود را اینجا پیکربندی کنید.',
+                        'host'          => 'میزبان',
+                        'port'          => 'پورت',
+                        'encryption'    => 'نوع رمزگذاری',
+                        'validate-cert' => 'اعتبارسنجی گواهی SSL',
+                        'username'      => 'نام کاربری IMAP',
+                        'password'      => 'رمز عبور IMAP',
+                    ],
+                ],
+            ],
+
+            'magic-ai' => [
+                'title' => 'هوش مصنوعی جادویی',
+                'info'  => 'پیکربندی هوش مصنوعی جادویی برای برنامه.',
+
+                'settings' => [
+                    'api-key'             => 'کلید API',
+                    'api-key-info'        => 'به یاد داشته باشید که برای هر مدل از کلید API OpenRouter استفاده کنید. این یک گام ساده برای افزایش امنیت و عملکرد است.',
+                    'enable'              => 'فعال کردن',
+                    'info'                => 'تجربه هوش مصنوعی جادویی خود را با کلید API OpenRouter خود بهبود بخشید. اکنون آن را یکپارچه کنید تا یک ماجراجویی هوش مصنوعی شخصی‌سازی شده و بدون درز برای شما فراهم شود! به راحتی تنظیمات را سفارشی کنید و کنترل سفر هوش مصنوعی خود را به دست بگیرید.',
+                    'other'               => 'مدل دیگر',
+                    'other-model'         => 'برای مدل‌های دیگر، از شناسه مدل از OpenRouter استفاده کنید.',
+                    'pdf-generation'      => 'تولید PDF',
+                    'pdf-generation-info' => 'ویژگی تولید PDF را فعال کنید تا به طور خودکار داده‌ها را از فایل‌های PDF استخراج کرده و به فرمت متنی تبدیل کنید. با فعال کردن این ویژگی، بهره‌وری و کارایی خود را افزایش دهید و جریان کاری خود را ساده کنید.',
+                    'title'               => 'تنظیمات عمومی',
+
+                    'models'     => [
+                        'deepseek-r1'           => 'Deepseek R1 Distill-llama-8b',
+                        'gemini-2-0-flash-001'  => 'Gemini 2.0 flash-001',
+                        'gpt-4o'                => 'GPT-4.0',
+                        'gpt-4o-mini'           => 'GPT-4.0 mini',
+                        'grok-2-1212'           => 'Grok 2.12',
+                        'llama-3-2-3b-instruct' => 'Llama 3.2 3b Instruct',
+                        'title'                 => 'مدل‌ها',
+                    ],
+                ],
+            ],
         ],
     ],
 
@@ -2051,6 +2303,10 @@ return [
         'email-templates'      => 'قالب‌های ایمیل',
         'email'                => 'ایمیل',
         'email-templates-info' => 'اضافه، ویرایش یا حذف قالب‌های ایمیل از CRM',
+        'events'               => 'رویدادها',
+        'events-info'          => 'افزودن، ویرایش یا حذف رویدادها از CRM',
+        'campaigns'            => 'کمپین‌ها',
+        'campaigns-info'       => 'افزودن، ویرایش یا حذف کمپین‌ها از CRM',
         'workflows'            => 'فرایندها',
         'workflows-info'       => 'اضافه، ویرایش یا حذف فرایندها از CRM',
         'webhooks'             => 'وب‌هوک‌ها',
@@ -2069,6 +2325,8 @@ return [
         'warehouses'           => 'انبارها',
         'warehouse'            => 'انبار',
         'warehouses-info'      => 'اضافه، ویرایش یا حذف انبارها از CRM',
+        'data_transfer'        => 'انتقال داده',
+        'data_transfer_info'   => 'مدیریت تنظیمات مربوط به انتقال داده‌های اشخاص، محصولات و سرنخ‌ها در CRM',
     ],
 
     'user' => [
@@ -2109,6 +2367,12 @@ return [
                     'thanks'            => 'متشکریم!',
                 ],
             ],
+        ],
+    ],
+
+    'validations' => [
+        'message' => [
+            'decimal' => ':attribute باید یک عدد اعشاری باشد.',
         ],
     ],
 
