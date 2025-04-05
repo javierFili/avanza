@@ -2,10 +2,10 @@
 
 namespace Webkul\Goals\Http\Controllers;
 
-use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Routing\Controller;
 
 class GoalsController extends Controller
 {
@@ -26,20 +26,14 @@ class GoalsController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
-    {
-
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
      *
      * @return \Illuminate\Http\Response
      */
-    public function store()
-    {
-        
-    }
+    public function store() {}
 
     /**
      * Show the form for editing the specified resource.
@@ -47,10 +41,7 @@ class GoalsController extends Controller
      * @param  int  $id
      * @return \Illuminate\View\View
      */
-    public function edit($id)
-    {
-
-    }
+    public function edit($id) {}
 
     /**
      * Update the specified resource in storage.
@@ -58,10 +49,7 @@ class GoalsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($id)
-    {
-        
-    }
+    public function update($id) {}
 
     /**
      * Remove the specified resource from storage.
@@ -69,8 +57,5 @@ class GoalsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        
-    }
+    public function destroy($id) {}
 }
