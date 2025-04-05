@@ -22,7 +22,7 @@ class GoalsServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'goals');
 
-        Event::listen('admin.layout.head.after', function($viewRenderEventManager) {
+        Event::listen('admin.layout.head.after', function ($viewRenderEventManager) {
             $viewRenderEventManager->addTemplate('goals::components.layouts.style');
         });
     }
@@ -45,11 +45,13 @@ class GoalsServiceProvider extends ServiceProvider
     protected function registerConfig()
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/menu.php', 'menu.admin'
+            dirname(__DIR__) . '/Config/menu.php',
+            'menu.admin'
         );
 
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/acl.php', 'acl'
+            dirname(__DIR__) . '/Config/acl.php',
+            'acl'
         );
     }
 }
