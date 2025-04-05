@@ -7,15 +7,25 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
+use Webkul\Admin\DataGrids\Settings\UserDataGrid;
 use Webkul\Goals\Contracts\Goals;
 use Webkul\Goals\Repositories\GoalsRepository;
+use Webkul\Lead\Repositories\PipelineRepository;
 use Webkul\User\Models\User;
+use Webkul\User\Repositories\GroupRepository;
+use Webkul\User\Repositories\RoleRepository;
 use Webkul\User\Repositories\UserRepository;
 
 class GoalsController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    public function __construct(protected  GoalsRepository $goals_repository, protected UserRepository $user_repository) {}
+    public function __construct(
+        protected  GoalsRepository $goalsRepository,
+        protected UserRepository $usersRepository,
+        protected RoleRepository $roleRepository,
+        protected GroupRepository $groupRepository,
+        protected PipelineRepository $pipelineRepository
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -24,9 +34,15 @@ class GoalsController extends Controller
      */
     public function index()
     {
-        $users = $this->user_repository->all();;
-        //dd(Auth::user());
-        return view('goals::index', compact("users"));
+        $users = $this->usersRepository->with("goals")->get();
+        if (request()->ajax()) {
+            return datagrid(UserDataGrid::class)->process();
+        }
+        $roles = $this->roleRepository->all();
+        $groups = $this->groupRepository->all();
+        $pipelines = $this->pipelineRepository->all();
+        //dd($users);
+        return view('goals::index', compact('roles', 'groups', 'pipelines', 'users'));
     }
 
     /**

@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
+use Webkul\Goals\Models\Goals;
 use Webkul\Lead\Models\Pipeline;
 use Webkul\User\Contracts\User as UserContract;
 
@@ -109,5 +110,13 @@ class User extends Authenticatable implements UserContract
     public function leadPipelines()
     {
         return $this->belongsToMany(Pipeline::class, 'lead_pipeline_user', 'user_id', 'lead_pipeline_id');
+    }
+
+    /**
+     * get the goals
+     */
+    public function goals()
+    {
+        return $this->hasMany(Goals::class);
     }
 }

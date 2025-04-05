@@ -4,6 +4,7 @@ namespace Webkul\Lead\Models;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Webkul\Goals\Models\Goals;
 use Webkul\Lead\Contracts\Pipeline as PipelineContract;
 
 class Pipeline extends Model implements PipelineContract
@@ -44,5 +45,13 @@ class Pipeline extends Model implements PipelineContract
     public function users()
     {
         return $this->belongsToMany(User::class, 'lead_pipeline_user', 'lead_pipeline_id', 'user_id');
+    }
+
+    /**
+     * get the goals
+     */
+    public function goals()
+    {
+        return $this->hasMany(Goals::class);
     }
 }
