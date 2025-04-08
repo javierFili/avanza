@@ -1,6 +1,6 @@
 <x-admin::layouts>
     <x-slot:title>
-        {{-- @lang('admin::app.settings.goals.index.title') --}} goals
+        {{-- @lang('admin::app.settings.goals.index.title') --}} Goals
     </x-slot>
 
     <div class="flex flex-col gap-4">
@@ -48,7 +48,7 @@
 
             <!-- Datagrid -->
             <x-admin::datagrid
-                :src="route('admin.settings.users.index')"
+                :src="route('admin.goals.index')"
                 ref="datagrid"
             >
                 <template #body="{
@@ -411,8 +411,8 @@
 
                         this.isProcessing = true;
 
-                        this.$axios.post(params.id ? `{{ route('admin.settings.users.update', '') }}/${params.id}` :
-                            "{{ route('admin.settings.users.store') }}", userForm).then(response => {
+                        this.$axios.post(params.id ? `{{ route('admin.goals.update', '') }}/${params.id}` :
+                            "{{ route('admin.goals.store') }}", userForm).then(response => {
                             this.isProcessing = false;
 
                             this.$refs.userUpdateAndCreateModal.toggle();

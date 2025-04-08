@@ -9,6 +9,6 @@ Route::group([
     'prefix'     => config('app.admin_path')
 ], function () {
     Route::get('goals', [GoalsController::class, 'index'])->name('admin.goals.index');
-    Route:
-    post("goals", [GoalsController::class, "store"])->name("admin.goals.store");
+    Route::post("goals", [GoalsController::class, "store"])->name("admin.goals.store");
+    Route::post("goals/{id}", [GoalsController::class, "update"])->name("admin.goals.update");
 });
