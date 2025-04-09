@@ -30,6 +30,7 @@ class UserController extends Controller
         protected UserRepository $userRepository,
         protected GroupRepository $groupRepository,
         protected RoleRepository $roleRepository,
+
         protected PipelineRepository $pipelineRepository,
     ) {}
 

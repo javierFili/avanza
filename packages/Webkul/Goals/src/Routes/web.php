@@ -10,5 +10,6 @@ Route::group([
 ], function () {
     Route::get('goals', [GoalsController::class, 'index'])->name('admin.goals.index');
     Route::post("goals", [GoalsController::class, "store"])->name("admin.goals.store");
-    Route::post("goals/{id}", [GoalsController::class, "update"])->name("admin.goals.update");
+    Route::put("goals/{id}", [GoalsController::class, "update"])->name("admin.goals.update");
+    Route::get("goal/{id}", [GoalsController::class, "show"])->name("admin.goals.show");
 });

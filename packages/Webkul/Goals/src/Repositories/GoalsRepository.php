@@ -68,7 +68,7 @@ class GoalsRepository extends Repository
      */
     public function getAllGoals()
     {
-        return $this->model->with('user')->with("pipeline")->get();
+        return $this->model->with('user')->with("pipeline")->paginate(12);
     }
     /**
      * Get all goals by user

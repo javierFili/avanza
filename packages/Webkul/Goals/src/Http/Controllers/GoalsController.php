@@ -78,11 +78,13 @@ class GoalsController extends Controller
         }
         $data = $request->all();
         try {
+            //dd($data);
             $creted = $this->goalsRepository->create([
                 'user_id' => $data['user_id'],
                 'pipeline_id' => $data['pipeline_id'],
                 'date_start' => $data['date_start'],
-                'date_end' => $data['date_end']
+                'date_end' => $data['date_end'],
+                "minimun_amount" => $data["amount"]
             ]);
             if (!$creted) {
                 return response()->json([
@@ -102,7 +104,13 @@ class GoalsController extends Controller
      * @param  int  $id
      * @return \Illuminate\View\View
      */
-    public function edit($id) {}
+    public function show($id)
+    {
+        return response()->json([
+            "success" => true,
+            "data" => $this->goalsRepository->find($id)
+        ]);
+    }
 
     /**
      * Update the specified resource in storage.
@@ -110,7 +118,37 @@ class GoalsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($id) {}
+    public function update(Request $request)
+    {
+        //dd($request->all());
+        try {
+            $validor = Validator::make($request->all(), [
+                'user_id' => 'required|exists:users,id',
+                'pipeline_id' => 'required|exists:lead_pipelines,id',
+                'date_end' => 'required|date',
+                'date_start' => 'required|date|after:start_date'
+            ]);
+            if ($validor->fails()) {
+                return redirect()->back()->with("error", "Validation error");
+            }
+            $data = $request->all();
+            $goal = $this->goalsRepository->find($data['id']);
+            if (!$goal) {
+                return redirect()->back()->with("error", "Don't exits");
+            }
+            $goal->update([
+                'user_id' => $data['user_id'],
+                'pipeline_id' => $data['pipeline_id'],
+                'start_date' => $data['date_start'],
+                'end_date' => $data['date_end'],
+                "minimun_amount" => $data["amount"]
+            ]);
+
+            return redirect()->back()->with("success", "Create");
+        } catch (\Exception $e) {
+            return redirect()->back()->with("error", "Don't exits");
+        }
+    }
 
     /**
      * Remove the specified resource from storage.
