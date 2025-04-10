@@ -89,6 +89,7 @@
             </div>
 
             @include('goals::table')
+            @include("goals::components.delete_modal")
         </div>
 
             <x-admin::form
@@ -260,6 +261,8 @@
                         users: @json($users),
                         goal: {},
                         searchQuery: '',
+                        goalToDelete: null,
+                        showDeleteModal: false
                     };
                 },
 
@@ -313,10 +316,10 @@
                                 type: 'success',
                                 message: response.data.message
                             });
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 2000);
 
-                            this.$refs.datagrid.get();
-
-                            resetForm();
                         }).catch(error => {
                             this.isProcessing = false;
 
@@ -355,6 +358,38 @@
                     },
                     sortBy(parametro) {
                         console.log("Ordenar por:", this.sortColumn);
+                    },
+                    //metods for delete
+                    confirmDelete(id) {
+                        console.log(id);
+                        this.goalToDelete = id;
+                        this.showDeleteModal = true;
+                    },
+                    deleteGoal() {
+                        this.isProcessing = true;
+                        this.$axios.post(`{{ route('admin.goals.delete', '') }}/${this.goalToDelete}`)
+                            .then(response => {
+                                this.isProcessing = false;
+                                this.showDeleteModal = false;
+
+                                this.$emitter.emit('add-flash', {
+                                    type: 'success',
+                                    message: response.data.message
+                                });
+                                setTimeout(() => {
+                                    window.location.reload();
+                                }, 2000);
+                            })
+                            .catch(error => {
+                                this.isProcessing = false;
+                                this.showDeleteModal = false;
+
+                                this.$emitter.emit('add-flash', {
+                                    type: 'error',
+                                    message: error.response?.data?.message ||
+                                        'Error al eliminar el objetivo'
+                                });
+                            });
                     }
                 },
             });

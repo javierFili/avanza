@@ -140,11 +140,12 @@ class GoalsController extends Controller
                 'pipeline_id' => $data['pipeline_id'],
                 'start_date' => $data['date_start'],
                 'end_date' => $data['date_end'],
-                "minimun_amount" => $data["amount"]
+                "target_value" => $data["target_value"]
             ], $data["id"]);
             if ($updated[1]) {
                 return redirect()->back()->with("success", "Create");
             }
+
             return redirect()->back()->with("error", "Error!");
         } catch (\Exception $e) {
             return redirect()->back()->with("error", "Don't exits");
@@ -157,5 +158,13 @@ class GoalsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {}
+    public function destroy($id)
+    {
+        $goal = $this->goalsRepository->delete($id);
+        if ($goal[1]) {
+            return redirect()->back()->with("success", "Objetive delete");
+        } else {
+            return redirect()->back()->with("error", "Error!");
+        }
+    }
 }

@@ -47,6 +47,7 @@ class GoalsRepository extends Repository
     {
         try {
             $goal = Goals::find($id);
+            //dd($goal);
             $goal->update($data);
             return [$goal, true];
         } catch (\Exception $e) {
@@ -60,7 +61,6 @@ class GoalsRepository extends Repository
      */
     public function delete($id)
     {
-
         try {
             $goal = Goals::find($id);
             $goal->delete();

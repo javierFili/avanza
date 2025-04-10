@@ -3,19 +3,22 @@
 namespace Webkul\Goals\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Webkul\Goals\Contracts\Goals as GoalsContract;
 use Webkul\Lead\Models\Pipeline;
 use Webkul\User\Models\User;
 
 class Goals extends Model implements GoalsContract
 {
+    use SoftDeletes;
+    protected $date = ["delete_at"];
     protected $fillable = [
         "id",
         "user_id",
         "pipeline_id",
         "start_date",
         "end_date",
-        "minimun_amount",
+        "target_value",
     ];
     public function pipeline()
     {
