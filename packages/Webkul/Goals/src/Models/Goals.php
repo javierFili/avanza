@@ -11,19 +11,23 @@ use Webkul\User\Models\User;
 class Goals extends Model implements GoalsContract
 {
     use SoftDeletes;
-    protected $date = ["delete_at"];
+
+    protected $date = ['delete_at'];
+
     protected $fillable = [
-        "id",
-        "user_id",
-        "pipeline_id",
-        "start_date",
-        "end_date",
-        "target_value",
+        'id',
+        'user_id',
+        'pipeline_id',
+        'start_date',
+        'end_date',
+        'target_value',
     ];
+
     public function pipeline()
     {
         return $this->belongsTo(Pipeline::class);
     }
+
     public function user()
     {
         return $this->belongsTo(User::class);
