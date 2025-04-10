@@ -22,7 +22,8 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->date('start_date');
             $table->date('end_date');
-            $table->decimal('minimun_amount', 10, 2);
+            $table->decimal('target_value', 10, 2);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

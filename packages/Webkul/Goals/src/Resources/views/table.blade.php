@@ -94,7 +94,7 @@
                         </td>
                         <td>
                             <span class="label-{{ strtolower($goal->start_date) }}">
-                                <p class="truncate">{{ $goal->minimun_amount }}</p>
+                                <p class="truncate">{{ $goal->target_value }}</p>
                             </span>
                         </td>
                         <td>

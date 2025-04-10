@@ -152,12 +152,12 @@
 
                                     <x-admin::form.control-group.control
                                         type="number"
-                                        name="amount"
+                                        name="target_value"
                                         rules="required"
-                                        v-model="goal.amount"
+                                        v-model="goal.target_value"
                                         :label="trans('admin::app.settings.users.index.create.role')"
                                     >
-                                    @{{ goal.amount }}
+                                    @{{ goal.target_value }}
                                     </x-admin::form.control-group.control>
                                 </x-admin::form.control-group>
                             </div>
@@ -332,7 +332,7 @@
                                 this.goal = {
                                     id: response.data.data.id,
                                     user_id: response.data.data.user_id,
-                                    amount: response.data.data.minimun_amount,
+                                    target_value: response.data.data.target_value,
                                     pipeline_id: response.data.data.pipeline_id,
                                     date_start: response.data.data.start_date,
                                     date_end: response.data.data.end_date,

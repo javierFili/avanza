@@ -30,6 +30,7 @@ class GoalsRepository extends Repository
             $goal->pipeline_id = $data['pipeline_id'];
             $goal->start_date = $data['date_start'];
             $goal->end_date = $data['date_end'];
+            $goal->target_value = $data["target_value"];
             $goal->save();
             return $goal;
         } catch (\Exception $e) {
@@ -42,12 +43,15 @@ class GoalsRepository extends Repository
      *
      * @return void
      */
-    public function update(array $data, $id)
+    public function update($data, $id)
     {
-        $data['updated_by'] = auth()->user()->id;
-        $data['updated_at'] = now();
-
-        return parent::update($data, $id);
+        try {
+            $goal = Goals::find($id);
+            $goal->update($data);
+            return [$goal, true];
+        } catch (\Exception $e) {
+            return [$e, false];
+        }
     }
     /**
      * Delete a new repository instance.
@@ -56,10 +60,14 @@ class GoalsRepository extends Repository
      */
     public function delete($id)
     {
-        $data['deleted_by'] = auth()->user()->id;
-        $data['deleted_at'] = now();
 
-        return parent::delete($id);
+        try {
+            $goal = Goals::find($id);
+            $goal->delete();
+            return [$goal, true];
+        } catch (\Exception $e) {
+            return [$e, false];
+        }
     }
     /**
      * Get all goals

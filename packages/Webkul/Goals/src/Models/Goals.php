@@ -11,10 +11,11 @@ class Goals extends Model implements GoalsContract
 {
     protected $fillable = [
         "id",
-        "goals_id",
+        "user_id",
+        "pipeline_id",
         "start_date",
         "end_date",
-        "target",
+        "minimun_amount",
     ];
     public function pipeline()
     {
