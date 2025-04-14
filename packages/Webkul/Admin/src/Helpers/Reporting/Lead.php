@@ -228,17 +228,17 @@ class Lead extends AbstractReporting
      * @param  \Carbon\Carbon  $endDate
      * @return array
      */
-    public function getTotalWonLeadValueForPipelineAndUserId($pipeline_id,$user_id,$startDate, $endDate): ?float
+    public function getTotalWonLeadValueForPipelineAndUserId($pipeline_id, $user_id, $startDate, $endDate): ?float
     {
         $res = $this->leadRepository
-            ->where("lead_pipeline_id", $pipeline_id)
-            ->where("user_id", $user_id)
+            ->where('lead_pipeline_id', $pipeline_id)
+            ->where('user_id', $user_id)
             ->whereIn('lead_pipeline_stage_id', $this->wonStageIds)
             ->whereBetween('closed_at', [Carbon::parse($startDate)->startOfDay(), Carbon::parse($endDate)->startOfDay()])
             ->sum('lead_value');
-        return  $res;
-    }
 
+        return $res;
+    }
 
     /**
      * Retrieves average lost lead value and their progress.

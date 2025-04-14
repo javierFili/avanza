@@ -2,8 +2,8 @@
 
 namespace Webkul\Goals\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\ServiceProvider;
 
 class GoalsServiceProvider extends ServiceProvider
 {
@@ -14,13 +14,13 @@ class GoalsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
 
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/web.php');
+        $this->loadRoutesFrom(__DIR__.'/../Routes/web.php');
 
-        $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'goals');
+        $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'goals');
 
-        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'goals');
+        $this->loadViewsFrom(__DIR__.'/../Resources/views', 'goals');
 
         Event::listen('admin.layout.head.after', function ($viewRenderEventManager) {
             $viewRenderEventManager->addTemplate('goals::components.layouts.style');
@@ -45,12 +45,12 @@ class GoalsServiceProvider extends ServiceProvider
     protected function registerConfig()
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/menu.php',
+            dirname(__DIR__).'/Config/menu.php',
             'menu.admin'
         );
 
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/Config/acl.php',
+            dirname(__DIR__).'/Config/acl.php',
             'acl'
         );
     }

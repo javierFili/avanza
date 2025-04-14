@@ -2,6 +2,4 @@
 
 namespace Webkul\Goals\Contracts;
 
-interface Goals
-{
-}
+interface Goals {}

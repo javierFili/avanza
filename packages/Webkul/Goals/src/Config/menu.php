@@ -7,5 +7,5 @@ return [
         'route'      => 'admin.goals.index',
         'sort'       => 2,
         'icon-class' => 'temp-icon',
-    ]
+    ],
 ];

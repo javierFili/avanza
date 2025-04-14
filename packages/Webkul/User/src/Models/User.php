@@ -121,12 +121,14 @@ class User extends Authenticatable implements UserContract
     {
         return $this->hasMany(Goals::class);
     }
+
     /**
      * get leads only wons
      */
     public function leadWon()
     {
-        $wonId = PipelineProxy::where("code", "won")->first()->id;
-        return $this->hasMany(Lead::class)->where("lead_pipeline_stage_id", $wonId);
+        $wonId = PipelineProxy::where('code', 'won')->first()->id;
+
+        return $this->hasMany(Lead::class)->where('lead_pipeline_stage_id', $wonId);
     }
 }

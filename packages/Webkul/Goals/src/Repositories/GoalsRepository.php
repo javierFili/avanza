@@ -13,7 +13,7 @@ class GoalsRepository extends Repository
      *
      * @return mixed
      */
-    function model()
+    public function model()
     {
         return 'Webkul\Goals\Contracts\Goals';
     }
@@ -26,19 +26,22 @@ class GoalsRepository extends Repository
     public function create(array $data)
     {
         try {
-            $goal = new Goals();
+            $goal = new Goals;
             $goal->user_id = $data['user_id'];
             $goal->pipeline_id = $data['pipeline_id'];
             $goal->start_date = $data['date_start'];
             $goal->end_date = $data['date_end'];
-            $goal->target_value = $data["target_value"];
+            $goal->target_value = $data['target_value'];
             $goal->save();
+
             return $goal;
         } catch (\Exception $e) {
             return false;
         }
+
         return $goal;
     }
+
     /**
      * Update a new repository instance.
      *
@@ -48,13 +51,15 @@ class GoalsRepository extends Repository
     {
         try {
             $goal = Goals::find($id);
-            //dd($goal);
+            // dd($goal);
             $goal->update($data);
+
             return [$goal, true];
         } catch (\Exception $e) {
             return [$e, false];
         }
     }
+
     /**
      * Delete a new repository instance.
      *
@@ -65,11 +70,13 @@ class GoalsRepository extends Repository
         try {
             $goal = Goals::find($id);
             $goal->delete();
+
             return [$goal, true];
         } catch (\Exception $e) {
             return [$e, false];
         }
     }
+
     /**
      * Get all goals
      *
@@ -77,8 +84,9 @@ class GoalsRepository extends Repository
      */
     public function getAllGoals()
     {
-        return $this->model->with('user')->with("pipeline")->paginate(12);
+        return $this->model->with('user')->with('pipeline')->paginate(12);
     }
+
     /**
      * Get all goals by user
      *
@@ -88,6 +96,7 @@ class GoalsRepository extends Repository
     {
         return $this->model->where('user_id', $userId)->with('user')->get();
     }
+
     /**
      * Get all goals by user
      *
@@ -97,6 +106,7 @@ class GoalsRepository extends Repository
     {
         return $this->model->where('pipeline_id', $pipelineId)->with('user')->get();
     }
+
     /**
      * Get all goals by user
      *
@@ -106,16 +116,17 @@ class GoalsRepository extends Repository
     {
         return $this->model->where('pipeline_stage_id', $pipelineStageId)->with('user')->get();
     }
+
     /**
      * Get gols target_value for user,pipeline, dates
      */
     public function userStatitics($data)
     {
         $valueGoal = $this->model
-            ->where("user_id", $data["user_id"])
-            ->where("pipeline_id", $data["pipeline_id"])
-            ->where("start_date", "<=", $data["start_date"])
-            ->where("end_date", ">=", $data["end_date"])
+            ->where('user_id', $data['user_id'])
+            ->where('pipeline_id', $data['pipeline_id'])
+            ->where('start_date', '<=', $data['start_date'])
+            ->where('end_date', '>=', $data['end_date'])
             ->first()?->target_value;
 
         return $valueGoal;
