@@ -11,13 +11,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Webkul\Admin\DataGrids\Settings\UserDataGrid;
-use Webkul\Goals\Contracts\Goals;
 use Webkul\Goals\Repositories\GoalsRepository;
+use Webkul\Lead\Repositories\LeadRepository;
 use Webkul\Lead\Repositories\PipelineRepository;
-use Webkul\User\Models\User;
+use Webkul\Admin\Helpers\Reporting\Lead;
 use Webkul\User\Repositories\GroupRepository;
 use Webkul\User\Repositories\RoleRepository;
 use Webkul\User\Repositories\UserRepository;
+
+use function Pest\Laravel\call;
 
 class GoalsController extends Controller
 {
@@ -27,7 +29,9 @@ class GoalsController extends Controller
         protected UserRepository $usersRepository,
         protected RoleRepository $roleRepository,
         protected GroupRepository $groupRepository,
-        protected PipelineRepository $pipelineRepository
+        protected PipelineRepository $pipelineRepository,
+        protected LeadRepository $leadRepository,
+        protected Lead $leadReporting
     ) {}
 
     /**
@@ -165,6 +169,57 @@ class GoalsController extends Controller
             return redirect()->back()->with("success", "Objetive delete");
         } else {
             return redirect()->back()->with("error", "Error!");
+        }
+    }
+
+    /**
+     * Get users statitics
+     */
+    public function statisticsUser(Request $request){
+        //return response()->json(["success"=>false,"errors"=>"antra"],420);
+        $validator = Validator::make($request->all(),[
+            "userId"=>"required",
+            "pipelineId"=>"required",
+            "date_start"=>"required",
+            "date_end"=>"required"
+        ]);
+        if($validator->fails()){
+            return response()->json(["success"=>false, "error"=>"validation errors","erros"=>$validator->errors()],420);
+        }
+        $data = $request->all();
+        return $this->statisticsUserResult($data["userId"],$data["pipelineId"],$data["date_start"],$data["date_end"]);
+    }
+
+    public function statisticsUserResult($userId, $pipelineId, $date_start, $date_end)
+    {
+        try {
+
+            $valueGoal = $this->goalsRepository->userStatitics([
+                "user_id" => $userId,
+                "pipeline_id" => $pipelineId,
+                "start_date" => $date_start,
+                "end_date" => $date_end
+            ]);
+
+            $leadsWonValueSum = $this->leadReporting->getTotalWonLeadValueForPipelineAndUserId($userId,$pipelineId,$date_start,$date_end);
+            $percentageAchieved = ((float)$leadsWonValueSum * 100) / $valueGoal;
+            $missingPercentage = 100 - $percentageAchieved;
+
+            $statistics = [
+                "name" =>"Proceso de objetivo",
+                "percentage_achieved" => round($percentageAchieved, 2),
+                "missing_percentage" => round($missingPercentage, 2),
+                "value_goal" => $valueGoal,
+                "leads_won_value_sum" => $leadsWonValueSum
+            ];
+
+            return response()->json(["success" => true, "statistics" => $statistics, "date_range"=>"rango"], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                "success" => false,
+                "error" => "Server error",
+                "exception_message" => $e->getMessage()
+            ], 500);
         }
     }
 }

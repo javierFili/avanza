@@ -78,21 +78,15 @@
         {!! view_render_event('admin.dashboard.index.content.left.after') !!}
     </div>
 
+    <div class="mt-4">
+        @include('admin::dashboard.index.user-proccess')
+    </div>
     {!! view_render_event('admin.dashboard.index.content.after') !!}
 
     @pushOnce('scripts')
+        <script type="module" src="{{ vite()->asset('js/chart.js') }}"></script>
 
-        <script
-            type="module"
-            src="{{ vite()->asset('js/chart.js') }}"
-        >
-        </script>
-
-        <script
-            type="module"
-            src="https://cdn.jsdelivr.net/npm/chartjs-chart-funnel@4.2.1/build/index.umd.min.js"
-        >
-        </script>
+        <script type="module" src="https://cdn.jsdelivr.net/npm/chartjs-chart-funnel@4.2.1/build/index.umd.min.js"></script>
 
         <script
             type="text/x-template"

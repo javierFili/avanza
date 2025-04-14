@@ -7,7 +7,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use Webkul\Goals\Models\Goals;
+use Webkul\Lead\Models\Lead;
 use Webkul\Lead\Models\Pipeline;
+use Webkul\Lead\Models\PipelineProxy;
 use Webkul\User\Contracts\User as UserContract;
 
 class User extends Authenticatable implements UserContract
@@ -118,5 +120,13 @@ class User extends Authenticatable implements UserContract
     public function goals()
     {
         return $this->hasMany(Goals::class);
+    }
+    /**
+     * get leads only wons
+     */
+    public function leadWon()
+    {
+        $wonId = PipelineProxy::where("code", "won")->first()->id;
+        return $this->hasMany(Lead::class)->where("lead_pipeline_stage_id", $wonId);
     }
 }

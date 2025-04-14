@@ -2,6 +2,7 @@
 
 namespace Webkul\Admin\Helpers\Reporting;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Webkul\Lead\Repositories\LeadRepository;
 use Webkul\Lead\Repositories\StageRepository;
@@ -21,7 +22,7 @@ class Lead extends AbstractReporting
     /**
      * The won stage ids.
      */
-    protected array $wonStageIds;
+    public array $wonStageIds;
 
     /**
      * The lost stage ids.
@@ -219,6 +220,25 @@ class Lead extends AbstractReporting
             ->whereBetween('created_at', [$startDate, $endDate])
             ->sum('lead_value');
     }
+
+    /**
+     * Retrieves average won lead value for pipeline_id and user_id
+     *
+     * @param  \Carbon\Carbon  $startDate
+     * @param  \Carbon\Carbon  $endDate
+     * @return array
+     */
+    public function getTotalWonLeadValueForPipelineAndUserId($pipeline_id,$user_id,$startDate, $endDate): ?float
+    {
+        $res = $this->leadRepository
+            ->where("lead_pipeline_id", $pipeline_id)
+            ->where("user_id", $user_id)
+            ->whereIn('lead_pipeline_stage_id', $this->wonStageIds)
+            ->whereBetween('closed_at', [Carbon::parse($startDate)->startOfDay(), Carbon::parse($endDate)->startOfDay()])
+            ->sum('lead_value');
+        return  $res;
+    }
+
 
     /**
      * Retrieves average lost lead value and their progress.

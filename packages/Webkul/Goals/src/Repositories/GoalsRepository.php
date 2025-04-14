@@ -4,6 +4,7 @@ namespace Webkul\Goals\Repositories;
 
 use Webkul\Core\Eloquent\Repository;
 use Webkul\Goals\Models\Goals;
+use Webkul\User\Models\User;
 
 class GoalsRepository extends Repository
 {
@@ -104,5 +105,19 @@ class GoalsRepository extends Repository
     public function getAllGoalsByPipelineStage($pipelineStageId)
     {
         return $this->model->where('pipeline_stage_id', $pipelineStageId)->with('user')->get();
+    }
+    /**
+     * Get gols target_value for user,pipeline, dates
+     */
+    public function userStatitics($data)
+    {
+        $valueGoal = $this->model
+            ->where("user_id", $data["user_id"])
+            ->where("pipeline_id", $data["pipeline_id"])
+            ->where("start_date", "<=", $data["start_date"])
+            ->where("end_date", ">=", $data["end_date"])
+            ->first()?->target_value;
+
+        return $valueGoal;
     }
 }
