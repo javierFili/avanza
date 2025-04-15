@@ -26,23 +26,32 @@
                         {{-- @lang('admin::app.dashboard.index.revenue-by-types.title') --}}
                         Objetivos del usuario
                     </p>
+                    <form>
+
+                    </form>
                 </div>
 
                 <!-- Doughnut Chart -->
                 <div class="flex w-full max-w-full flex-col gap-4 px-8 pt-8" v-if="report.statistics.length">
                     <!-- Gráfico con contenedor pequeño y opciones personalizadas -->
-                    <div class="mx-auto h-48 w-48">
-                        <x-admin::charts.doughnut
-                            ::labels="chartLabels"
-                            ::datasets="chartDatasets"
-                            ::options="{
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: { legend: { display: false } }
-                            }"
-                        />
+                   <div class="flex flex-wrap justify-center gap-5">
+                        <div class="w-[300px] h-[250px]"> <!-- Contenedor con tamaño fijo -->
+                            <x-admin::charts.doughnut
+                                ::labels="chartLabels"
+                                ::datasets="chartDatasets"
+                                ::options="{
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: {
+                                            display: false
+                                        }
+                                    },
+                                    cutout: '65%'  <!-- Controla el grosor del anillo -->
+                                }"
+                            />
+                        </div>
                     </div>
-
                     <!-- Leyenda -->
                     <div class="flex flex-wrap justify-center gap-5">
                         <div
@@ -96,8 +105,7 @@
 
                     colors: [
                         '#8979FF',
-                        '#FF928A',
-                        '#3CC3DF',
+                        '#111827',
                     ],
 
                     isLoading: true,
@@ -114,9 +122,9 @@
                     return [{
                         data: [statistics[2], statistics[1]], // Solo 2 valores que sumen 100%
                         backgroundColor: [
-                        '#F44336','#4CAF50'], // Verde para completado, rojo para faltante
+                        '#111827','#4CAF50'], // Verde para completado, rojo para faltante
                         borderWidth: 0 // Elimina el borde si no lo necesitas
-                    }];
+                    },];
                 }
             },
 

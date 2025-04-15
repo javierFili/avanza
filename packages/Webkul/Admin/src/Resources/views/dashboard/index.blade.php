@@ -52,10 +52,10 @@
 
             <div class="flex gap-4 max-lg:flex-wrap">
                 <!-- Total Products -->
-                @include('admin::dashboard.index.top-selling-products')
+
 
                 <!-- Total Persons -->
-                @include('admin::dashboard.index.top-persons')
+                {{-- @include('admin::dashboard.index.top-persons') --}}
             </div>
         </div>
 
@@ -69,10 +69,11 @@
             @include('admin::dashboard.index.open-leads-by-states')
 
             <!-- Revenue by Sources -->
-            @include('admin::dashboard.index.revenue-by-sources')
+            {{-- @include('admin::dashboard.index.revenue-by-sources') --}}
 
             <!-- Revenue by Types -->
-            @include('admin::dashboard.index.revenue-by-types')
+            {{-- @include('admin::dashboard.index.revenue-by-types') --}}
+            @include('admin::dashboard.index.top-selling-products')
         </div>
 
         {!! view_render_event('admin.dashboard.index.content.left.after') !!}

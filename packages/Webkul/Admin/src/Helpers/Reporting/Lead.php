@@ -22,7 +22,7 @@ class Lead extends AbstractReporting
     /**
      * The won stage ids.
      */
-    public array $wonStageIds;
+    protected array $wonStageIds;
 
     /**
      * The lost stage ids.
