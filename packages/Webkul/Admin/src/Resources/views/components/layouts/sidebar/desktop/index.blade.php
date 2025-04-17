@@ -7,11 +7,6 @@
     <div class="journal-scroll h-[calc(100vh-100px)] overflow-hidden group-[.sidebar-collapsed]/container:overflow-visible">
         <nav class="sidebar-rounded grid w-full gap-2">
             <!-- Navigation Menu -->
-            @php
-                // En tu vista temporalmente:
-                //dd(menu()); // Verás el objeto completo
-                dd(debug_backtrace()); // Verás de dónde se llama
-            @endphp
             @foreach (menu()->getItems('admin') as $menuItem)
                 <div class="px-4 group/item {{ $menuItem->isActive() ? 'active' : 'inactive' }}">
                     <a
