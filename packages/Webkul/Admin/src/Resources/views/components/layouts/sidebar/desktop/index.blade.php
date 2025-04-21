@@ -10,7 +10,7 @@
             @php
                 // En tu vista temporalmente:
                 //dd(menu()); // Verás el objeto completo
-                dd(debug_backtrace()); // Verás de dónde se llama
+                //dd(debug_backtrace()); // Verás de dónde se llama
             @endphp
             @foreach (menu()->getItems('admin') as $menuItem)
                 <div class="px-4 group/item {{ $menuItem->isActive() ? 'active' : 'inactive' }}">
