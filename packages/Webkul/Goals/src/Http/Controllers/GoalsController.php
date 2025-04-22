@@ -10,6 +10,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Validator;
 use Webkul\Admin\DataGrids\Settings\UserDataGrid;
 use Webkul\Admin\Helpers\Reporting\Lead;
+use Webkul\Goals\Models\Goals;
 use Webkul\Goals\Repositories\GoalsRepository;
 use Webkul\Lead\Repositories\LeadRepository;
 use Webkul\Lead\Repositories\PipelineRepository;
@@ -65,7 +66,6 @@ class GoalsController extends Controller
      */
     public function store(Request $request)
     {
-
         $validor = Validator::make($request->all(), [
             'user_id'      => 'required|exists:users,id',
             'pipeline_id'  => 'required|exists:lead_pipelines,id',
@@ -80,6 +80,16 @@ class GoalsController extends Controller
             ], 420);
         }
         $data = $request->all();
+        $validateDate = $this->goalsRepository->existsGoalInDateRange($data);
+        //dd($validateDate);
+        if ($validateDate) {
+            return response()->json(
+                [
+                    'success'=>false,
+                    "message"=>'Goal already exists in the selected date range: '.$validateDate->end_date." to ".$validateDate->start_date,
+                ]
+            );
+        }
         try {
             $creted = $this->goalsRepository->create([
                 'user_id'      => $data['user_id'],
@@ -95,7 +105,12 @@ class GoalsController extends Controller
                 ], 500);
             }
 
-            return redirect()->back()->with('success', 'Goal Created Successfully');
+            return response()->json([
+                "success"=>true,
+                "message"=>"Goal Created Successfully",
+                "data"=>$creted,
+            ], 200);
+
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong');
         }
@@ -179,12 +194,12 @@ class GoalsController extends Controller
         // return response()->json(["success"=>false,"errors"=>"antra"],420);
         $validator = Validator::make($request->all(), [
             'userId'    => 'required',
-            'pipelineId'=> 'required',
-            'date_start'=> 'required',
+            'pipelineId' => 'required',
+            'date_start' => 'required',
             'date_end'  => 'required',
         ]);
         if ($validator->fails()) {
-            return response()->json(['success'=>false, 'error'=>'validation errors', 'erros'=>$validator->errors()], 420);
+            return response()->json(['success' => false, 'error' => 'validation errors', 'erros' => $validator->errors()], 420);
         }
         $data = $request->all();
 
@@ -214,7 +229,7 @@ class GoalsController extends Controller
                 'leads_won_value_sum' => $leadsWonValueSum,
             ];
 
-            return response()->json(['success' => true, 'statistics' => $statistics, 'date_range'=>'rango'], 200);
+            return response()->json(['success' => true, 'statistics' => $statistics, 'date_range' => 'rango'], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success'           => false,

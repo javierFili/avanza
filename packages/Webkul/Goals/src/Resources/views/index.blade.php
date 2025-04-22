@@ -311,14 +311,21 @@
                             this.isProcessing = false;
 
                             this.$refs.userUpdateAndCreateModal.toggle();
-
-                            this.$emitter.emit('add-flash', {
-                                type: 'success',
-                                message: response.data.message
-                            });
-                            setTimeout(() => {
-                                window.location.reload();
-                            }, 2000);
+                            console.log(response.data);
+                            if (response.data.success) {
+                                this.$emitter.emit('add-flash', {
+                                    type: 'success',
+                                    message: response.data.message,
+                                });
+                                setTimeout(() => {
+                                   window.location.reload();
+                                }, 2000);
+                            } else {
+                                this.$emitter.emit('add-flash', {
+                                    type: 'error',
+                                    message: response.data.message
+                                });
+                            }
 
                         }).catch(error => {
                             this.isProcessing = false;
