@@ -62,17 +62,17 @@
                         </div>
 
                         <!-- Filtro -->
-                        <div>
+                        {{-- <div>
                             <div class="relative flex cursor-pointer items-center rounded-md bg-sky-100 px-4 py-[9px] font-semibold text-sky-600 dark:bg-brandColor dark:text-white"
                                 onclick="searchUsers1()">
                                 Filtro
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
 
                 <!-- Paginación y elementos por página -->
-                <div class="toolbarRight flex gap-x-4">
+                <div class="toolbarRight flex gap-x-4 hidden">
                     <div class="flex items-center gap-x-2">
                         <p class="whitespace-nowrap text-gray-600 dark:text-gray-300 max-sm:hidden">Por Página</p>
                         <div class="relative">
@@ -260,12 +260,14 @@
                         isProcessing: false,
                         roles: @json($roles),
                         groups: @json($groups),
-                        pipelines:@json($pipelines),
+                        pipelines: @json($pipelines),
                         users: @json($users),
                         goal: {},
                         searchQuery: '',
                         goalToDelete: null,
-                        showDeleteModal: false
+                        showDeleteModal: false,
+                        selectedGoals: [],
+                        selectAll: false
                     };
                 },
 
@@ -438,6 +440,41 @@
                             .finally(() => {
                                 this.isProcessing = false;
                             });
+                    },
+                    toggleSelectAll() {
+                        console.log("entra");
+                        if (this.selectAll) {
+                            // Seleccionar todos los IDs de las metas
+                            this.selectedGoals = @json($goals->pluck('id'));
+                        } else {
+                            // Limpiar selección
+                            this.selectedGoals = [];
+                        }
+                    },
+
+                    toggleGoalSelection(goalId) {
+                        const index = this.selectedGoals.indexOf(goalId);
+                        if (index === -1) {
+                            // Añadir a la selección
+                            this.selectedGoals.push(goalId);
+                        } else {
+                            // Quitar de la selección
+                            this.selectedGoals.splice(index, 1);
+                        }
+
+                        // Actualizar el estado de "seleccionar todos"
+                        this.selectAll = this.selectedGoals.length === @json($goals->count());
+                    },
+                    openModalDeleted() {
+                        console.log("entra desde el checkbox", this.selectedGoals);
+                        this.showModal = true;
+                    },
+                    confirmDelete() {
+                        // Aquí iría tu lógica para eliminar
+                        console.log("Elementos a eliminar:", this.selectedGoals);
+                        // Ejemplo:
+                        // this.deleteSelectedGoals();
+                        this.showModal = false;
                     }
                 },
             });

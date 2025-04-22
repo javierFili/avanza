@@ -46,8 +46,6 @@ class GoalsController extends Controller
         $groups = $this->groupRepository->all();
         $pipelines = $this->pipelineRepository->all();
         $goals = $this->goalsRepository->getAllGoals();
-
-        // dd($goals);
         return view('goals::index', compact('roles', 'groups', 'pipelines', 'users', 'goals'));
     }
 
