@@ -120,12 +120,15 @@ class PipelineRepository extends Repository
 
         return $pipeline;
     }
+
     /**
      * get pipeline by user id
      */
-    public function getPipelinesForUser($userId){
+    public function getPipelinesForUser($userId)
+    {
         $pipelines = $this->userRepository->with('leadPipelines')->find($userId);
-        $pipelines =$pipelines->leadPipelines? $pipelines->leadPipelines:[];
+        $pipelines = $pipelines->leadPipelines ? $pipelines->leadPipelines : [];
+
         return $pipelines;
     }
 }

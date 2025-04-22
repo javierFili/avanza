@@ -4,10 +4,10 @@ namespace Webkul\Admin\Http\Controllers\Settings;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
-use Illuminate\Http\Request;
 use Webkul\Admin\DataGrids\Settings\PipelineDataGrid;
 use Webkul\Admin\Http\Controllers\Controller;
 use Webkul\Admin\Http\Requests\PipelineForm;
@@ -135,36 +135,37 @@ class PipelineController extends Controller
             'message' => trans('admin::app.settings.pipelines.index.delete-failed'),
         ], 400);
     }
+
     /**
      * Get all pipelines for user
      */
-    public function getPipelinesForUser(Request $request){
-        $validator =  Validator::make($request->all(),[
-            "userId"=>"required|exists:users,id",
+    public function getPipelinesForUser(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'userId'=> 'required|exists:users,id',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json([
-                "success"=>false,
-                "error"=>"validation error",
-                "errors"=>$validator->errors(),
+                'success'=> false,
+                'error'  => 'validation error',
+                'errors' => $validator->errors(),
             ], 420);
         }
 
         $data = $request->all();
         $pipelines = $this->pipelineRepository->getPipelinesForUser($data['userId'][0]);
 
-        if($pipelines->isEmpty()){
+        if ($pipelines->isEmpty()) {
             return response()->json([
-                "success"=>false,
-                "error"=>"No pipelines for user",
+                'success'=> false,
+                'error'  => 'No pipelines for user',
             ], 200);
         }
 
         return response()->json([
-            "success"=>true,
-            "pipelines"=>$pipelines,
+            'success'  => true,
+            'pipelines'=> $pipelines,
         ], 200);
     }
-
 }

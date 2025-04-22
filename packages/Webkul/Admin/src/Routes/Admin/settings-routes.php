@@ -189,7 +189,7 @@ Route::prefix('settings')->group(function () {
 
         Route::delete('{id}', 'destroy')->name('admin.settings.pipelines.delete');
 
-        Route::get("for-userid","getPipelinesForUser")->name('admin.settings.pipelines.getPipelinesForUser');
+        Route::get('for-userid', 'getPipelinesForUser')->name('admin.settings.pipelines.getPipelinesForUser');
     });
 
     /**

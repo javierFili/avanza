@@ -131,29 +131,33 @@ class GoalsRepository extends Repository
 
         return $valueGoal;
     }
-    public function getByUserIdPipelineIdAndDate($data){
-        //->whereBetween('closed_at', [Carbon::parse($startDate)->startOfDay(), Carbon::parse($endDate)->startOfDay()])
+
+    public function getByUserIdPipelineIdAndDate($data)
+    {
+        // ->whereBetween('closed_at', [Carbon::parse($startDate)->startOfDay(), Carbon::parse($endDate)->startOfDay()])
         $goal = $this->model
-        ->where("pipeline_id",$data["pipeline_id"])
-        ->where("user_id",$data["user_id"])
-        ->where("start_date",">=",$data["date_start"])
-        ->where("end_date","<=",$data["date_end"])
-        ->get();
+            ->where('pipeline_id', $data['pipeline_id'])
+            ->where('user_id', $data['user_id'])
+            ->where('start_date', '>=', $data['date_start'])
+            ->where('end_date', '<=', $data['date_end'])
+            ->get();
+
         return $goal;
     }
 
     /**
      * get all goals by user_id, pipeline_id, start_date, end_date
      */
-    public function existsGoalInDateRange($data) {
+    public function existsGoalInDateRange($data)
+    {
         return $this->model
-            ->where("pipeline_id", $data["pipeline_id"])
-            ->where("user_id", $data["user_id"])
-            ->where(function($query) use ($data) {
-                $query->where(function($q) use ($data) {
+            ->where('pipeline_id', $data['pipeline_id'])
+            ->where('user_id', $data['user_id'])
+            ->where(function ($query) use ($data) {
+                $query->where(function ($q) use ($data) {
                     // Verifica si el nuevo rango se solapa con algún goal existente
-                    $q->where("end_date", ">=", $data["date_start"])  // El goal existente termina después del nuevo inicio
-                      ->where("start_date", "<=", $data["date_end"]); // El goal existente comienza antes del nuevo fin
+                    $q->where('end_date', '>=', $data['date_start'])  // El goal existente termina después del nuevo inicio
+                        ->where('start_date', '<=', $data['date_end']); // El goal existente comienza antes del nuevo fin
                 });
             })
             ->first();

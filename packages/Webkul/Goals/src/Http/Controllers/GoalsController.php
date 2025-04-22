@@ -46,6 +46,7 @@ class GoalsController extends Controller
         $groups = $this->groupRepository->all();
         $pipelines = $this->pipelineRepository->all();
         $goals = $this->goalsRepository->getAllGoals();
+
         return view('goals::index', compact('roles', 'groups', 'pipelines', 'users', 'goals'));
     }
 
@@ -78,12 +79,12 @@ class GoalsController extends Controller
         }
         $data = $request->all();
         $validateDate = $this->goalsRepository->existsGoalInDateRange($data);
-        //dd($validateDate);
+        // dd($validateDate);
         if ($validateDate) {
             return response()->json(
                 [
-                    'success'=>false,
-                    "message"=>'Goal already exists in the selected date range: '.$validateDate->end_date." to ".$validateDate->start_date,
+                    'success'=> false,
+                    'message'=> 'Goal already exists in the selected date range: '.$validateDate->end_date.' to '.$validateDate->start_date,
                 ]
             );
         }
@@ -103,9 +104,9 @@ class GoalsController extends Controller
             }
 
             return response()->json([
-                "success"=>true,
-                "message"=>"Goal Created Successfully",
-                "data"=>$creted,
+                'success'=> true,
+                'message'=> 'Goal Created Successfully',
+                'data'   => $creted,
             ], 200);
 
         } catch (\Exception $e) {
@@ -190,10 +191,10 @@ class GoalsController extends Controller
     {
         // return response()->json(["success"=>false,"errors"=>"antra"],420);
         $validator = Validator::make($request->all(), [
-            'userId'    => 'required',
+            'userId'     => 'required',
             'pipelineId' => 'required',
             'date_start' => 'required',
-            'date_end'  => 'required',
+            'date_end'   => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json(['success' => false, 'error' => 'validation errors', 'erros' => $validator->errors()], 420);
@@ -235,5 +236,4 @@ class GoalsController extends Controller
             ], 500);
         }
     }
-
 }
