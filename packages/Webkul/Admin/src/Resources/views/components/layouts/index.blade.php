@@ -154,5 +154,4 @@
 
     {!! view_render_event('admin.layout.vue-app-mount.after') !!}
 </body>
-
 </html>

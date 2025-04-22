@@ -66,3 +66,11 @@
         </nav>
     </div>
 </div>
+<style>
+    .icon-goals {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: url('/packages/Webkul/Goals/src/Resources/assets/images/icon-goals.svg') center/contain no-repeat;
+}
+</style>

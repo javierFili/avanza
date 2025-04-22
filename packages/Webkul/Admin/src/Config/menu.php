@@ -133,6 +133,15 @@ return [
         'icon-class' => 'icon-product',
     ],
 
+     [
+        'key'        => 'pipelines',
+        'name'       => 'admin::app.layouts.pipelines',
+        'info'       => 'admin::app.layouts.pipelines-info',
+        'route'      => 'admin.settings.pipelines.index',
+        'sort'       => 1,
+        'icon-class' => 'icon-settings-pipeline',
+    ],
+
     /**
      * Settings.
      */
@@ -177,13 +186,6 @@ return [
         'route'      => 'admin.settings.pipelines.index',
         'sort'       => 2,
         'icon-class' => '',
-    ], [
-        'key'        => 'settings.lead.pipelines',
-        'name'       => 'admin::app.layouts.pipelines',
-        'info'       => 'admin::app.layouts.pipelines-info',
-        'route'      => 'admin.settings.pipelines.index',
-        'sort'       => 1,
-        'icon-class' => 'icon-settings-pipeline',
     ], [
         'key'        => 'settings.lead.sources',
         'name'       => 'admin::app.layouts.sources',
@@ -283,6 +285,13 @@ return [
         'route'      => 'admin.settings.tags.index',
         'sort'       => 1,
         'icon-class' => 'icon-settings-tag',
+    ],
+    [
+        'key'        => 'goals',
+        'name'       => 'Goals',
+        'route'      => 'admin.goals.index',
+        'sort'       => 2,
+        'icon-class' => 'icon-goals',
     ],
 
     /**

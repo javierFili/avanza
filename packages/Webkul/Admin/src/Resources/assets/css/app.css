@@ -31,7 +31,7 @@
     .icon-image:before {
         content: "\e956";
     }
-      
+
     .icon-bookmark:before {
         content: "\e92c";
     }
@@ -122,6 +122,13 @@
 
     .icon-settings-roles:before {
         content: "\e940";
+    }
+
+    .icon-goals {
+        display: inline-block;
+        width: 1.5rem;
+        height: 1.5rem;
+        background: url('/packages/Webkul/Goals/src/Resources/assets/images/icon-goals.svg') center/contain no-repeat;
     }
 
     .icon-settings-sources:before {
