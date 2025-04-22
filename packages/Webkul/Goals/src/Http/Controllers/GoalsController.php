@@ -10,7 +10,6 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Validator;
 use Webkul\Admin\DataGrids\Settings\UserDataGrid;
 use Webkul\Admin\Helpers\Reporting\Lead;
-use Webkul\Goals\Models\Goals;
 use Webkul\Goals\Repositories\GoalsRepository;
 use Webkul\Lead\Repositories\LeadRepository;
 use Webkul\Lead\Repositories\PipelineRepository;
@@ -29,7 +28,7 @@ class GoalsController extends Controller
         protected GroupRepository $groupRepository,
         protected PipelineRepository $pipelineRepository,
         protected LeadRepository $leadRepository,
-        protected Lead $leadReporting
+        protected Lead $leadReporting,
     ) {}
 
     /**
@@ -238,4 +237,5 @@ class GoalsController extends Controller
             ], 500);
         }
     }
+
 }

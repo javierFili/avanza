@@ -188,6 +188,8 @@ Route::prefix('settings')->group(function () {
         Route::post('edit/{id}', 'update')->name('admin.settings.pipelines.update');
 
         Route::delete('{id}', 'destroy')->name('admin.settings.pipelines.delete');
+
+        Route::get("for-userid","getPipelinesForUser")->name('admin.settings.pipelines.getPipelinesForUser');
     });
 
     /**

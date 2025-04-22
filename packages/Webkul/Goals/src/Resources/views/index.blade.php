@@ -134,6 +134,7 @@
                                         rules="required"
                                         v-model="goal.user_id"
                                         :label="trans('admin::app.settings.users.index.create.role')"
+                                        @change="changePipeline()"
                                     >
                                         <option
                                             v-for="user in users"
@@ -174,24 +175,26 @@
                                         v-model="pipeline_id"
                                     >
                                         <select
-                                            name="pipeline_id"
-                                            class="flex min-h-[39px] w-full rounded-md border px-3 py-2 text-sm text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400 dark:focus:border-gray-400"
-                                            :class="[errors['pipeline_id'] ? 'border !border-red-600 hover:border-red-600' : '']"
-                                            v-model="goal.pipeline_id"
+                                        name="pipeline_id"
+                                        class="flex min-h-[39px] w-full rounded-md border px-3 py-2 text-sm text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400 dark:focus:border-gray-400"
+                                        :class="[errors['pipeline_id'] ? 'border !border-red-600 hover:border-red-600' : '']"
+                                        v-model="goal.pipeline_id"
+                                    >
+                                        <option v-if="pipelines[0] == undefined" value="" disabled selected >
+                                            No hay pipelines disponibles para este usuario
+                                        </option>
+                                        <option
+                                            v-for="pipeline in pipelines"
+                                            :value="pipeline.id"
                                         >
-                                            <option
-                                                v-for="pipeline in pipelines"
-                                                :value="pipeline.id"
-                                            >
-                                                @{{ pipeline.name }}
-                                            </option>
-                                        </select>
+                                            @{{ pipeline.name }}
+                                        </option>
+                                    </select>
                                     </v-field>
 
                                     <x-admin::form.control-group.error name="pipeline_id" />
                                 </x-admin::form.control-group>
                             {{-- Pipeline end --}}
-
                             {{-- Dates start --}}
                                  <div class="flex gap-4">
                                     <x-admin::form.control-group>
@@ -257,7 +260,7 @@
                         isProcessing: false,
                         roles: @json($roles),
                         groups: @json($groups),
-                        pipelines: @json($pipelines),
+                        pipelines:@json($pipelines),
                         users: @json($users),
                         goal: {},
                         searchQuery: '',
@@ -288,9 +291,16 @@
 
                 methods: {
                     openModal() {
-                        this.user = {
-                            groups: [],
+                        this.goal = {
+                            id: null,
+                            user_id: null,
+                            target_value: null,
+                            pipeline_id: null,
+                            date_start: null,
+                            date_end: null,
+                            groups: []
                         };
+                        this.pipelines = [];
 
                         this.$refs.userUpdateAndCreateModal.toggle();
                     },
@@ -305,20 +315,18 @@
 
                         this.isProcessing = true;
 
-
                         this.$axios.post(params.id ? `{{ route('admin.goals.update', '') }}/${params.id}` :
                             "{{ route('admin.goals.store') }}", userForm).then(response => {
                             this.isProcessing = false;
 
                             this.$refs.userUpdateAndCreateModal.toggle();
-                            console.log(response.data);
                             if (response.data.success) {
                                 this.$emitter.emit('add-flash', {
                                     type: 'success',
                                     message: response.data.message,
                                 });
                                 setTimeout(() => {
-                                   window.location.reload();
+                                    window.location.reload();
                                 }, 2000);
                             } else {
                                 this.$emitter.emit('add-flash', {
@@ -396,6 +404,39 @@
                                     message: error.response?.data?.message ||
                                         'Error al eliminar el objetivo'
                                 });
+                            });
+                    },
+                    changePipeline() {
+                        if (!this.goal.user_id) {
+                            this.pipelines = [];
+                            return;
+                        }
+
+                        this.isProcessing = true;
+
+                        const params = {
+                            params: {
+                                userId: this.goal.user_id
+                            }
+                        };
+
+                        this.$axios.get(`{{ route('admin.settings.pipelines.getPipelinesForUser') }}`, params)
+                            .then(response => {
+                                this.pipelines = response.data.pipelines || [];
+
+                                if (this.pipelines.length > 0 && !this.pipelines.some(p => p.id === this.goal
+                                        .pipeline_id)) {
+                                    this.goal.pipeline_id = this.pipelines[0].id;
+                                } else if (this.pipelines.length === 0) {
+                                    this.goal.pipeline_id = null;
+                                }
+                            })
+                            .catch(error => {
+                                console.log("Error fetching pipelines:", error);
+                                this.pipelines = [];
+                            })
+                            .finally(() => {
+                                this.isProcessing = false;
                             });
                     }
                 },
