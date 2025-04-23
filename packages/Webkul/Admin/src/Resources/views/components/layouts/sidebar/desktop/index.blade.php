@@ -7,13 +7,16 @@
     <div class="journal-scroll h-[calc(100vh-100px)] overflow-hidden group-[.sidebar-collapsed]/container:overflow-visible">
         <nav class="sidebar-rounded grid w-full gap-2">
             <!-- Navigation Menu -->
-            @php
-                // En tu vista temporalmente:
-                //dd(menu()); // Verás el objeto completo
-                //dd(debug_backtrace()); // Verás de dónde se llama
-            @endphp
             @foreach (menu()->getItems('admin') as $menuItem)
-                <div class="px-4 group/item {{ $menuItem->isActive() ? 'active' : 'inactive' }}">
+            @php
+                \Log::debug('Menu item:', [
+                    'key' => $menuItem->getKey(),
+                    'route' => $menuItem->getUrl(),
+                    'children' => $menuItem->haveChildren(),
+                    'active'=>$menuItem->isActive(),
+                ]);
+            @endphp
+                <div  class="px-4 group/item {{ $menuItem->isActive() ? 'active' : 'inactive' }}">
                     <a
                         class="flex gap-2 p-1.5 items-center cursor-pointer hover:rounded-lg {{ $menuItem->isActive() == 'active' ? 'bg-brandColor rounded-lg' : ' hover:bg-gray-100 hover:dark:bg-gray-950' }} peer"
                         href="{{ ! in_array($menuItem->getKey(), ['settings', 'configuration']) && $menuItem->haveChildren() ? 'javascript:void(0)' : $menuItem->getUrl() }}"

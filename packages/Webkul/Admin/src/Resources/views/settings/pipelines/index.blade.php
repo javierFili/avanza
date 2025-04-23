@@ -10,7 +10,7 @@
                 {!! view_render_event('admin.settings.pipelines.index.breadcrumbs.before') !!}
 
                 <!-- Breadcrumbs -->
-                {{-- <x-admin::breadcrumbs name="settings.pipelines" /> --}}
+                 <x-admin::breadcrumbs name="settings.pipelines" />
 
                 {!! view_render_event('admin.settings.pipelines.index.breadcrumbs.after') !!}
 

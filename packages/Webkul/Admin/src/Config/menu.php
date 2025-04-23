@@ -144,6 +144,22 @@ return [
         'route'      => 'admin.settings.pipelines.index',
         'sort'       => 1,
         'icon-class' => 'icon-settings-pipeline',
+    ],[
+        'key'        => 'settings.lead',
+        'name'       => 'admin::app.layouts.lead',
+        'info'       => 'admin::app.layouts.lead-info',
+        'route'      => 'admin.settings.pipelines.index',
+        'sort'       => 2,
+        'icon-class' => '',
+        'hidden'=>true
+    ], [
+        'key'        => 'settings.warehouse',
+        'name'       => 'admin::app.layouts.warehouse',
+        'info'       => 'admin::app.layouts.warehouses-info',
+        'route'      => 'admin.settings.pipelines.index',
+        'icon-class' => '',
+        'sort'       => 2,
+        'hidden'=>true
     ],
 
     /**
@@ -183,14 +199,7 @@ return [
         'route'      => 'admin.settings.users.index',
         'sort'       => 3,
         'icon-class' => 'icon-user',
-    ], [
-        'key'        => 'settings.lead',
-        'name'       => 'admin::app.layouts.lead',
-        'info'       => 'admin::app.layouts.lead-info',
-        'route'      => 'admin.settings.pipelines.index',
-        'sort'       => 2,
-        'icon-class' => '',
-    ], [
+    ],  [
         'key'        => 'settings.lead.sources',
         'name'       => 'admin::app.layouts.sources',
         'info'       => 'admin::app.layouts.sources-info',
@@ -204,13 +213,6 @@ return [
         'route'      => 'admin.settings.types.index',
         'sort'       => 3,
         'icon-class' => 'icon-settings-type',
-    ], [
-        'key'        => 'settings.warehouse',
-        'name'       => 'admin::app.layouts.warehouse',
-        'info'       => 'admin::app.layouts.warehouses-info',
-        'route'      => 'admin.settings.pipelines.index',
-        'icon-class' => '',
-        'sort'       => 2,
     ], [
         'key'        => 'settings.warehouse.warehouses',
         'name'       => 'admin::app.layouts.warehouses',
