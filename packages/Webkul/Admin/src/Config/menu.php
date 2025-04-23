@@ -144,14 +144,14 @@ return [
         'route'      => 'admin.settings.pipelines.index',
         'sort'       => 1,
         'icon-class' => 'icon-settings-pipeline',
-    ],[
+    ], [
         'key'        => 'settings.lead',
         'name'       => 'admin::app.layouts.lead',
         'info'       => 'admin::app.layouts.lead-info',
         'route'      => 'admin.settings.pipelines.index',
         'sort'       => 2,
         'icon-class' => '',
-        'hidden'=>true
+        'hidden'     => true,
     ], [
         'key'        => 'settings.warehouse',
         'name'       => 'admin::app.layouts.warehouse',
@@ -159,7 +159,7 @@ return [
         'route'      => 'admin.settings.pipelines.index',
         'icon-class' => '',
         'sort'       => 2,
-        'hidden'=>true
+        'hidden'     => true,
     ],
 
     /**

@@ -9,7 +9,7 @@ Route::group(['middleware' => ['user']], function () {
     Route::controller(ProductController::class)->prefix('products')->group(function () {
         Route::get('', 'index')->name('admin.products.index');
 
-        Route::get('create', 'create')->name('admin.products.create');  
+        Route::get('create', 'create')->name('admin.products.create');
 
         Route::post('create', 'store')->name('admin.products.store');
 

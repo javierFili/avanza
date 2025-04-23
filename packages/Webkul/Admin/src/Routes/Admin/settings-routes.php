@@ -8,7 +8,6 @@ use Webkul\Admin\Http\Controllers\Settings\GroupController;
 use Webkul\Admin\Http\Controllers\Settings\LocationController;
 use Webkul\Admin\Http\Controllers\Settings\Marketing\CampaignsController;
 use Webkul\Admin\Http\Controllers\Settings\Marketing\EventController;
-use Webkul\Admin\Http\Controllers\Settings\PipelineController;
 use Webkul\Admin\Http\Controllers\Settings\RoleController;
 use Webkul\Admin\Http\Controllers\Settings\SettingController;
 use Webkul\Admin\Http\Controllers\Settings\SourceController;
@@ -356,4 +355,3 @@ Route::prefix('settings')->group(function () {
         });
     });
 });
-

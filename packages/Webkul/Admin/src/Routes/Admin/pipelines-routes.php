@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Webkul\Admin\Http\Controllers\Settings\PipelineController;
 
-
 Route::group(['middleware' => ['user']], function () {
     /**
      * Pipelines Routes.
