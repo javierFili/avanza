@@ -49,3 +49,7 @@ require 'configuration-routes.php';
  * Rest routes.
  */
 require 'rest-routes.php';
+/**
+ * Pipelines routes.
+ */
+require 'pipelines-routes.php';

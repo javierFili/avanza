@@ -10,7 +10,7 @@
                 {!! view_render_event('admin.settings.pipelines.index.breadcrumbs.before') !!}
 
                 <!-- Breadcrumbs -->
-                <x-admin::breadcrumbs name="settings.pipelines" />
+                {{-- <x-admin::breadcrumbs name="settings.pipelines" /> --}}
 
                 {!! view_render_event('admin.settings.pipelines.index.breadcrumbs.after') !!}
 
@@ -23,7 +23,7 @@
             <div class="flex items-center gap-x-2.5">
                 <div class="flex items-center gap-x-2.5">
                     {!! view_render_event('admin.settings.pipelines.index.create_button.before') !!}
-                    
+
                     @if (bouncer()->hasPermission('settings.lead.pipelines.create'))
                         <!-- Create button Pipelines -->
                         <a
@@ -46,7 +46,7 @@
             <!-- DataGrid Shimmer -->
             <x-admin::shimmer.datagrid />
         </x-admin::datagrid>
-        
+
         {!! view_render_event('admin.settings.pipelines.index.datagrid.after') !!}
     </div>
 </x-admin::layouts>

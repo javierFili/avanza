@@ -133,7 +133,11 @@ return [
         'icon-class' => 'icon-product',
     ],
 
-     [
+    /***
+     * Pipelies
+     */
+
+    [
         'key'        => 'pipelines',
         'name'       => 'admin::app.layouts.pipelines',
         'info'       => 'admin::app.layouts.pipelines-info',
