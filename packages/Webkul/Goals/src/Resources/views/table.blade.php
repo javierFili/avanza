@@ -13,14 +13,14 @@
             <thead
                 class="hidden min-h-[47px] items-center gap-2.5 border-b bg-gray-50 px-4 py-2.5 text-black dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 max-lg:hidden"
                 style="display: table-header-group;">
-                <tr style="display: grid; grid-template-columns: repeat(8, minmax(0px, 1fr));">
-                    <th class="px-2 py-2 text-center">
+                <tr style="display: grid; grid-template-columns: repeat(7, minmax(0px, 1fr));">
+                    {{-- <th class="px-2 py-2 text-center" hidden>
                         <label for="mass_action_select_all_records">
                             <input type="checkbox" v-model="selectAll" @change="toggleSelectAll()" class="peer hidden">
                             <span
                                 class="icon-checkbox-outline cursor-pointer rounded-md text-2xl text-gray-500 peer-checked:text-brandColor"></span>
                         </label>
-                    </th>
+                    </th> --}}
                     <th class="px-2 py-2 text-center">
                         <div class="flex items-center gap-1.5 break-words cursor-pointer select-none hover:text-gray-800 dark:hover:text-white"
                             @click="sortBy('id')">
@@ -73,14 +73,14 @@
             <tbody>
                 @foreach ($goals as $goal)
                     <tr class="grid items-center gap-2.5 border-b px-4 py-4 text-gray-600 transition-all hover:bg-gray-50 dark:border-gray-800 dark:text-gray-300 dark:hover:bg-gray-950 max-lg:hidden"
-                        style="grid-template-columns: repeat(8, minmax(0px, 1fr));">
-                        <td class="flex select-none items-center gap-16">
+                        style="grid-template-columns: repeat(7, minmax(0px, 1fr));">
+                        {{-- <td class="flex select-none items-center gap-16" hidden>
                             <input type="checkbox" v-model="selectedGoals" :id="{{ $goal->id }}"
                                 value="{{ $goal->id }}" class="peer hidden" @change="openModalDeleted">
                             <label
                                 class="icon-checkbox-outline peer-checked:icon-checkbox-select cursor-pointer rounded-md text-2xl text-gray-600 peer-checked:text-brandColor dark:text-gray-300"
-                                for="{{ $goal->id }}"></label>
-                        </td>
+                                for="{{ $goal->id }}" hidden></label >
+                        </td> --}}
                         <td>{{ $goal->id }}</td>
                         <td>
                             <div class="flex items-center gap-2.5">
