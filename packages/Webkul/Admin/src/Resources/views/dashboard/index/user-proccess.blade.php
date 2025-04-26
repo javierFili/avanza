@@ -147,10 +147,9 @@
 
                     var filtets = Object.assign({}, filtets);
 
-                    filtets.type = 'open-leads-by-process';
-
-                    const url = "{{ route('admin.goals.user.statistics') }}";
-                    //const url = "{{ route('admin.dashboard.stats') }}";
+                    filtets.type = 'user-proccess-states';
+                   // const url = "{{ route('admin.goals.user.statistics') }}";
+                    const url = "{{ route('admin.dashboard.stats') }}";
                     const response = this.$axios.get(url, {
                         params: filtets
                     }).then(response => {

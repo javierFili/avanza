@@ -5,6 +5,8 @@ namespace Webkul\Admin\Helpers\Reporting;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
+use Webkul\Lead\Models\Pipeline;
+use Webkul\Lead\Repositories\PipelineRepository;
 
 abstract class AbstractReporting
 {
@@ -29,6 +31,10 @@ abstract class AbstractReporting
     protected Carbon $lastEndDate;
 
     /**
+     * The pipeline id
+     */
+    protected int $pipelineId;
+    /**
      * Create a helper instance.
      *
      * @return void
@@ -38,6 +44,8 @@ abstract class AbstractReporting
         $this->setStartDate(request()->date('start'));
 
         $this->setEndDate(request()->date('end'));
+
+        $this->setPipelineId(request()->pipeline_id);
     }
 
     /**
@@ -70,6 +78,20 @@ abstract class AbstractReporting
 
         return $this;
     }
+
+    /**
+     *
+     */
+    public function setPipelineId($pipelineId):self{
+        if(!$pipelineId){
+            $pipelieIdDefault = Pipeline::first();
+            $this->pipelineId = $pipelieIdDefault->id;
+        }else{
+            $this->pipelineId = $pipelineId;
+        }
+        return $this;
+    }
+
 
     /**
      * Get the start date.

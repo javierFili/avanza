@@ -5,11 +5,13 @@ namespace Webkul\Admin\Helpers;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Webkul\Admin\Helpers\Reporting\Activity;
+use Webkul\Admin\Helpers\Reporting\Goals;
 use Webkul\Admin\Helpers\Reporting\Lead;
 use Webkul\Admin\Helpers\Reporting\Organization;
 use Webkul\Admin\Helpers\Reporting\Person;
 use Webkul\Admin\Helpers\Reporting\Product;
 use Webkul\Admin\Helpers\Reporting\Quote;
+
 
 class Dashboard
 {
@@ -25,6 +27,7 @@ class Dashboard
         protected Person $personReporting,
         protected Organization $organizationReporting,
         protected Quote $quoteReporting,
+        protected Goals $goalsReporting,
     ) {}
 
     /**
@@ -139,5 +142,20 @@ class Dashboard
     {
         return $this->getStartDate()->format('d M').' - '.$this->getEndDate()->format('d M');
     }
+    /**
+     * returns the pipeline_id
+     */
+    public function getPepiline(): Carbon
+    {
+        return $this->getStartDate();
+    }
+    /**
+     * Return user proccess on goals
+     */
+    public function getUserProccessStates()
+    {
+
+        return response()->json(["data"=> $this->goalsReporting->getUserProccess()]);
+    }
+
 }
-// trasladar la estadistica de los objetivos de lead,modificar toda las estadisticas para que muestren calculos a nivel de pipeline_id
