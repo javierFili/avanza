@@ -6,7 +6,6 @@ use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Webkul\Core\Eloquent\Repository;
-use Webkul\Lead\Models\Pipeline;
 use Webkul\User\Repositories\UserRepository;
 
 class PipelineRepository extends Repository
@@ -120,15 +119,12 @@ class PipelineRepository extends Repository
 
         return $pipeline;
     }
-
     /**
-     * get pipeline by user id
-     */
-    public function getPipelinesForUser($userId)
-    {
-        $pipelines = $this->userRepository->with('leadPipelines')->find($userId);
-        $pipelines = $pipelines->leadPipelines ? $pipelines->leadPipelines : [];
-
+     *get all pipelines by user_id
+    */
+    public function getAllPipelinesByUserId($userId){
+        $user = $this->userRepository->where("id",$userId)->with("leadPipelines")->first();
+        $pipelines =$user?->leadPipelines;
         return $pipelines;
     }
 }

@@ -129,24 +129,30 @@
             },
 
             mounted() {
-                const filters = {
+/*                 const filters = {
                     userId: 1,
-                    pipelineId: 1,
+                    pipelineId:"" ,
                     date_start: "2025-04-10",
                     date_end: "2025-05-08"
                 };
-
-                this.getStats(filters);
+ */
+                this.getStats({});
 
                 this.$emitter.on('reporting-filter-updated', this.getStats);
             },
 
             methods: {
-                getStats(filters) {
-                    this.isLoading = true;
+                getStats(filtets) {
+                     this.isLoading = true;
+
+                    var filtets = Object.assign({}, filtets);
+
+                    filtets.type = 'open-leads-by-process';
+
                     const url = "{{ route('admin.goals.user.statistics') }}";
+                    //const url = "{{ route('admin.dashboard.stats') }}";
                     const response = this.$axios.get(url, {
-                        params: filters
+                        params: filtets
                     }).then(response => {
                         console.log(response);
 

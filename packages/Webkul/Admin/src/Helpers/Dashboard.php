@@ -140,3 +140,4 @@ class Dashboard
         return $this->getStartDate()->format('d M').' - '.$this->getEndDate()->format('d M');
     }
 }
+// trasladar la estadistica de los objetivos de lead,modificar toda las estadisticas para que muestren calculos a nivel de pipeline_id

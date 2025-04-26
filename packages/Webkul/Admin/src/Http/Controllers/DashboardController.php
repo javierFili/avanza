@@ -2,7 +2,9 @@
 
 namespace Webkul\Admin\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Webkul\Admin\Helpers\Dashboard;
+use Webkul\Lead\Repositories\PipelineRepository;
 
 class DashboardController extends Controller
 {
@@ -27,7 +29,10 @@ class DashboardController extends Controller
      *
      * @return void
      */
-    public function __construct(protected Dashboard $dashboardHelper) {}
+    public function __construct(
+        protected Dashboard $dashboardHelper,
+        protected PipelineRepository $pipelineRepository
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -36,7 +41,10 @@ class DashboardController extends Controller
      */
     public function index()
     {
+        $userId = Auth::user()->id;
+        $pipelines = $this->pipelineRepository->getAllPipelinesByUserId($userId);
         return view('admin::dashboard.index')->with([
+            'pipelines' => $pipelines,
             'startDate' => $this->dashboardHelper->getStartDate(),
             'endDate'   => $this->dashboardHelper->getEndDate(),
         ]);
@@ -50,7 +58,6 @@ class DashboardController extends Controller
     public function stats()
     {
         $stats = $this->dashboardHelper->{$this->typeFunctions[request()->query('type')]}();
-
         return response()->json([
             'statistics' => $stats,
             'date_range' => $this->dashboardHelper->getDateRange(),

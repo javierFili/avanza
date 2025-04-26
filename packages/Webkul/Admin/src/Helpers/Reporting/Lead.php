@@ -310,6 +310,7 @@ class Lead extends AbstractReporting
      */
     public function getOpenLeadsByStates()
     {
+        dd($this);  
         return $this->leadRepository
             ->resetModel()
             ->select(

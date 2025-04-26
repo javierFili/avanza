@@ -190,31 +190,31 @@ class GoalsController extends Controller
     public function statisticsUser(Request $request)
     {
         // return response()->json(["success"=>false,"errors"=>"antra"],420);
+        dd($request->all());
         $validator = Validator::make($request->all(), [
-            'userId'     => 'required',
-            'pipelineId' => 'required',
-            'date_start' => 'required',
-            'date_end'   => 'required',
+            'pipelineId'=> 'required',
+            'date_start'=> 'required',
+            'date_end'  => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json(['success' => false, 'error' => 'validation errors', 'erros' => $validator->errors()], 420);
         }
         $data = $request->all();
 
-        return $this->statisticsUserResult($data['userId'], $data['pipelineId'], $data['date_start'], $data['date_end']);
+        return $this->statisticsUserResult($data['pipelineId'], $data['date_start'], $data['date_end']);
     }
 
-    public function statisticsUserResult($userId, $pipelineId, $date_start, $date_end)
+    public function statisticsUserResult( $pipelineId, $date_start, $date_end)
     {
         try {
 
             $valueGoal = $this->goalsRepository->userStatitics([
-                'user_id'     => $userId,
                 'pipeline_id' => $pipelineId,
                 'start_date'  => $date_start,
                 'end_date'    => $date_end,
             ]);
-
+            // revisar esto
+            $userId = $valueGoal->toArray();
             $leadsWonValueSum = $this->leadReporting->getTotalWonLeadValueForPipelineAndUserId($userId, $pipelineId, $date_start, $date_end);
             $percentageAchieved = ((float) $leadsWonValueSum * 100) / $valueGoal;
             $missingPercentage = 100 - $percentageAchieved;

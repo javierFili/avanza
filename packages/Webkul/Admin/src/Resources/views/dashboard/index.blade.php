@@ -83,7 +83,6 @@
         @include('admin::dashboard.index.user-proccess')
     </div>
     {!! view_render_event('admin.dashboard.index.content.after') !!}
-
     @pushOnce('scripts')
         <script type="module" src="{{ vite()->asset('js/chart.js') }}"></script>
 
@@ -94,9 +93,17 @@
             id="v-dashboard-filters-template"
         >
             {!! view_render_event('admin.dashboard.index.date_filters.before') !!}
-
             <div class="flex gap-1.5">
-                <x-admin::flat-picker.date class="!w-[140px]" ::allow-input="false">
+                <select
+                    class="flex min-h-[30px] w-full rounded-md border px-3 py-2 text-sm text-gray-600 transition-all hover:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400"
+                    v-model="filters.pipeline_id"
+                    placeholder="Select pipeline"
+                >
+                    <option v-for="pipeline in pipelines" :value="pipeline.id" :key="pipeline.id">
+                       @{{ pipeline.name }}
+                    </option>
+                </select>
+                <x-admin::flat-picker.date class="!w-[160px]" ::allow-input="false">
                     <input
                         class="flex min-h-[39px] w-full rounded-md border px-3 py-2 text-sm text-gray-600 transition-all hover:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400"
                         v-model="filters.start"
@@ -104,7 +111,7 @@
                     />
                 </x-admin::flat-picker.date>
 
-                <x-admin::flat-picker.date class="!w-[140px]" ::allow-input="false">
+                <x-admin::flat-picker.date class="!w-[160px]" ::allow-input="false">
                     <input
                         class="flex min-h-[39px] w-full rounded-md border px-3 py-2 text-sm text-gray-600 transition-all hover:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-400"
                         v-model="filters.end"
@@ -122,7 +129,10 @@
 
                 data() {
                     return {
+                        pipelines: @json($pipelines),
                         filters: {
+                            pipeline_id:@json($pipelines->isNotEmpty() ? $pipelines[0]->id : ''),
+
                             channel: '',
 
                             start: "{{ $startDate->format('Y-m-d') }}",
