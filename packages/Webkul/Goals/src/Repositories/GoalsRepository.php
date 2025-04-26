@@ -125,8 +125,13 @@ class GoalsRepository extends Repository
         $valueGoal = $this->model
             ->where('user_id', $data['user_id'])
             ->where('pipeline_id', $data['pipeline_id'])
-            ->where('start_date', '<=', $data['start_date'])
-            ->where('end_date', '>=', $data['end_date'])
+            ->where(function ($query) use ($data) {
+                $query->where(function ($q) use ($data) {
+                    // Verifica si el nuevo rango se solapa con algún goal existente
+                    $q->where('end_date', '>=', $data['start_date'])  // El goal existente termina después del nuevo inicio
+                        ->where('start_date', '<=', $data['end_date']); // El goal existente comienza antes del nuevo fin
+                });
+            })
             ->first()?->target_value;
 
         return $valueGoal;

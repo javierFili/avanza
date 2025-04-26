@@ -8,11 +8,17 @@ use Webkul\Goals\Repositories\GoalsRepository;
 use Webkul\Lead\Repositories\LeadRepository;
 use Webkul\Lead\Repositories\PipelineRepository;
 use Webkul\Lead\Repositories\StageRepository;
+use Webkul\User\Repositories\UserRepository;
 
 class Goals extends AbstractReporting
 {
 
-    public function __construct(protected GoalsRepository $goalsRepository, protected Lead $leadReporting,protected PipelineRepository $pipelineRepository)
+    public function __construct(
+        protected GoalsRepository $goalsRepository,
+        protected Lead $leadReporting,
+        protected PipelineRepository $pipelineRepository,
+        protected UserRepository $userRepository,
+        )
     {
         parent::__construct();
     }
@@ -48,10 +54,11 @@ class Goals extends AbstractReporting
             ]);
 
             $leadsWonValueSum = $this->leadReporting->getTotalWonLeadValueForPipelineAndUserId($userId, $pipelineId, $date_start, $date_end);
-            $percentageAchieved = $valueGoal>0? ((float) $leadsWonValueSum * 100) / $valueGoal:0;
+            $percentageAchieved = $valueGoal > 0 ? ((float) $leadsWonValueSum * 100) / $valueGoal:0;
             $missingPercentage = 100 - $percentageAchieved;
-
+            $user = $this->userRepository->find($userId);
             $statistics = [
+                'userFullName' =>$user->name,
                 'name'                => 'Proceso de objetivo',
                 'percentage_achieved' => round($percentageAchieved, 2),
                 'missing_percentage'  => round($missingPercentage, 2),

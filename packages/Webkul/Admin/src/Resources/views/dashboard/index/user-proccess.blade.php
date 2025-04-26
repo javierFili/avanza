@@ -129,13 +129,7 @@
             },
 
             mounted() {
-/*                 const filters = {
-                    userId: 1,
-                    pipelineId:"" ,
-                    date_start: "2025-04-10",
-                    date_end: "2025-05-08"
-                };
- */
+
                 this.getStats({});
 
                 this.$emitter.on('reporting-filter-updated', this.getStats);
@@ -143,12 +137,11 @@
 
             methods: {
                 getStats(filtets) {
-                     this.isLoading = true;
+                    this.isLoading = true;
 
                     var filtets = Object.assign({}, filtets);
 
                     filtets.type = 'user-proccess-states';
-                   // const url = "{{ route('admin.goals.user.statistics') }}";
                     const url = "{{ route('admin.dashboard.stats') }}";
                     const response = this.$axios.get(url, {
                         params: filtets
