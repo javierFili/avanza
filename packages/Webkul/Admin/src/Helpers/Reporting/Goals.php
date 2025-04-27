@@ -31,9 +31,13 @@ class Goals extends AbstractReporting
         $result = [];
         if ($pipeline->users) {
             $users = $pipeline->users;
-            foreach ($users as $user) {
-                $userStatistics = $this->statisticsUserResult($pipelineId, $startDate, $endDate, $user->id);
-                array_push($result, $userStatistics);
+            foreach($users as $user){
+                $userStatistics = $this->statisticsUserResult($pipelineId, $startDate, $endDate,$user->id);
+                if($userStatistics!=false){
+                    array_push($result, $userStatistics);
+                }else{
+                    //dd($userStatistics,$pipeline);
+                }
             }
         }
 
@@ -49,7 +53,9 @@ class Goals extends AbstractReporting
                 'start_date'  => $date_start,
                 'end_date'    => $date_end,
             ]);
-
+            if($valueGoal==false){
+                return false;
+            }
             $leadsWonValueSum = $this->leadReporting->getTotalWonLeadValueForPipelineAndUserId($userId, $pipelineId, $date_start, $date_end);
             $percentageAchieved = $valueGoal > 0 ? ((float) $leadsWonValueSum * 100) / $valueGoal : 0;
             $missingPercentage = 100 - $percentageAchieved;

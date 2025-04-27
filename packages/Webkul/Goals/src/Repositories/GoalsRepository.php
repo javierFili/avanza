@@ -122,14 +122,20 @@ class GoalsRepository extends Repository
      */
     public function userStatitics($data)
     {
+        $userExits = $this->model
+        ->where("user_id",$data["user_id"])
+        ->where("pipeline_id",$data["pipeline_id"]);
+        if(!$userExits){
+            return false;
+        }
+
         $valueGoal = $this->model
             ->where('user_id', $data['user_id'])
             ->where('pipeline_id', $data['pipeline_id'])
             ->where(function ($query) use ($data) {
                 $query->where(function ($q) use ($data) {
-                    // Verifica si el nuevo rango se solapa con algún goal existente
-                    $q->where('end_date', '>=', $data['start_date'])  // El goal existente termina después del nuevo inicio
-                        ->where('start_date', '<=', $data['end_date']); // El goal existente comienza antes del nuevo fin
+                    $q->where('end_date', '>=', $data['start_date'])
+                        ->where('start_date', '<=', $data['end_date']);
                 });
             })
             ->first()?->target_value;
@@ -139,7 +145,6 @@ class GoalsRepository extends Repository
 
     public function getByUserIdPipelineIdAndDate($data)
     {
-        // ->whereBetween('closed_at', [Carbon::parse($startDate)->startOfDay(), Carbon::parse($endDate)->startOfDay()])
         $goal = $this->model
             ->where('pipeline_id', $data['pipeline_id'])
             ->where('user_id', $data['user_id'])
@@ -160,9 +165,8 @@ class GoalsRepository extends Repository
             ->where('user_id', $data['user_id'])
             ->where(function ($query) use ($data) {
                 $query->where(function ($q) use ($data) {
-                    // Verifica si el nuevo rango se solapa con algún goal existente
-                    $q->where('end_date', '>=', $data['date_start'])  // El goal existente termina después del nuevo inicio
-                        ->where('start_date', '<=', $data['date_end']); // El goal existente comienza antes del nuevo fin
+                    $q->where('end_date', '>=', $data['date_start'])
+                        ->where('start_date', '<=', $data['date_end']);
                 });
             })
             ->first();
