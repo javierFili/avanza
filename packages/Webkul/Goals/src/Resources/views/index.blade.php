@@ -469,7 +469,7 @@
                         console.log("entra desde el checkbox", this.selectedGoals);
                         this.showModal = true;
                     },
-                    confirmDelete() {
+                    confirmDeleteMassive() {
                         // Aquí iría tu lógica para eliminar
                         console.log("Elementos a eliminar:", this.selectedGoals);
                         // Ejemplo:
