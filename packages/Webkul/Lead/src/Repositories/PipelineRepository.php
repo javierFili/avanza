@@ -136,6 +136,16 @@ class PipelineRepository extends Repository
         return $this->all();
     }
     /**
+     * get pipeline by user id
+     */
+    public function getPipelinesForUser($userId)
+    {
+        $pipelines = $this->userRepository->with('leadPipelines')->find($userId);
+        $pipelines = $pipelines->leadPipelines ? $pipelines->leadPipelines : [];
+
+        return $pipelines;
+    }
+    /**
      * get all pipelines for user id
      */
     public function getAllUserForPipelineId($pipelineId){
