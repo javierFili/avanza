@@ -120,21 +120,27 @@ class PipelineRepository extends Repository
 
         return $pipeline;
     }
+
     /**
      *get all pipelines by user_id
-    */
-    public function getAllPipelinesByUserId($userId){
-        $user = $this->userRepository->where("id",$userId)->with("leadPipelines")->first();
-        $pipelines =$user?->leadPipelines;
+     */
+    public function getAllPipelinesByUserId($userId)
+    {
+        $user = $this->userRepository->where('id', $userId)->with('leadPipelines')->first();
+        $pipelines = $user?->leadPipelines;
+
         return $pipelines;
     }
+
     /**
      * get the default pipeline for all users
      */
-    public function getDefaultPipelineAllUsers(){
+    public function getDefaultPipelineAllUsers()
+    {
 
         return $this->all();
     }
+
     /**
      * get pipeline by user id
      */
@@ -145,10 +151,12 @@ class PipelineRepository extends Repository
 
         return $pipelines;
     }
+
     /**
      * get all pipelines for user id
      */
-    public function getAllUserForPipelineId($pipelineId){
-        return $this->where("id",$pipelineId)->with("users")->first();
+    public function getAllUserForPipelineId($pipelineId)
+    {
+        return $this->where('id', $pipelineId)->with('users')->first();
     }
 }

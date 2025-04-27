@@ -33,6 +33,7 @@ abstract class AbstractReporting
      * The pipeline id
      */
     protected int $pipelineId;
+
     /**
      * Create a helper instance.
      *
@@ -78,19 +79,17 @@ abstract class AbstractReporting
         return $this;
     }
 
-    /**
-     *
-     */
-    public function setPipelineId($pipelineId):self{
-        if(!$pipelineId){
+    public function setPipelineId($pipelineId): self
+    {
+        if (! $pipelineId) {
             $pipelieIdDefault = Pipeline::all()->first();
             $this->pipelineId = $pipelieIdDefault->id;
-        }else{
+        } else {
             $this->pipelineId = $pipelineId;
         }
+
         return $this;
     }
-
 
     /**
      * Get the start date.

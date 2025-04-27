@@ -234,9 +234,9 @@ class Lead extends AbstractReporting
             ->where('lead_pipeline_id', $pipeline_id)
             ->where('user_id', $user_id)
             ->whereIn('lead_pipeline_stage_id', $this->wonStageIds)
-            ->where("closed_at",">=",Carbon::parse($startDate))
-            ->where("closed_at","<=",Carbon::parse($endDate))
-            //->whereBetween('closed_at', [Carbon::parse($startDate)->startOfDay(), Carbon::parse($endDate)->startOfDay()])
+            ->where('closed_at', '>=', Carbon::parse($startDate))
+            ->where('closed_at', '<=', Carbon::parse($endDate))
+            // ->whereBetween('closed_at', [Carbon::parse($startDate)->startOfDay(), Carbon::parse($endDate)->startOfDay()])
             ->sum('lead_value');
 
         return $res;
