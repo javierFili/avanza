@@ -44,6 +44,7 @@ class DashboardController extends Controller
     {
         $userId = Auth::user()->id;
         $pipelines = $this->pipelineRepository->getAllPipelinesByUserId($userId);
+
         return view('admin::dashboard.index')->with([
             'pipelines' => $pipelines,
             'startDate' => $this->dashboardHelper->getStartDate(),
@@ -59,6 +60,7 @@ class DashboardController extends Controller
     public function stats()
     {
         $stats = $this->dashboardHelper->{$this->typeFunctions[request()->query('type')]}();
+
         return response()->json([
             'statistics' => $stats,
             'date_range' => $this->dashboardHelper->getDateRange(),

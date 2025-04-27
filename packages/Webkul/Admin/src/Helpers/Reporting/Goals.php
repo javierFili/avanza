@@ -2,44 +2,41 @@
 
 namespace Webkul\Admin\Helpers\Reporting;
 
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Webkul\Goals\Repositories\GoalsRepository;
-use Webkul\Lead\Repositories\LeadRepository;
 use Webkul\Lead\Repositories\PipelineRepository;
-use Webkul\Lead\Repositories\StageRepository;
 use Webkul\User\Repositories\UserRepository;
 
 class Goals extends AbstractReporting
 {
-
     public function __construct(
         protected GoalsRepository $goalsRepository,
         protected Lead $leadReporting,
         protected PipelineRepository $pipelineRepository,
         protected UserRepository $userRepository,
-        )
-    {
+    ) {
         parent::__construct();
     }
-    public function getUserProccess(){
+
+    public function getUserProccess()
+    {
         return $this->statisticsUser($this->pipelineId, $this->startDate, $this->endDate);
     }
 
     /**
      * Get users statitics
      */
-    public function statisticsUser($pipelineId,$startDate,$endDate)
+    public function statisticsUser($pipelineId, $startDate, $endDate)
     {
         $pipeline = $this->pipelineRepository->getAllUserForPipelineId($pipelineId);
         $result = [];
-        if($pipeline->users){
+        if ($pipeline->users) {
             $users = $pipeline->users;
-            foreach($users as $user){
-                $userStatistics = $this->statisticsUserResult($pipelineId, $startDate, $endDate,$user->id);
-                array_push($result,$userStatistics);
+            foreach ($users as $user) {
+                $userStatistics = $this->statisticsUserResult($pipelineId, $startDate, $endDate, $user->id);
+                array_push($result, $userStatistics);
             }
         }
+
         return $result;
     }
 
@@ -54,11 +51,11 @@ class Goals extends AbstractReporting
             ]);
 
             $leadsWonValueSum = $this->leadReporting->getTotalWonLeadValueForPipelineAndUserId($userId, $pipelineId, $date_start, $date_end);
-            $percentageAchieved = $valueGoal > 0 ? ((float) $leadsWonValueSum * 100) / $valueGoal:0;
+            $percentageAchieved = $valueGoal > 0 ? ((float) $leadsWonValueSum * 100) / $valueGoal : 0;
             $missingPercentage = 100 - $percentageAchieved;
             $user = $this->userRepository->find($userId);
             $statistics = [
-                'userFullName' =>$user->name,
+                'userFullName'        => $user->name,
                 'name'                => 'Proceso de objetivo',
                 'percentage_achieved' => round($percentageAchieved, 2),
                 'missing_percentage'  => round($missingPercentage, 2),
@@ -75,6 +72,4 @@ class Goals extends AbstractReporting
             ], 500);
         }
     }
-
 }
-

@@ -12,7 +12,6 @@ use Webkul\Admin\Helpers\Reporting\Person;
 use Webkul\Admin\Helpers\Reporting\Product;
 use Webkul\Admin\Helpers\Reporting\Quote;
 
-
 class Dashboard
 {
     /**
@@ -142,6 +141,7 @@ class Dashboard
     {
         return $this->getStartDate()->format('d M').' - '.$this->getEndDate()->format('d M');
     }
+
     /**
      * returns the pipeline_id
      */
@@ -149,13 +149,13 @@ class Dashboard
     {
         return $this->getStartDate();
     }
+
     /**
      * Return user proccess on goals
      */
     public function getUserProccessStates()
     {
 
-        return response()->json(["data"=> $this->goalsReporting->getUserProccess()]);
+        return response()->json(['data'=> $this->goalsReporting->getUserProccess()]);
     }
-
 }
