@@ -6,7 +6,6 @@ use Carbon\CarbonPeriod;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Webkul\Lead\Models\Pipeline;
-use Webkul\Lead\Repositories\PipelineRepository;
 
 abstract class AbstractReporting
 {
@@ -84,7 +83,7 @@ abstract class AbstractReporting
      */
     public function setPipelineId($pipelineId):self{
         if(!$pipelineId){
-            $pipelieIdDefault = Pipeline::first();
+            $pipelieIdDefault = Pipeline::all()->first();
             $this->pipelineId = $pipelieIdDefault->id;
         }else{
             $this->pipelineId = $pipelineId;

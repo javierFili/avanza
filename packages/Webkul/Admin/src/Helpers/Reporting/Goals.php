@@ -2,12 +2,8 @@
 
 namespace Webkul\Admin\Helpers\Reporting;
 
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Webkul\Goals\Repositories\GoalsRepository;
-use Webkul\Lead\Repositories\LeadRepository;
 use Webkul\Lead\Repositories\PipelineRepository;
-use Webkul\Lead\Repositories\StageRepository;
 use Webkul\User\Repositories\UserRepository;
 
 class Goals extends AbstractReporting
@@ -37,7 +33,11 @@ class Goals extends AbstractReporting
             $users = $pipeline->users;
             foreach($users as $user){
                 $userStatistics = $this->statisticsUserResult($pipelineId, $startDate, $endDate,$user->id);
-                array_push($result,$userStatistics);
+                if($userStatistics!=false){
+                    array_push($result, $userStatistics);
+                }else{
+                    //dd($userStatistics,$pipeline);
+                }
             }
         }
         return $result;
@@ -52,7 +52,9 @@ class Goals extends AbstractReporting
                 'start_date'  => $date_start,
                 'end_date'    => $date_end,
             ]);
-
+            if($valueGoal==false){
+                return false;
+            }
             $leadsWonValueSum = $this->leadReporting->getTotalWonLeadValueForPipelineAndUserId($userId, $pipelineId, $date_start, $date_end);
             $percentageAchieved = $valueGoal > 0 ? ((float) $leadsWonValueSum * 100) / $valueGoal:0;
             $missingPercentage = 100 - $percentageAchieved;
