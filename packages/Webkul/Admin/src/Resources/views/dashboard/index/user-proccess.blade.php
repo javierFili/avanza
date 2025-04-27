@@ -26,9 +26,6 @@
                         {{-- @lang('admin::app.dashboard.index.revenue-by-types.title') --}}
                         Objetivos del usuario
                     </p>
-                    <form>
-
-                    </form>
                 </div>
 
                 <!-- Doughnut Chart -->
@@ -42,7 +39,12 @@
                         > <!-- Contenedor con tamaño fijo -->
                             <x-admin::charts.doughnut
                                 ::labels="chartLabels"
-                                ::datasets="chartDatasets"
+                                ::datasets="[{
+                                                data: [start.original.statistics.missing_percentage, start.original.statistics.percentage_achieved],
+                                                backgroundColor: [
+                                                '#111827','#4CAF50'],
+                                                borderWidth: 0 // Elimina el borde si no lo necesitas
+                                            }]"
                                 ::options="{
                                     responsive: true,
                                     maintainAspectRatio: false,
@@ -55,7 +57,7 @@
                                 }"
                             />
                             <label class="justify-center">
-                                @{{ start }}
+                                @{{ start.original.statistics.userFullName }}
                             </label>
                         </div>
                     </div>
@@ -110,17 +112,7 @@
                 chartLabels() {
                     return ["Faltante", "Completado"];
                 },
-                chartDatasets() {
-                    //.original.statistics
-                    const statistics = this.report.statistics;
-                    console.log(statistics);
-                    return [{
-                        data: [statistics[2], statistics[1]], // Solo 2 valores que sumen 100%
-                        backgroundColor: [
-                        '#111827','#4CAF50'], // Verde para completado, rojo para faltante
-                        borderWidth: 0 // Elimina el borde si no lo necesitas
-                    }];
-                }
+                // aqui vienen las variables previa peticion api
             },
 
             mounted() {
@@ -143,7 +135,7 @@
                     }).then(response => {
                         this.report = response.data;
                         if (!Array.isArray(this.report.statistics)) {
-                            console.log(this.report.statistics.original.data[0].original.statistics);
+                            //console.log(this.report.statistics.original.data[0].original.statistics);
                             this.report.statistics = Object.values(this.report.statistics.original.data);
                         }
                         this.extendColors(this.report.statistics.length);
@@ -162,3 +154,10 @@
         });
     </script>
 @endPushOnce
+{{-- ::datasets="{
+                                                data: [start.original.statistics.statistics[2], start.original.statistics.statistics[1]], // Solo 2 valores que sumen 100%
+                                                backgroundColor: [
+                                                '#111827','#4CAF50'], // Verde para completado, rojo para faltante
+                                                borderWidth: 0 // Elimina el borde si no lo necesitas
+                                            }"
+ --}}
