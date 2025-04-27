@@ -35,7 +35,11 @@
                 <div class="flex w-full max-w-full flex-col gap-4 px-8 pt-8" v-if="report.statistics.length">
                     <!-- Gráfico con contenedor pequeño y opciones personalizadas -->
                    <div class="flex flex-wrap justify-center gap-5">
-                        <div class="w-[300px] h-[250px]"> <!-- Contenedor con tamaño fijo -->
+                        <div
+                        class="w-[300px] h-[250px]"
+                        v-for = "(start, index) in report.statistics"
+                        :key = "index"
+                        > <!-- Contenedor con tamaño fijo -->
                             <x-admin::charts.doughnut
                                 ::labels="chartLabels"
                                 ::datasets="chartDatasets"
@@ -50,19 +54,9 @@
                                     cutout: '65%'  <!-- Controla el grosor del anillo -->
                                 }"
                             />
-                        </div>
-                    </div>
-                    <!-- Leyenda -->
-                    <div class="flex flex-wrap justify-center gap-5">
-                        <div
-                            class="flex items-center gap-2 whitespace-nowrap"
-                            v-for="(stat, index) in report.statistics"
-                        >
-                            <span
-                                class="h-3.5 w-3.5 rounded-sm"
-                                :style="{ backgroundColor: colors[index] }"
-                            ></span>
-                            <p class="text-xs dark:text-gray-300">@{{ stat.name }}</p>
+                            <label class="justify-center">
+                                @{{ start }}
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -117,14 +111,15 @@
                     return ["Faltante", "Completado"];
                 },
                 chartDatasets() {
+                    //.original.statistics
                     const statistics = this.report.statistics;
-
+                    console.log(statistics);
                     return [{
                         data: [statistics[2], statistics[1]], // Solo 2 valores que sumen 100%
                         backgroundColor: [
                         '#111827','#4CAF50'], // Verde para completado, rojo para faltante
                         borderWidth: 0 // Elimina el borde si no lo necesitas
-                    },];
+                    }];
                 }
             },
 
@@ -146,11 +141,10 @@
                     const response = this.$axios.get(url, {
                         params: filtets
                     }).then(response => {
-                        console.log(response);
-
                         this.report = response.data;
                         if (!Array.isArray(this.report.statistics)) {
-                            this.report.statistics = Object.values(this.report.statistics);
+                            console.log(this.report.statistics.original.data[0].original.statistics);
+                            this.report.statistics = Object.values(this.report.statistics.original.data);
                         }
                         this.extendColors(this.report.statistics.length);
                         this.isLoading = false;

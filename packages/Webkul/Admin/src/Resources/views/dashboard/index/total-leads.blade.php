@@ -37,23 +37,23 @@
                     <div class="flex justify-center gap-5">
                         <div class="flex items-center gap-2">
                             <span class="h-3.5 w-3.5 rounded-sm bg-[#8979FF]"></span>
-                            
+
                             <p class="text-xs dark:text-gray-300">
                                 @lang('admin::app.dashboard.index.total-leads.total')
                             </p>
                         </div>
-                        
+
                         <div class="flex items-center gap-2">
                             <span class="h-3.5 w-3.5 rounded-sm bg-[#63CFE5]"></span>
-                            
+
                             <p class="text-xs dark:text-gray-300">
                                 @lang('admin::app.dashboard.index.total-leads.won')
                             </p>
                         </div>
-                        
+
                         <div class="flex items-center gap-2">
                             <span class="h-3.5 w-3.5 rounded-sm bg-[#FFA8A1]"></span>
-                            
+
                             <p class="text-xs dark:text-gray-300">
                                 @lang('admin::app.dashboard.index.total-leads.lost')
                             </p>
