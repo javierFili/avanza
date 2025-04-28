@@ -58,7 +58,7 @@ class Goals extends AbstractReporting
             }
             $leadsWonValueSum = $this->leadReporting->getTotalWonLeadValueForPipelineAndUserId( $pipelineId,$userId, $date_start, $date_end);
             $percentageAchieved = $valueGoal > 0 ? ((float) $leadsWonValueSum * 100) / $valueGoal : 0;
-            $missingPercentage = 100 - $percentageAchieved;
+            $missingPercentage = $percentageAchieved>=100? 0:100 - $percentageAchieved;
             $user = $this->userRepository->find($userId);
             $statistics = [
                 'userFullName'        => $user->name,
