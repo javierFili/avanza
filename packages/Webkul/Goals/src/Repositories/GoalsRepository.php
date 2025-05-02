@@ -123,9 +123,9 @@ class GoalsRepository extends Repository
     public function userStatitics($data)
     {
         $userExits = $this->model
-        ->where("user_id",$data["user_id"])
-        ->where("pipeline_id",$data["pipeline_id"]);
-        if(!$userExits){
+            ->where('user_id', $data['user_id'])
+            ->where('pipeline_id', $data['pipeline_id']);
+        if (! $userExits) {
             return false;
         }
 

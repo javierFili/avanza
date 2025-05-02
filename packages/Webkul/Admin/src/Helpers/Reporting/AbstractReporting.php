@@ -79,11 +79,9 @@ abstract class AbstractReporting
         return $this;
     }
 
-    /**
-     *
-     */
-    public function setPipelineId($pipelineId):self{
-        if(!$pipelineId){
+    public function setPipelineId($pipelineId): self
+    {
+        if (! $pipelineId) {
             $pipelieIdDefault = Pipeline::all()->first();
             $this->pipelineId = $pipelieIdDefault->id;
         } else {

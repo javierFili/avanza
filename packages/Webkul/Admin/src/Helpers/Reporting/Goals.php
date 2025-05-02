@@ -31,12 +31,12 @@ class Goals extends AbstractReporting
         $result = [];
         if ($pipeline->users) {
             $users = $pipeline->users;
-            foreach($users as $user){
-                $userStatistics = $this->statisticsUserResult($pipelineId, $startDate, $endDate,$user->id);
-                if($userStatistics!=false){
+            foreach ($users as $user) {
+                $userStatistics = $this->statisticsUserResult($pipelineId, $startDate, $endDate, $user->id);
+                if ($userStatistics != false) {
                     array_push($result, $userStatistics);
-                }else{
-                    //dd($userStatistics,$pipeline);
+                } else {
+                    // dd($userStatistics,$pipeline);
                 }
             }
         }
@@ -53,12 +53,12 @@ class Goals extends AbstractReporting
                 'start_date'  => $date_start,
                 'end_date'    => $date_end,
             ]);
-            if($valueGoal==false){
+            if ($valueGoal == false) {
                 return false;
             }
-            $leadsWonValueSum = $this->leadReporting->getTotalWonLeadValueForPipelineAndUserId($userId, $pipelineId, $date_start, $date_end);
+            $leadsWonValueSum = $this->leadReporting->getTotalWonLeadValueForPipelineAndUserId($pipelineId, $userId, $date_start, $date_end);
             $percentageAchieved = $valueGoal > 0 ? ((float) $leadsWonValueSum * 100) / $valueGoal : 0;
-            $missingPercentage = 100 - $percentageAchieved;
+            $missingPercentage = $percentageAchieved >= 100 ? 0 : 100 - $percentageAchieved;
             $user = $this->userRepository->find($userId);
             $statistics = [
                 'userFullName'        => $user->name,

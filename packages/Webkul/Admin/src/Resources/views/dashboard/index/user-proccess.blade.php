@@ -42,8 +42,8 @@
                                 ::datasets="[{
                                                 data: [start.original.statistics.missing_percentage, start.original.statistics.percentage_achieved],
                                                 backgroundColor: [
-                                                '#111827','#4CAF50'],
-                                                borderWidth: 0 // Elimina el borde si no lo necesitas
+                                                '#d82323','#1fcb23'],
+                                                borderWidth: 1 // Elimina el borde si no lo necesitas
                                             }]"
                                 ::options="{
                                     responsive: true,
