@@ -106,6 +106,7 @@ class Lead extends AbstractReporting
         return $this->leadRepository
             ->resetModel()
             ->whereBetween('created_at', [$startDate, $endDate])
+            ->where("lead_pipeline_id",$this->pipelineId)
             ->count();
     }
 
@@ -189,6 +190,7 @@ class Lead extends AbstractReporting
         return $this->leadRepository
             ->resetModel()
             ->whereBetween('created_at', [$startDate, $endDate])
+            ->where("lead_pipeline_id",$this->pipelineId)
             ->avg('lead_value') ?? 0;
     }
 
@@ -217,6 +219,7 @@ class Lead extends AbstractReporting
         return $this->leadRepository
             ->resetModel()
             ->whereIn('lead_pipeline_stage_id', $this->wonStageIds)
+            ->where("lead_pipeline_id",$this->pipelineId)
             ->whereBetween('created_at', [$startDate, $endDate])
             ->sum('lead_value');
     }
@@ -267,6 +270,7 @@ class Lead extends AbstractReporting
         return $this->leadRepository
             ->resetModel()
             ->whereIn('lead_pipeline_stage_id', $this->lostStageIds)
+            ->where("lead_pipeline_id",$this->pipelineId)
             ->whereBetween('created_at', [$startDate, $endDate])
             ->sum('lead_value');
     }
@@ -321,6 +325,7 @@ class Lead extends AbstractReporting
             ->leftJoin('lead_pipeline_stages', 'leads.lead_pipeline_stage_id', '=', 'lead_pipeline_stages.id')
             ->whereNotIn('lead_pipeline_stage_id', $this->wonStageIds)
             ->whereNotIn('lead_pipeline_stage_id', $this->lostStageIds)
+            ->where("leads.lead_pipeline_id",$this->pipelineId)
             ->whereBetween('leads.created_at', [$this->startDate, $this->endDate])
             ->groupBy('lead_pipeline_stage_id')
             ->orderByDesc('total')
@@ -349,6 +354,7 @@ class Lead extends AbstractReporting
                 DB::raw('COUNT(*) AS count')
             )
             ->whereIn('lead_pipeline_stage_id', $this->stageIds)
+            ->where("lead_pipeline_id",$this->pipelineId)
             ->whereBetween($dateColumn, [$startDate, $endDate])
             ->groupBy('date');
 

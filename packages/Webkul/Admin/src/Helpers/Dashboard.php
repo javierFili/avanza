@@ -4,6 +4,7 @@ namespace Webkul\Admin\Helpers;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Webkul\Admin\Helpers\Reporting\Activity;
 use Webkul\Admin\Helpers\Reporting\Goals;
 use Webkul\Admin\Helpers\Reporting\Lead;
@@ -155,7 +156,6 @@ class Dashboard
      */
     public function getUserProccessStates()
     {
-
         return response()->json(['data'=> $this->goalsReporting->getUserProccess()]);
     }
 }

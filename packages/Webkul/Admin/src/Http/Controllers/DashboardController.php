@@ -42,8 +42,12 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $userId = Auth::user()->id;
-        $pipelines = $this->pipelineRepository->getAllPipelinesByUserId($userId);
+        if(!bouncer()->hasPermission('admin.settings.pipelines.view')){
+            $userId = Auth::user()->id;
+            $pipelines = $this->pipelineRepository->getAllPipelinesByUserId($userId);
+        }else{
+            $pipelines = $this->pipelineRepository->getDefaultPipelineAllUsers();
+        }
 
         return view('admin::dashboard.index')->with([
             'pipelines' => $pipelines,
