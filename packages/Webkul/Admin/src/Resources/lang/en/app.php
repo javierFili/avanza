@@ -42,6 +42,8 @@ return [
         'data-transfer'   => 'Data Transfer',
         'imports'         => 'Imports',
         'import'          => 'Import',
+        'goals'           => 'Goals',
+        'viewall'         => 'View all'
     ],
 
     'users' => [

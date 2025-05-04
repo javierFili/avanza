@@ -296,6 +296,12 @@ return [
         'name'  => 'admin::app.acl.delete',
         'route' => 'admin.settings.pipelines.delete',
         'sort'  => 3,
+    ],
+    [
+        'key'   => 'settings.lead.pipelines.view',
+        'name'  => 'admin::app.acl.view',
+        'route' => 'admin.settings.pipelines.view',
+        'sort'  => 3,
     ], [
         'key'   => 'settings.lead.sources',
         'name'  => 'admin::app.acl.sources',

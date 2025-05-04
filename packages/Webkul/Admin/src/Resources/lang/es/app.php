@@ -44,6 +44,8 @@ return [
         'data-transfer'   => 'Transferencia de Datos',
         'imports'         => 'Importaciones',
         'import'          => 'Importar',
+        'goals'           => 'Metas',
+        'viewall'         => 'Ver todos'
     ],
 
     'users' => [
@@ -1698,6 +1700,22 @@ return [
                 'update-success'    => 'Importación actualizada exitosamente.',
             ],
         ],
+    ],
+
+    'goals'=>[
+        'index'=>[
+            'title'=>"Metas",
+        ],
+        'edit'=>[
+            'title'=> 'Editar Metas',
+            'back-btn' => 'Volver',
+        ],
+        'create' => [
+            'title'=> 'Crear metas'
+        ],
+        'delete'=>[
+            'title'=> 'Eliminar meta'
+        ]
     ],
 
     'activities' => [

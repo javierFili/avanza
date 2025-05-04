@@ -15,26 +15,41 @@ class PipelineDataGrid extends DataGrid
      */
     public function prepareQueryBuilder(): Builder
     {
-        $userId = Auth::user()->id;
-        $pipelines = User::where('id', $userId)
-            ->with('leadPipelines')
-            ->first();
-        $pipelinesIds = [];
-        foreach ($pipelines->leadPipelines as $pipeline) {
-            array_push($pipelinesIds, $pipeline->id);
+        $rolVista = bouncer()->hasPermission('settings.lead.pipelines.view');
+        if(!$rolVista){
+            $userId = Auth::user()->id;
+            $pipelines = User::where('id', $userId)
+                ->with('leadPipelines')
+                ->first();
+            $pipelinesIds = [];
+            foreach ($pipelines->leadPipelines as $pipeline) {
+                array_push($pipelinesIds, $pipeline->id);
+            }
+            $queryBuilder = DB::table('lead_pipelines')->whereIn('id', $pipelinesIds)
+                ->addSelect(
+                    'lead_pipelines.id',
+                    'lead_pipelines.name',
+                    'lead_pipelines.rotten_days',
+                    'lead_pipelines.is_default',
+                );
+
+            $this->addFilter('id', 'lead_pipelines.id');
+
+            return $queryBuilder;
+        }else{
+            $queryBuilder = DB::table('lead_pipelines')
+                ->addSelect(
+                    'lead_pipelines.id',
+                    'lead_pipelines.name',
+                    'lead_pipelines.rotten_days',
+                    'lead_pipelines.is_default',
+                );
+
+            $this->addFilter('id', 'lead_pipelines.id');
+
+            return $queryBuilder;
         }
-        // dd($pipelinesIds);
-        $queryBuilder = DB::table('lead_pipelines')->whereIn('id', $pipelinesIds)
-            ->addSelect(
-                'lead_pipelines.id',
-                'lead_pipelines.name',
-                'lead_pipelines.rotten_days',
-                'lead_pipelines.is_default',
-            );
 
-        $this->addFilter('id', 'lead_pipelines.id');
-
-        return $queryBuilder;
     }
 
     /**
