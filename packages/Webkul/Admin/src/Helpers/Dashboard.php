@@ -4,7 +4,6 @@ namespace Webkul\Admin\Helpers;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
 use Webkul\Admin\Helpers\Reporting\Activity;
 use Webkul\Admin\Helpers\Reporting\Goals;
 use Webkul\Admin\Helpers\Reporting\Lead;

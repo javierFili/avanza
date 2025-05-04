@@ -24,5 +24,5 @@ return [
         'name'  => 'admin::app.acl.delete',
         'route' => 'admin.goals.delete',
         'sort'  => 4,
-    ]
+    ],
 ];

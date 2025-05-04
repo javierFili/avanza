@@ -45,7 +45,7 @@ return [
         'imports'         => 'Importaciones',
         'import'          => 'Importar',
         'goals'           => 'Metas',
-        'viewall'         => 'Ver todos'
+        'viewall'         => 'Ver todos',
     ],
 
     'users' => [
@@ -1702,20 +1702,20 @@ return [
         ],
     ],
 
-    'goals'=>[
-        'index'=>[
-            'title'=>"Metas",
+    'goals'=> [
+        'index'=> [
+            'title'=> 'Metas',
         ],
-        'edit'=>[
-            'title'=> 'Editar Metas',
+        'edit'=> [
+            'title'    => 'Editar Metas',
             'back-btn' => 'Volver',
         ],
         'create' => [
-            'title'=> 'Crear metas'
+            'title'=> 'Crear metas',
         ],
-        'delete'=>[
-            'title'=> 'Eliminar meta'
-        ]
+        'delete'=> [
+            'title'=> 'Eliminar meta',
+        ],
     ],
 
     'activities' => [

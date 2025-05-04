@@ -42,10 +42,10 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        if(!bouncer()->hasPermission('admin.settings.pipelines.view')){
+        if (! bouncer()->hasPermission('admin.settings.pipelines.view')) {
             $userId = Auth::user()->id;
             $pipelines = $this->pipelineRepository->getAllPipelinesByUserId($userId);
-        }else{
+        } else {
             $pipelines = $this->pipelineRepository->getDefaultPipelineAllUsers();
         }
 

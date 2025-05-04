@@ -16,7 +16,7 @@ class PipelineDataGrid extends DataGrid
     public function prepareQueryBuilder(): Builder
     {
         $rolVista = bouncer()->hasPermission('settings.lead.pipelines.view');
-        if(!$rolVista){
+        if (! $rolVista) {
             $userId = Auth::user()->id;
             $pipelines = User::where('id', $userId)
                 ->with('leadPipelines')
@@ -36,7 +36,7 @@ class PipelineDataGrid extends DataGrid
             $this->addFilter('id', 'lead_pipelines.id');
 
             return $queryBuilder;
-        }else{
+        } else {
             $queryBuilder = DB::table('lead_pipelines')
                 ->addSelect(
                     'lead_pipelines.id',

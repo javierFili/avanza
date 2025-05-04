@@ -43,7 +43,7 @@ return [
         'imports'         => 'Imports',
         'import'          => 'Import',
         'goals'           => 'Goals',
-        'viewall'         => 'View all'
+        'viewall'         => 'View all',
     ],
 
     'users' => [
