@@ -5,7 +5,7 @@ return [
         'key'   => 'goals',
         'name'  => 'admin::app.acl.goals',
         'route' => 'admin.goals.index',
-        'sort'  => 2,
+        'sort'  => 1,
     ],
     [
         'key'   => 'goals.create',

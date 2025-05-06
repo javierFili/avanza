@@ -104,15 +104,19 @@
                             </span>
                         </td>
                         <td class="flex justify-center">
-                            <a @click.prevent="editModal('{{ route('admin.goals.show', [$goal->id]) }}')"
-                                class="p-1.5">
-                                <span
-                                    class="icon-edit cursor-pointer text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800"></span>
-                            </a>
-                            <a @click.prevent="confirmDelete({{ $goal->id }})" class="p-1.5">
-                                <span
-                                    class="icon-delete cursor-pointer text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800"></span>
-                            </a>
+                            @if (bouncer()->hasPermission('goals.edit'))
+                                <a @click.prevent="editModal('{{ route('admin.goals.show', [$goal->id]) }}')"
+                                    class="p-1.5">
+                                    <span
+                                        class="icon-edit cursor-pointer text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800"></span>
+                                </a>
+                            @endif
+                            @if (bouncer()->hasPermission('goals.delete'))
+                                <a @click.prevent="confirmDelete({{ $goal->id }})" class="p-1.5">
+                                    <span
+                                        class="icon-delete cursor-pointer text-2xl transition-all hover:bg-gray-200 dark:hover:bg-gray-800"></span>
+                                </a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

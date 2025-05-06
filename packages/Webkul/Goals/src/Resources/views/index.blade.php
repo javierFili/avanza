@@ -20,7 +20,7 @@
                 {!! view_render_event('admin.settings.users.index.create_button.before') !!}
 
                 <!-- Create button for User -->
-                @if (bouncer()->hasPermission('settings.user.users.create'))
+                @if (bouncer()->hasPermission('goals.create'))
                     <div class="flex items-center gap-x-2.5">
                         <button type="button" class="primary-button" @click="$refs.userSettings.openModal()">
                             {{-- @lang('admin::app.settings.users.index.create-btn') --}}
