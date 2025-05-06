@@ -36,7 +36,7 @@ class LeadController extends Controller
      * Const variable for supported types.
      */
     const SUPPORTED_TYPES = 'pdf,bmp,jpeg,jpg,png,webp';
-
+    protected $pipelineId;
     /**
      * Create a new controller instance.
      *
@@ -53,6 +53,7 @@ class LeadController extends Controller
         protected ProductRepository $productRepository,
         protected PersonRepository $personRepository
     ) {
+        $this->pipelineId = $this->pipelineRepository->getDefaultPipeline()->id;
         request()->request->add(['entity_type' => 'leads']);
     }
 
@@ -166,7 +167,7 @@ class LeadController extends Controller
 
             $data['lead_pipeline_id'] = $stage->lead_pipeline_id;
         } else {
-            $pipeline = $this->pipelineRepository->getDefaultPipeline();
+            $pipeline = $this->pipelineRepository->getPipelineById($this->pipelineId);
 
             $stage = $pipeline->stages()->first();
 

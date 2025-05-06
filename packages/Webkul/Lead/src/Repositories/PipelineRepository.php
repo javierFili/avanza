@@ -106,18 +106,22 @@ class PipelineRepository extends Repository
      */
     public function getDefaultPipeline()
     {
-        $user = Auth::user()->id;
-        $pipelinesUsers = app('Webkul\User\Repositories\UserRepository')
-            ->where('id', $user)
-            ->with('leadPipelines')
-            ->get();
-        $pipeline = $pipelinesUsers->first()->leadPipelines->first();
+        if(Auth::user()){
+            $userId = Auth::user()->id;
+            $pipelinesUsers = app('Webkul\User\Repositories\UserRepository')
+                ->where('id', $userId)
+                ->with('leadPipelines')
+                ->get();
+            $pipeline = $pipelinesUsers->first()->leadPipelines->first();
 
-        if (! $pipeline) {
-            $pipeline = $this->first();
+            if (! $pipeline) {
+                $pipeline = $this->first();
+            }
+
+            return $pipeline;
         }
+        return $this->first();
 
-        return $pipeline;
     }
 
     /**
@@ -157,5 +161,12 @@ class PipelineRepository extends Repository
     public function getAllUserForPipelineId($pipelineId)
     {
         return $this->where('id', $pipelineId)->with('users')->first();
+    }
+    /**
+     * get pipeline by id
+     */
+    public function getPipelineById($pipelineId)
+    {
+        return $this->where('id', $pipelineId)->with('stages')->first();
     }
 }
