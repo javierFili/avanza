@@ -106,7 +106,7 @@ class PipelineRepository extends Repository
      */
     public function getDefaultPipeline()
     {
-        if(Auth::user()){
+        if (Auth::user()) {
             $userId = Auth::user()->id;
             $pipelinesUsers = app('Webkul\User\Repositories\UserRepository')
                 ->where('id', $userId)
@@ -120,6 +120,7 @@ class PipelineRepository extends Repository
 
             return $pipeline;
         }
+
         return $this->first();
 
     }
@@ -162,6 +163,7 @@ class PipelineRepository extends Repository
     {
         return $this->where('id', $pipelineId)->with('users')->first();
     }
+
     /**
      * get pipeline by id
      */
