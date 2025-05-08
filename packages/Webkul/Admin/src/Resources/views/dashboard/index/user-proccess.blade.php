@@ -1,14 +1,24 @@
 {!! view_render_event('admin.dashboard.index.revenue_by_types.before') !!}
 
+
 <!-- Total Leads Vue Component -->
 <v-dashboard-revenue-by-user-goals>
     <!-- Shimmer -->
     <x-admin::shimmer.dashboard.index.revenue-by-types />
 </v-dashboard-revenue-by-user-goals>
 
+<div>
+    <div id="chartdiv"></div>
+</div>
 {!! view_render_event('admin.dashboard.index.revenue_by_types.after') !!}
 
 @pushOnce('scripts')
+    <!-- Resources -->
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <script></script>
+
     <script
         type="text/x-template"
         id="v-dashboard-revenue-by-user-goals-template"
@@ -46,16 +56,20 @@
                                                 borderWidth: 1 // Elimina el borde si no lo necesitas
                                             }]"
                                 ::options="{
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    plugins: {
-                                        legend: {
-                                            display: false
-                                        }
-                                    },
-                                    cutout: '65%'  <!-- Controla el grosor del anillo -->
-                                }"
-                            />
+                                            rotation: -Math.PI, // Equivale a -180 grados
+                                            circumference: Math.PI, // Equivale a 180 grados
+                                            responsive: true,
+                                            maintainAspectRatio: false,
+                                            plugins: {
+                                                legend: { display: false }
+                                            },
+                                            cutout: '65%',
+                                            animation: {
+                                                animateRotate: true,
+                                                animateScale: true
+                                            }
+                                        }"
+                                        />
                             <label class="justify-center">
                                 @{{ start.original.statistics.userFullName }}
                             </label>
@@ -89,7 +103,7 @@
                 </div>
             </div>
         </template>
-    </script>
+</script>
 
     <script type="module">
         app.component('v-dashboard-revenue-by-user-goals', {
@@ -137,6 +151,7 @@
                         if (!Array.isArray(this.report.statistics)) {
                             //console.log(this.report.statistics.original.data[0].original.statistics);
                             this.report.statistics = Object.values(this.report.statistics.original.data);
+                            this.generateGraphs(response.data);
                         }
                         this.extendColors(this.report.statistics.length);
                         this.isLoading = false;
@@ -150,14 +165,71 @@
                         this.colors.push(newColor);
                     }
                 },
+                generateGraphs(dataGraphs){
+                    let statics = dataGraphs.statistics[0];
+                    this.initChart(statics.original.statistics);
+                },
+                initChart(datas) {
+                    console.log(datas);
+                    am5.ready(function() {
+                        var root = am5.Root.new("chartdiv");
+
+                        root.setThemes([
+                            am5themes_Animated.new(root)
+                        ]);
+
+                        var chart = root.container.children.push(
+                            am5percent.PieChart.new(root, {
+                                startAngle: 160, endAngle: 380
+                            })
+                        );
+
+                        var series1 = chart.series.push(
+                            am5percent.PieSeries.new(root, {
+                                startAngle: 180,
+                                endAngle: 360,
+                                valueField: "bottles",
+                                innerRadius: am5.percent(80),
+                                categoryField: "country"
+                            })
+                        );
+
+                        series1.ticks.template.set("forceHidden", true);
+                        series1.labels.template.set("forceHidden", true);
+
+                        var label = chart.seriesContainer.children.push(
+                            am5.Label.new(root, {
+                                textAlign: "center",
+                                centerY: am5.p100,
+                                centerX: am5.p50,
+                                text: `[fontSize:18px]total[/]:\n[bold fontSize:30px]${datas.value_goal}[/]`
+                            })
+                        );
+
+                        var data = [
+                        {
+                            country: "Completado",
+                            litres: datas.missing_percentage,
+                            bottles: datas.missing_percentage
+                        },
+                        {
+                            country: "Faltante",
+                            litres: datas.percentage_achieved,
+                            bottles: datas.percentage_achieved
+                        }
+                        ];
+                        series1.data.setAll(data);
+                    });
+                },
             }
         });
     </script>
+    <!-- Chart code -->
+
+    <style>
+        #chartdiv {
+            width: 50em;
+            height: 550px;
+        }
+    </style>
 @endPushOnce
-{{-- ::datasets="{
-                                                data: [start.original.statistics.statistics[2], start.original.statistics.statistics[1]], // Solo 2 valores que sumen 100%
-                                                backgroundColor: [
-                                                '#111827','#4CAF50'], // Verde para completado, rojo para faltante
-                                                borderWidth: 0 // Elimina el borde si no lo necesitas
-                                            }"
- --}}
