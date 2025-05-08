@@ -1,23 +1,15 @@
 {!! view_render_event('admin.dashboard.index.revenue_by_types.before') !!}
 
-
 <!-- Total Leads Vue Component -->
 <v-dashboard-revenue-by-user-goals>
     <!-- Shimmer -->
     <x-admin::shimmer.dashboard.index.revenue-by-types />
 </v-dashboard-revenue-by-user-goals>
-
-<div>
-    <div id="chartdiv"></div>
-</div>
 {!! view_render_event('admin.dashboard.index.revenue_by_types.after') !!}
 
 @pushOnce('scripts')
-    <!-- Resources -->
-    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-    <script></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-apexcharts@1.7.0/dist/vue-apexcharts.min.js"></script>
 
     <script
         type="text/x-template"
@@ -33,31 +25,31 @@
             <div class="grid gap-4 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
                 <div class="flex flex-col justify-between gap-1">
                     <p class="text-base font-semibold dark:text-gray-300">
-                        {{-- @lang('admin::app.dashboard.index.revenue-by-types.title') --}}
                         Objetivos del usuario
                     </p>
                 </div>
 
                 <!-- Doughnut Chart -->
-                <div class="flex w-full max-w-full flex-col gap-4 px-8 pt-8" v-if="report.statistics.length">
-                    <!-- Gráfico con contenedor pequeño y opciones personalizadas -->
-                   <div class="flex flex-wrap justify-center gap-5">
-                        <div
+                <div class="flex w-full max-w-full flex-col gap-4 px-8 pt-8" v-if="report.statistics && report.statistics.length">
+                    <!-- Gráficos con contenedor pequeño y opciones personalizadas -->
+                    <div class="flex flex-wrap justify-center gap-5">
+                        <!-- Gráficos existentes de doughnut -->
+                        {{-- <div
                         class="w-[300px] h-[250px]"
-                        v-for = "(start, index) in report.statistics"
-                        :key = "index"
-                        > <!-- Contenedor con tamaño fijo -->
+                        v-for="(start, index) in report.statistics"
+                        :key="'doughnut-' + index"
+                        >
                             <x-admin::charts.doughnut
                                 ::labels="chartLabels"
                                 ::datasets="[{
                                                 data: [start.original.statistics.missing_percentage, start.original.statistics.percentage_achieved],
                                                 backgroundColor: [
                                                 '#d82323','#1fcb23'],
-                                                borderWidth: 1 // Elimina el borde si no lo necesitas
+                                                borderWidth: 1
                                             }]"
                                 ::options="{
-                                            rotation: -Math.PI, // Equivale a -180 grados
-                                            circumference: Math.PI, // Equivale a 180 grados
+                                            rotation: -Math.PI,
+                                            circumference: Math.PI,
                                             responsive: true,
                                             maintainAspectRatio: false,
                                             plugins: {
@@ -69,10 +61,19 @@
                                                 animateScale: true
                                             }
                                         }"
-                                        />
-                            <label class="justify-center">
+                            />
+                            <label class="text-center block mt-2">
                                 @{{ start.original.statistics.userFullName }}
                             </label>
+                        </div> --}}
+
+                        <!-- Múltiples gráficos ApexCharts -->
+                        <div
+                            v-for="(chart, chartIndex) in chartConfigs"
+                            :key="'chart-' + chartIndex"
+                            class="w-[350px] h-[300px] relative"
+                        >
+                            <div :id="'chart-container-' + chartIndex"></div>
                         </div>
                     </div>
                 </div>
@@ -103,22 +104,31 @@
                 </div>
             </div>
         </template>
-</script>
+    </script>
 
     <script type="module">
+        // Register ApexCharts component globally
+        app.component('apexchart', VueApexCharts);
+
         app.component('v-dashboard-revenue-by-user-goals', {
             template: '#v-dashboard-revenue-by-user-goals-template',
 
             data() {
                 return {
-                    report: [],
-
+                    report: {
+                        statistics: []
+                    },
                     colors: [
                         '#8979FF',
                         '#111827',
+                        '#d82323',
+                        '#1fcb23',
+                        '#FF9800',
+                        '#03A9F4'
                     ],
-
                     isLoading: true,
+                    charts: [], // Array para almacenar instancias de gráficos
+                    chartConfigs: [] // Array para configuraciones de gráficos
                 }
             },
 
@@ -126,36 +136,69 @@
                 chartLabels() {
                     return ["Faltante", "Completado"];
                 },
-                // aqui vienen las variables previa peticion api
             },
 
             mounted() {
-
                 this.getStats({});
-
                 this.$emitter.on('reporting-filter-updated', this.getStats);
             },
 
+            updated() {
+                // Inicializar gráficos cuando los datos estén disponibles
+                if (!this.isLoading && this.report.statistics && this.report.statistics.length) {
+                    this.$nextTick(() => {
+                        // Solo renderizar gráficos si hay configuraciones
+                        if (this.chartConfigs.length > 0) {
+                            this.renderAllCharts();
+                        }
+                    });
+                }
+            },
+
+            beforeUnmount() {
+                // Limpiar todas las instancias de gráficos
+                this.destroyAllCharts();
+                this.$emitter.off('reporting-filter-updated', this.getStats);
+            },
+
             methods: {
-                getStats(filtets) {
+                getStats(filters) {
                     this.isLoading = true;
 
-                    var filtets = Object.assign({}, filtets);
+                    // Destruir gráficos existentes antes de cargar nuevos datos
+                    this.destroyAllCharts();
+                    // Reiniciar configuraciones de gráficos
+                    this.chartConfigs = [];
 
-                    filtets.type = 'user-proccess-states';
+                    var filters = Object.assign({}, filters);
+                    filters.type = 'user-proccess-states';
+
                     const url = "{{ route('admin.dashboard.stats') }}";
-                    const response = this.$axios.get(url, {
-                        params: filtets
+
+                    this.$axios.get(url, {
+                        params: filters
                     }).then(response => {
                         this.report = response.data;
+
                         if (!Array.isArray(this.report.statistics)) {
-                            //console.log(this.report.statistics.original.data[0].original.statistics);
-                            this.report.statistics = Object.values(this.report.statistics.original.data);
-                            this.generateGraphs(response.data);
+                            this.report.statistics = Object.values(this.report.statistics.original?.data ||
+                            {});
                         }
+
                         this.extendColors(this.report.statistics.length);
+                        // Preparar configuraciones de gráficos basadas en los datos
+                        this.prepareChartConfigs(this.report.statistics);
+
                         this.isLoading = false;
-                    }).catch(error => {});
+
+                        // Renderizar gráficos en el siguiente tick
+                        this.$nextTick(() => {
+                            this.renderAllCharts();
+                        });
+                    }).catch(error => {
+                        console.error('Error fetching stats:', error);
+                        this.isLoading = false;
+                    });
                 },
 
                 extendColors(length) {
@@ -165,71 +208,157 @@
                         this.colors.push(newColor);
                     }
                 },
-                generateGraphs(dataGraphs){
-                    let statics = dataGraphs.statistics[0];
-                    this.initChart(statics.original.statistics);
+
+                // Preparar configuraciones de gráficos basadas en los datos
+                prepareChartConfigs(statistics) {
+                    if (!statistics || !statistics.length) {
+                        return;
+                    }
+
+                    // Limpiar configuraciones anteriores
+                    this.chartConfigs = [];
+
+                    // Crear configuraciones para cada usuario
+                    statistics.forEach(item => {
+                        const stats = item.original.statistics;
+
+                        this.chartConfigs.push({
+                            title: stats.userFullName,
+                            type: "donut",
+                            series: [stats.percentage_achieved, stats.missing_percentage],
+                            labels: ['Completado', 'Faltante'],
+                            colors: ['#1fcb23', '#d82323']
+                        });
+                    });
+
+                    console.log("Configuraciones de gráficos preparadas:", this.chartConfigs);
                 },
-                initChart(datas) {
-                    console.log(datas);
-                    am5.ready(function() {
-                        var root = am5.Root.new("chartdiv");
 
-                        root.setThemes([
-                            am5themes_Animated.new(root)
-                        ]);
+                // Renderizar todos los gráficos
+                renderAllCharts() {
+                    // Destruir gráficos existentes primero
+                    this.destroyAllCharts();
 
-                        var chart = root.container.children.push(
-                            am5percent.PieChart.new(root, {
-                                startAngle: 160, endAngle: 380
-                            })
-                        );
+                    // Crear nuevas instancias de gráficos
+                    this.chartConfigs.forEach((config, index) => {
+                        const containerId = `chart-container-${index}`;
+                        const container = document.getElementById(containerId);
 
-                        var series1 = chart.series.push(
-                            am5percent.PieSeries.new(root, {
-                                startAngle: 180,
-                                endAngle: 360,
-                                valueField: "bottles",
-                                innerRadius: am5.percent(80),
-                                categoryField: "country"
-                            })
-                        );
+                        if (container) {
+                            console.log(`Renderizando gráfico ${index} en contenedor ${containerId}`);
+                            const options = this.getChartOptions(config);
 
-                        series1.ticks.template.set("forceHidden", true);
-                        series1.labels.template.set("forceHidden", true);
-
-                        var label = chart.seriesContainer.children.push(
-                            am5.Label.new(root, {
-                                textAlign: "center",
-                                centerY: am5.p100,
-                                centerX: am5.p50,
-                                text: `[fontSize:18px]total[/]:\n[bold fontSize:30px]${datas.value_goal}[/]`
-                            })
-                        );
-
-                        var data = [
-                        {
-                            country: "Completado",
-                            litres: datas.missing_percentage,
-                            bottles: datas.missing_percentage
-                        },
-                        {
-                            country: "Faltante",
-                            litres: datas.percentage_achieved,
-                            bottles: datas.percentage_achieved
+                            try {
+                                const chart = new ApexCharts(container, options);
+                                chart.render();
+                                this.charts.push(chart);
+                                console.log(`Gráfico ${index} renderizado con éxito`);
+                            } catch (error) {
+                                console.error(`Error al renderizar gráfico ${index}:`, error);
+                            }
+                        } else {
+                            console.warn(
+                                `Contenedor ${containerId} no encontrado para el gráfico ${index}`);
                         }
-                        ];
-                        series1.data.setAll(data);
                     });
                 },
+
+                // Obtener opciones específicas para cada tipo de gráfico
+                getChartOptions(config) {
+                    const baseOptions = {
+                        series: config.series,
+                        title: {
+                            text: config.title,
+                            align: 'center',
+                            margin: 10,
+                            offsetX: 0,
+                            offsetY: 0,
+                            floating: false,
+                            style: {
+                                fontSize: '14px',
+                                fontWeight: 'bold',
+                                fontFamily: undefined,
+                                color: '#263238'
+                            },
+                        },
+                        chart: {
+                            type: config.type,
+                            height: 280,
+                            fontFamily: 'inherit',
+                            toolbar: {
+                                show: false
+                            }
+                        },
+                        colors: config.colors,
+                        labels: config.labels,
+                        legend: {
+                            position: 'bottom'
+                        },
+                        responsive: [{
+                            breakpoint: 480,
+                            options: {
+                                chart: {
+                                    width: 250
+                                },
+                                legend: {
+                                    position: 'bottom',
+                                    offsetY: 10
+                                }
+                            }
+                        }],
+                        plotOptions: {
+                            pie: {
+                                startAngle: -90,
+                                endAngle: 90,
+                                offsetY: 10,
+                                donut: {
+                                    size: '65%',
+                                    label: "total",
+                                    formatter: function(w) {
+                                        const total = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+                                        return total;
+                                    }
+                                },
+                                value:{
+                                    show:true,
+                                    formatter:function (val){
+                                        return val;
+                                    },
+                                }
+                            }
+                        },
+                        grid: {
+                            padding: {
+                                bottom: -80
+                            }
+                        }
+                    };
+
+                    return baseOptions;
+                },
+
+                // Destruir todos los gráficos para limpiar la memoria
+                destroyAllCharts() {
+                    if (this.charts && this.charts.length) {
+                        this.charts.forEach(chart => {
+                            if (chart) {
+                                try {
+                                    chart.destroy();
+                                } catch (error) {
+                                    console.error("Error al destruir gráfico:", error);
+                                }
+                            }
+                        });
+                        this.charts = [];
+                    }
+                }
             }
         });
     </script>
-    <!-- Chart code -->
 
     <style>
-        #chartdiv {
-            width: 50em;
-            height: 550px;
+        .chart-container {
+            margin-bottom: 20px;
         }
     </style>
 @endPushOnce
