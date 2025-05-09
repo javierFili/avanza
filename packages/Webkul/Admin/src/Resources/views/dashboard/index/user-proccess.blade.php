@@ -33,47 +33,39 @@
                 <div class="flex w-full max-w-full flex-col gap-4 px-8 pt-8" v-if="report.statistics && report.statistics.length">
                     <!-- Gráficos con contenedor pequeño y opciones personalizadas -->
                     <div class="flex flex-wrap justify-center gap-5">
-                        <!-- Gráficos existentes de doughnut -->
-                        {{-- <div
-                        class="w-[300px] h-[250px]"
-                        v-for="(start, index) in report.statistics"
-                        :key="'doughnut-' + index"
-                        >
-                            <x-admin::charts.doughnut
-                                ::labels="chartLabels"
-                                ::datasets="[{
-                                                data: [start.original.statistics.missing_percentage, start.original.statistics.percentage_achieved],
-                                                backgroundColor: [
-                                                '#d82323','#1fcb23'],
-                                                borderWidth: 1
-                                            }]"
-                                ::options="{
-                                            rotation: -Math.PI,
-                                            circumference: Math.PI,
-                                            responsive: true,
-                                            maintainAspectRatio: false,
-                                            plugins: {
-                                                legend: { display: false }
-                                            },
-                                            cutout: '65%',
-                                            animation: {
-                                                animateRotate: true,
-                                                animateScale: true
-                                            }
-                                        }"
-                            />
-                            <label class="text-center block mt-2">
-                                @{{ start.original.statistics.userFullName }}
-                            </label>
-                        </div> --}}
-
                         <!-- Múltiples gráficos ApexCharts -->
-                        <div
+                       <div
                             v-for="(chart, chartIndex) in chartConfigs"
                             :key="'chart-' + chartIndex"
-                            class="w-[350px] h-[300px] relative"
+                            class="w-[350px] h-[300px]"
                         >
-                            <div :id="'chart-container-' + chartIndex"></div>
+                        <div class="text-center dark:text-gray-300">
+                            @{{ chart.values.name }}
+                        </div>
+                            <div :id="'chart-container-' + chartIndex" class="text-xs dark:text-gray-300"></div>
+                            <!-- Alineación de los 3 elementos: izquierda, centro y derecha -->
+                            <div class="flex justify-between items-center" >
+                                <!-- Izquierda -->
+                                <div class="text-start" style="margin-top:-60%; margin-left:3em;">
+                                    <p class="text-xs dark:text-gray-300">
+                                        @{{ chart.values.leads_won_value_sum }}
+                                    </p>
+                                </div>
+
+                                <!-- Centro -->
+                                <div class="text-center" style="margin-top:-80%;">
+                                    <p class="text-xxs dark:text-gray-300">
+                                        @{{ chart.values.value_goal }}
+                                    </p>
+                                </div>
+
+                                <!-- Derecha -->
+                                <div class="text-end" style="margin-top:-60%; margin-right:3em">
+                                    <p class="text-xs dark:text-gray-300">
+                                        @{{ chart.values.value_goal - chart.values.leads_won_value_sum }}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -221,66 +213,45 @@
                     // Crear configuraciones para cada usuario
                     statistics.forEach(item => {
                         const stats = item.original.statistics;
-
                         this.chartConfigs.push({
                             title: stats.userFullName,
                             type: "donut",
                             series: [stats.percentage_achieved, stats.missing_percentage],
                             labels: ['Completado', 'Faltante'],
-                            colors: ['#1fcb23', '#d82323']
+                            colors: ['#33D970', '#EF4444'],
+                            values: {
+                                leads_won_value_sum: stats.leads_won_value_sum,
+                                missing_percentage: stats.missing_percentage,
+                                name: stats.name,
+                                percentage_achieved: stats.percentage_achieved,
+                                userFullName: stats.userFullName,
+                                value_goal: stats.value_goal,
+                            }
                         });
                     });
-
-                    console.log("Configuraciones de gráficos preparadas:", this.chartConfigs);
                 },
 
-                // Renderizar todos los gráficos
                 renderAllCharts() {
-                    // Destruir gráficos existentes primero
                     this.destroyAllCharts();
-
-                    // Crear nuevas instancias de gráficos
                     this.chartConfigs.forEach((config, index) => {
                         const containerId = `chart-container-${index}`;
                         const container = document.getElementById(containerId);
-
                         if (container) {
-                            console.log(`Renderizando gráfico ${index} en contenedor ${containerId}`);
                             const options = this.getChartOptions(config);
-
                             try {
                                 const chart = new ApexCharts(container, options);
                                 chart.render();
                                 this.charts.push(chart);
-                                console.log(`Gráfico ${index} renderizado con éxito`);
                             } catch (error) {
-                                console.error(`Error al renderizar gráfico ${index}:`, error);
+                                console.log(`Error al renderizar gráfico ${index}:`, error);
                             }
-                        } else {
-                            console.warn(
-                                `Contenedor ${containerId} no encontrado para el gráfico ${index}`);
                         }
                     });
                 },
 
-                // Obtener opciones específicas para cada tipo de gráfico
                 getChartOptions(config) {
                     const baseOptions = {
                         series: config.series,
-                        title: {
-                            text: config.title,
-                            align: 'center',
-                            margin: 10,
-                            offsetX: 0,
-                            offsetY: 0,
-                            floating: false,
-                            style: {
-                                fontSize: '14px',
-                                fontWeight: 'bold',
-                                fontFamily: undefined,
-                                color: '#263238'
-                            },
-                        },
                         chart: {
                             type: config.type,
                             height: 280,
@@ -310,21 +281,7 @@
                             pie: {
                                 startAngle: -90,
                                 endAngle: 90,
-                                offsetY: 10,
-                                donut: {
-                                    size: '65%',
-                                    label: "total",
-                                    formatter: function(w) {
-                                        const total = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
-                                        return total;
-                                    }
-                                },
-                                value:{
-                                    show:true,
-                                    formatter:function (val){
-                                        return val;
-                                    },
-                                }
+                                offsetY: 10
                             }
                         },
                         grid: {
@@ -337,7 +294,6 @@
                     return baseOptions;
                 },
 
-                // Destruir todos los gráficos para limpiar la memoria
                 destroyAllCharts() {
                     if (this.charts && this.charts.length) {
                         this.charts.forEach(chart => {
