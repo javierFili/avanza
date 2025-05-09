@@ -297,7 +297,7 @@ return [
         'name'       => 'Goals',
         'route'      => 'admin.goals.index',
         'sort'       => 2,
-        'icon-class' => 'icon-goals',
+        'icon-class' => 'icon-settings-sources',
     ],
 
     /**

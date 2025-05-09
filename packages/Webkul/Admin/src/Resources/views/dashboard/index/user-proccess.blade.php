@@ -40,7 +40,7 @@
                             class="w-[350px] h-[300px]"
                         >
                         <div class="text-center dark:text-gray-300">
-                            @{{ chart.values.name }}
+                            @{{ chart.values.userFullName }}
                         </div>
                             <div :id="'chart-container-' + chartIndex" class="text-xs dark:text-gray-300"></div>
                             <!-- Alineación de los 3 elementos: izquierda, centro y derecha -->
