@@ -70,7 +70,7 @@
                 {!! view_render_event('admin.settings.pipelines.create.form.rotten_days.before') !!}
 
                 <!-- Rotten-Days -->
-                <x-admin::form.control-group>
+                <x-admin::form.control-group class="hidden">
                     <x-admin::form.control-group.label class="required">
                         @lang('admin::app.settings.pipelines.create.rotten-days')
                     </x-admin::form.control-group.label>
@@ -82,7 +82,7 @@
                         rules="required|numeric|min_value:1"
                         :label="trans('admin::app.settings.pipelines.create.rotten-days')"
                         :placeholder="trans('admin::app.settings.pipelines.create.rotten-days')"
-                        value="{{ old('rotten_days') ?? 30 }}"
+                        value="99999"
                     />
 
                     <x-admin::form.control-group.error control-name="rotten_days" />
@@ -93,7 +93,7 @@
                 {!! view_render_event('admin.settings.pipelines.create.form.is_default.before') !!}
 
                 <!-- Mark as Default -->
-                <x-admin::form.control-group class="!mb-0 flex items-center gap-4">
+                <x-admin::form.control-group class="!mb-0 flex items-center gap-4 hidden">
                     <x-admin::form.control-group.label class="!mb-0">
                         @lang('admin::app.settings.pipelines.create.mark-as-default')
                     </x-admin::form.control-group.label>
@@ -157,17 +157,17 @@
                                     <!-- Stage Title and Action -->
                                     <div class="flex items-center justify-between">
                                         <span class="py-1 font-medium dark:text-gray-300">
-                                            @{{ element.name ? element.name : '@lang('admin::app.settings.pipelines.create.newly-added')'}} 
+                                            @{{ element.name ? element.name : '@lang('admin::app.settings.pipelines.create.newly-added')'}}
                                         </span>
 
                                         <!-- Drag Icon -->
                                         <i
-                                            v-if="isDragable(element)" 
+                                            v-if="isDragable(element)"
                                             class="icon-move cursor-grab rounded-md p-1 text-2xl transition-all hover:bg-gray-100 dark:hover:bg-gray-950"
                                         >
                                         </i>
                                     </div>
-                                    
+
                                     <!-- Card Body -->
                                     <div>
                                         <input
@@ -184,7 +184,7 @@
                                             <x-admin::form.control-group.label class="required">
                                                 @lang('admin::app.settings.pipelines.create.name')
                                             </x-admin::form.control-group.label>
-                                            
+
                                             <x-admin::form.control-group.control
                                                 type="text"
                                                 ::name="'stages[' + element.id + '][name]'"
@@ -227,16 +227,16 @@
                                         {!! view_render_event('admin.settings.pipelines.create.form.stages.probability.after') !!}
                                     </div>
                                 </div>
-                                
+
                                 {!! view_render_event('admin.settings.pipelines.create.form.stages.delete_button.before') !!}
 
                                 <div
-                                    class="flex cursor-pointer items-center gap-2 border-t border-gray-200 p-2 text-red-600 dark:border-gray-800" 
-                                    @click="removeStage(element)" 
+                                    class="flex cursor-pointer items-center gap-2 border-t border-gray-200 p-2 text-red-600 dark:border-gray-800"
+                                    @click="removeStage(element)"
                                     v-if="isDragable(element)"
                                 >
                                     <i class="icon-delete text-2xl"></i>
-                                    
+
                                     @lang('admin::app.settings.pipelines.create.delete-stage')
                                 </div>
 
@@ -287,7 +287,7 @@
                     return {
                         stages: [{
                             'id': 'stage_1',
-                            'code': 'new', 
+                            'code': 'new',
                             'name': "@lang('admin::app.settings.pipelines.create.new-stage')",
                             'probability': 100
                         }, {
@@ -346,7 +346,7 @@
                                 }
 
                                 this.removeUniqueNameErrors();
-                                
+
                                 this.$emitter.emit('add-flash', { type: 'success', message: "@lang('admin::app.settings.pipelines.create.stage-delete-success')" });
                             }
                         });
@@ -415,7 +415,7 @@
 
                     handleDragging(event) {
                         const draggedElement = event.draggedContext.element;
-                        
+
                         const relatedElement = event.relatedContext.element;
 
                         return this.isDragable(draggedElement) && this.isDragable(relatedElement);

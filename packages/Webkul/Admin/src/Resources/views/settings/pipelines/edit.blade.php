@@ -17,7 +17,7 @@
                     {!! view_render_event('admin.settings.pipelines.edit.breadcrumbs.before', ['pipeline' => $pipeline]) !!}
 
                     <!-- Breadcrumbs -->
-                    <x-admin::breadcrumbs 
+                    <x-admin::breadcrumbs
                         name="settings.pipelines.edit"
                         :entity="$pipeline"
                     />
@@ -72,9 +72,9 @@
                 {!! view_render_event('admin.settings.pipelines.edit.form.name.after', ['pipeline' => $pipeline]) !!}
 
                 {!! view_render_event('admin.settings.pipelines.edit.form.rotten_days.before', ['pipeline' => $pipeline]) !!}
-                
+
                 <!-- Pipeline Rotten Days -->
-                <x-admin::form.control-group>
+                <x-admin::form.control-group class="hidden">
                     <x-admin::form.control-group.label class="required">
                         @lang('admin::app.settings.pipelines.edit.rotten-days')
                     </x-admin::form.control-group.label>
@@ -97,7 +97,7 @@
                 {!! view_render_event('admin.settings.pipelines.edit.form.is_default.before', ['pipeline' => $pipeline]) !!}
 
                 <!-- Pipeline Default Switcher -->
-                <x-admin::form.control-group class="mt-4 flex items-center gap-4">
+                <x-admin::form.control-group class="mt-4 flex items-center gap-4 hidden">
                     <x-admin::form.control-group.label class="mb-0">
                         @lang('admin::app.settings.pipelines.edit.mark-as-default')
                     </x-admin::form.control-group.label>
@@ -152,13 +152,13 @@
                                     <!-- Stage Title and Action -->
                                     <div class="flex items-center justify-between">
                                         <span class="py-1 font-medium dark:text-gray-300">
-                                            @{{ element.name ? element.name : 'New Added' }} 
+                                            @{{ element.name ? element.name : 'New Added' }}
                                         </span>
 
                                         <i class="icon-move cursor-grab rounded-md p-1 text-2xl transition-all hover:bg-gray-100 dark:hover:bg-gray-950">
                                         </i>
                                     </div>
-                                    
+
                                     <!-- Cards input fields -->
                                     <div>
                                         <!-- Hidden Inputs Fields -->
@@ -183,7 +183,7 @@
                                             <x-admin::form.control-group.label class="required">
                                                 @lang('admin::app.settings.pipelines.edit.name')
                                             </x-admin::form.control-group.label>
-                                            
+
                                             <x-admin::form.control-group.control
                                                 type="text"
                                                 ::name="'stages[' + element.id + '][name]'"
@@ -219,16 +219,16 @@
                                         {!! view_render_event('admin.settings.pipelines.edit.form.stages.probability.after', ['pipeline' => $pipeline]) !!}
                                     </div>
                                 </div>
-                                
+
                                 {!! view_render_event('admin.settings.pipelines.edit.form.stages.remove_button.before', ['pipeline' => $pipeline]) !!}
 
                                 <!-- Remove Stage -->
                                 <div
-                                    class="flex cursor-pointer items-center gap-2 border-t border-gray-200 p-2 text-red-600 dark:border-gray-800" 
-                                    @click="remove(element)" 
+                                    class="flex cursor-pointer items-center gap-2 border-t border-gray-200 p-2 text-red-600 dark:border-gray-800"
+                                    @click="remove(element)"
                                 >
                                     <i class="icon-delete text-2xl"></i>
-                                    
+
                                     @lang('admin::app.settings.pipelines.edit.delete-stage')
                                 </div>
 
@@ -365,7 +365,7 @@
 
                     handleDragging(event) {
                         const draggedElement = event.draggedContext.element;
-                        
+
                         const relatedElement = event.relatedContext.element;
 
                         return true;

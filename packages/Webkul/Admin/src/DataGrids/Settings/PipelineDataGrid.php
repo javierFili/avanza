@@ -29,7 +29,6 @@ class PipelineDataGrid extends DataGrid
                 ->addSelect(
                     'lead_pipelines.id',
                     'lead_pipelines.name',
-                    'lead_pipelines.rotten_days',
                     'lead_pipelines.is_default',
                 );
 
@@ -41,7 +40,6 @@ class PipelineDataGrid extends DataGrid
                 ->addSelect(
                     'lead_pipelines.id',
                     'lead_pipelines.name',
-                    'lead_pipelines.rotten_days',
                     'lead_pipelines.is_default',
                 );
 
@@ -71,13 +69,6 @@ class PipelineDataGrid extends DataGrid
             'searchable' => true,
             'filterable' => true,
             'sortable'   => true,
-        ]);
-
-        $this->addColumn([
-            'index'    => 'rotten_days',
-            'label'    => trans('admin::app.settings.pipelines.index.datagrid.rotten-days'),
-            'type'     => 'string',
-            'sortable' => true,
         ]);
 
         $this->addColumn([
