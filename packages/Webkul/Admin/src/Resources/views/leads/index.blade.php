@@ -35,7 +35,7 @@
             @endif
 
             <!-- Create button for Leads -->
-            <div class="flex items-center gap-x-2.5">
+            <div class="flex items-center gap-x-2.5 hidden" >
                 @if (bouncer()->hasPermission('leads.create'))
                     <a href="{{ route('admin.leads.create') }}" class="primary-button">
                         @lang('admin::app.leads.index.create-btn')

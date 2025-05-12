@@ -46,9 +46,10 @@
                                 @if (bouncer()->hasPermission('leads.create'))
                                     <a
                                         :href="'{{ route('admin.leads.create') }}' + '?stage_id=' + stage.id"
-                                        class="icon-add cursor-pointer rounded p-1 text-lg text-gray-600 transition-all hover:bg-gray-200 hover:text-gray-800 dark:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-white"
+                                        class="primary-button"
                                         target="_blank"
                                     >
+                                    Create Lead
                                     </a>
                                 @endif
                             </div>
@@ -70,7 +71,7 @@
                         </div>
 
                         {!! view_render_event('admin.leads.index.kanban.content.stage.header.after') !!}
-                       
+
                         {!! view_render_event('admin.leads.index.kanban.content.stage.body.before') !!}
 
                         <!-- Draggable Stage Lead Cards -->
@@ -87,13 +88,13 @@
                             @change="updateStage(stage, $event)"
                         >
                             <template #header>
-                                <div 
+                                <div
                                     class="flex flex-col items-center justify-center"
                                     v-if="! stage.leads.data.length"
                                 >
                                     <img
                                         class="dark:mix-blend-exclusion dark:invert"
-                                        src="{{ vite()->asset('images/empty-placeholders/pipedrive.svg') }}"    
+                                        src="{{ vite()->asset('images/empty-placeholders/pipedrive.svg') }}"
                                     >
 
                                     <div class="flex flex-col items-center gap-4">
@@ -133,7 +134,7 @@
                                     <div class="flex items-start justify-between">
                                         <div class="flex items-center gap-1">
                                             <x-admin::avatar ::name="element.person.name" />
-                                  
+
                                             <div class="flex flex-col gap-0.5">
                                                 <span class="text-xs font-medium">
                                                     @{{ element.person.name }}
@@ -178,7 +179,7 @@
                                             v-if="element.user"
                                         >
                                             <span class="icon-settings-user text-sm"></span>
-                                            
+
                                             @{{ element.user.name }}
                                         </div>
 
