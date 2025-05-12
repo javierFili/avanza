@@ -30,15 +30,7 @@
             {!! view_render_event('admin.leads.index.view_switcher.pipeline.content.header.after') !!}
 
             <!-- Pipeline Links -->
-            @php
-                $user = Auth::user()->id;
-                $pipelinesUsers = app('Webkul\User\Repositories\UserRepository')
-                    ->where('id', $user)
-                    ->with('leadPipelines')
-                    ->get();
-            @endphp
-
-            @foreach ($pipelinesUsers->first()->leadPipelines as $tempPipeline)
+            @foreach ($pipelines as $tempPipeline)
                 {!! view_render_event('admin.leads.index.view_switcher.pipeline.content.before', [
                     'tempPipeline' => $tempPipeline,
                 ]) !!}
