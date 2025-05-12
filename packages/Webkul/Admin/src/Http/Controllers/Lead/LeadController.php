@@ -73,16 +73,15 @@ class LeadController extends Controller
         } else {
             $pipeline = $this->pipelineRepository->getDefaultPipeline();
         }
-        if(bouncer()->hasPermission('admin.leads.pipelines.view')){
+        if (bouncer()->hasPermission('admin.leads.pipelines.view')) {
             $pipelines = $this->pipelineRepository->all();
-        }else{
+        } else {
             $pipelines = $this->pipelineRepository->getAllPipelinesByUserId(auth()->user()->id);
         }
 
-
         return view('admin::leads.index', [
-            'pipeline' => $pipeline,
-            'columns'  => $this->getKanbanColumns(),
+            'pipeline'  => $pipeline,
+            'columns'   => $this->getKanbanColumns(),
             'pipelines' => $pipelines,
         ]);
     }
