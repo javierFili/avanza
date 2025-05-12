@@ -287,7 +287,7 @@
                     return {
                         stages: [{
                             'id': 'stage_1',
-                            'code': 'new',
+                            'code': '',
                             'name': "@lang('admin::app.settings.pipelines.create.new-stage')",
                             'probability': 100
                         }, {
