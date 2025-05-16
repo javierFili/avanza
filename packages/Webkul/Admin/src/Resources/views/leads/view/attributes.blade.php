@@ -5,7 +5,7 @@
         <x-slot:header class="!p-0">
             <div class="flex w-full items-center justify-between gap-4 font-semibold dark:text-white">
                 <h4>@lang('admin::app.leads.view.attributes.title')</h4>
-                
+
                 @if (bouncer()->hasPermission('leads.edit'))
                     <a
                         href="{{ route('admin.leads.edit', $lead->id) }}"
@@ -26,21 +26,21 @@
             >
                 <form @submit="handleSubmit($event, () => {})">
                     {!! view_render_event('admin.leads.view.attributes.form_controls.attributes.view.before', ['lead' => $lead]) !!}
-        
+
                     <x-admin::attributes.view
                         :custom-attributes="app('Webkul\Attribute\Repositories\AttributeRepository')->findWhere([
                             'entity_type' => 'leads',
-                            ['code', 'NOTIN', ['title', 'description', 'lead_pipeline_id', 'lead_pipeline_stage_id']]
+                            ['code', 'NOTIN', ['title', 'description', 'lead_pipeline_stage_id']]
                         ])"
                         :entity="$lead"
                         :url="route('admin.leads.attributes.update', $lead->id)"
                         :allow-edit="true"
                     />
-        
+
                     {!! view_render_event('admin.leads.view.attributes.form_controls.attributes.view.after', ['lead' => $lead]) !!}
                 </form>
             </x-admin::form>
-        
+
             {!! view_render_event('admin.leads.view.attributes.form_controls.after', ['lead' => $lead]) !!}
         </x-slot>
     </x-admin::accordion>
