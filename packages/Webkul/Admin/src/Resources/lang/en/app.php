@@ -1703,8 +1703,8 @@ return [
 
     'goals' => [
         'index' => [
-            'title' => 'Goals',
-            'target_amount' => "Target Amount"
+            'title'         => 'Goals',
+            'target_amount' => 'Target Amount',
         ],
         'edit' => [
             'title'    => 'Edit Goals',
@@ -1717,8 +1717,8 @@ return [
             'title' => 'Delete Goal',
         ],
         'datatime' => [
-            "start_end" => 'End'
-        ]
+            'start_end' => 'End',
+        ],
     ],
 
     'activities' => [
