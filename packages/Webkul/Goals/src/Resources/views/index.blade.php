@@ -1,6 +1,6 @@
 <x-admin::layouts>
     <x-slot:title>
-        {{-- @lang('admin::app.settings.goals.index.title') --}} Goals
+        @lang('admin::app.goals.index.title')
     </x-slot>
 
     <div class="flex flex-col gap-4">
@@ -11,8 +11,7 @@
                 {{-- <x-admin::breadcrumbs name="admin.goals" /> --}}
 
                 <div class="text-xl font-bold dark:text-white">
-                    {{-- @lang('admin::app.settings.users.index.title') --}}
-                    Metas
+                    @lang('admin::app.goals.index.title')
                 </div>
             </div>
 
@@ -23,8 +22,7 @@
                 @if (bouncer()->hasPermission('goals.create'))
                     <div class="flex items-center gap-x-2.5">
                         <button type="button" class="primary-button" @click="$refs.userSettings.openModal()">
-                            {{-- @lang('admin::app.settings.users.index.create-btn') --}}
-                            Crear Meta
+                            @lang('admin::app.goals.create.title')
                         </button>
                     </div>
                 @endif

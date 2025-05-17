@@ -1705,6 +1705,7 @@ return [
     'goals'=> [
         'index'=> [
             'title'=> 'Metas',
+            'target_amount' => "Monto objetivo"
         ],
         'edit'=> [
             'title'    => 'Editar Metas',
@@ -1716,6 +1717,9 @@ return [
         'delete'=> [
             'title'=> 'Eliminar meta',
         ],
+        'datatime'=>[
+            "start_end"=> 'Fecha Final'
+        ]
     ],
 
     'activities' => [

@@ -25,46 +25,40 @@
                         <div class="flex items-center gap-1.5 break-words cursor-pointer select-none hover:text-gray-800 dark:hover:text-white"
                             @click="sortBy('id')">
                             ID
-                            {{-- <!-- <span v-if="sortColumn === 'id'" class="text-sm">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span> --> --}}
                         </div>
                     </th>
                     <th class="px-2 py-2 text-center">
                         <div class="flex items-center gap-1.5 break-words cursor-pointer select-none hover:text-gray-800 dark:hover:text-white"
                             @click="sortBy('name')">
-                            Nombre
-                            {{-- <!-- <span v-if="sortColumn === 'name'" class="text-sm">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span> --> --}}
+                            @lang('admin::app.goals.index.title')
                         </div>
                     </th>
                     <th class="px-2 py-2 text-center">
                         <div class="flex items-center gap-1.5 break-words cursor-pointer select-none hover:text-gray-800 dark:hover:text-white"
                             @click="sortBy('email')">
-                            Pipeline
-                            {{-- <!-- <span v-if="sortColumn === 'email'" class="text-sm">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span> --> --}}
+                            @lang('admin::app.settings.pipelines.index.title')
                         </div>
                     </th>
                     <th class="px-2 py-2 text-center">
                         <div class="flex items-center gap-1.5 break-words cursor-pointer select-none hover:text-gray-800 dark:hover:text-white"
                             @click="sortBy('status')">
-                            Fecha inicio
-                            {{-- <!-- <span v-if="sortColumn === 'status'" class="text-sm">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span> --> --}}
+                            @lang("admin::app.settings.data-transfer.imports.index.datagrid.started-at")
                         </div>
                     </th>
                     <th class="px-2 py-2 text-center">
                         <div class="flex items-center gap-1.5 break-words cursor-pointer select-none hover:text-gray-800 dark:hover:text-white"
                             @click="sortBy('status')">
-                            Monto objetivo
-                            {{-- <!-- <span v-if="sortColumn === 'status'" class="text-sm">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span> --> --}}
+                            @lang('admin::app.goals.index.target_amount')
                         </div>
                     </th>
                     <th class="px-2 py-2 text-center">
                         <div class="flex items-center gap-1.5 break-words cursor-pointer select-none hover:text-gray-800 dark:hover:text-white"
                             @click="sortBy('created_at')">
-                            Fecha fin
-                            {{-- <!-- <span v-if="sortColumn === 'created_at'" class="text-sm">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span> --> --}}
+                            @lang("admin::app.goals.datatime.start_end")
                         </div>
                     </th>
                     <th class="px-2 py-2 text-center">
-                        <span>Acciones</span>
+                        <span>@lang('admin::app.settings.workflows.create.actions')</span>
                     </th>
                 </tr>
             </thead>

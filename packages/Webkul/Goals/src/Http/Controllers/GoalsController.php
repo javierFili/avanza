@@ -38,6 +38,9 @@ class GoalsController extends Controller
      */
     public function index()
     {
+        if(!bouncer()->hasPermission('goals.index')){
+            return redirect()->route('admin.leads.index');
+        }
         $users = $this->usersRepository->with('goals')->get();
         if (request()->ajax()) {
             return datagrid(UserDataGrid::class)->process();

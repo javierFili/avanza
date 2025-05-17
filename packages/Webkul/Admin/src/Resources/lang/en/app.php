@@ -1701,6 +1701,26 @@ return [
         ],
     ],
 
+    'goals' => [
+        'index' => [
+            'title' => 'Goals',
+            'target_amount' => "Target Amount"
+        ],
+        'edit' => [
+            'title'    => 'Edit Goals',
+            'back-btn' => 'Back',
+        ],
+        'create' => [
+            'title' => 'Create Goals',
+        ],
+        'delete' => [
+            'title' => 'Delete Goal',
+        ],
+        'datatime' => [
+            "start_end" => 'End'
+        ]
+    ],
+
     'activities' => [
         'index' => [
             'title'      => 'Activities',
