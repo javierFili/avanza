@@ -39,6 +39,7 @@ class Goals extends AbstractReporting
                 }
             }
         }
+
         return $result;
     }
 
@@ -55,7 +56,7 @@ class Goals extends AbstractReporting
                 return false;
             }
             $statistics = [];
-            foreach($goals as $goal){
+            foreach ($goals as $goal) {
                 $valueGoal = $goal->target_value;
                 $date_start = $goal->start_date;
                 $date_end = $goal->end_date;
@@ -70,9 +71,10 @@ class Goals extends AbstractReporting
                     'missing_percentage'  => round($missingPercentage, 2),
                     'value_goal'          => $valueGoal,
                     'leads_won_value_sum' => $leadsWonValueSum,
-                    'date_goal'           => $goal->start_date.'  '.$goal->end_date
+                    'date_goal'           => $goal->start_date.'  '.$goal->end_date,
                 ];
             }
+
             return response()->json(['success' => true, 'statistics' => $statistics, 'date_range' => 'rango'], 200);
         } catch (\Exception $e) {
             return response()->json([

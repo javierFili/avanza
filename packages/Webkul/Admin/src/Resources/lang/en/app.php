@@ -1705,10 +1705,10 @@ return [
         'index' => [
             'title'         => 'Goals',
             'target_amount' => 'Target Amount',
-            'simpleTitle' => 'Goal',
-            'missing'=> "Missing",
-            "completed"=> "Completed",
-            "user_goals" =>"Users Goals"
+            'simpleTitle'   => 'Goal',
+            'missing'       => 'Missing',
+            'completed'     => 'Completed',
+            'user_goals'    => 'Users Goals',
         ],
         'edit' => [
             'title'    => 'Edit Goals',

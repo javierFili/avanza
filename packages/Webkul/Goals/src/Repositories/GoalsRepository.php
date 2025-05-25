@@ -137,9 +137,9 @@ class GoalsRepository extends Repository
                         ->where('start_date', '<=', $data['end_date']);
                 });
             })
-            ->orderBy('start_date','desc')
+            ->orderBy('start_date', 'desc')
             ->get();
-            //->first()?->target_value;
+        // ->first()?->target_value;
 
         return $valueGoal;
     }
