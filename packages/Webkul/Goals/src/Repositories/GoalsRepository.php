@@ -4,7 +4,6 @@ namespace Webkul\Goals\Repositories;
 
 use Webkul\Core\Eloquent\Repository;
 use Webkul\Goals\Models\Goals;
-use Webkul\User\Models\User;
 
 class GoalsRepository extends Repository
 {
@@ -138,7 +137,8 @@ class GoalsRepository extends Repository
                         ->where('start_date', '<=', $data['end_date']);
                 });
             })
-            ->first()?->target_value;
+            ->get();
+            //->first()?->target_value;
 
         return $valueGoal;
     }

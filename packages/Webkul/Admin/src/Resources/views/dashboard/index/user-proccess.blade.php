@@ -25,47 +25,49 @@
             <div class="grid gap-4 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
                 <div class="flex flex-col justify-between gap-1">
                     <p class="text-base font-semibold dark:text-gray-300">
-                        Objetivos del usuario
+                        Objetivos de los usuarios
                     </p>
                 </div>
 
                 <!-- Doughnut Chart -->
                 <div class="flex w-full max-w-full flex-col gap-4 px-8 pt-8" v-if="report.statistics && report.statistics.length">
-                    <!-- Gráficos con contenedor pequeño y opciones personalizadas -->
-                    <div class="flex flex-wrap justify-center gap-5">
-                        <!-- Múltiples gráficos ApexCharts -->
-                       <div
-                            v-for="(chart, chartIndex) in chartConfigs"
+                     <!-- Múltiples gráficos ApexCharts -->
+                     <div v-for="(charts, chartsIndex) in chartConfigs" :key="'chart-' + chartIndex" class="w-full h-auto">
+                         <!-- Gráficos con contenedor pequeño y opciones personalizadas -->
+                        <div
+                            v-for="(chart,chartIndex) in charts"
                             :key="'chart-' + chartIndex"
-                            class="w-[350px] h-[300px]"
-                        >
-                        <div class="text-center dark:text-gray-300">
-                            @{{ chart.values.userFullName }}
-                        </div>
-                            <div :id="'chart-container-' + chartIndex" class="text-xs dark:text-gray-300"></div>
-                            <!-- Alineación de los 3 elementos: izquierda, centro y derecha -->
-                            <div class="flex justify-between items-center" >
-                                <!-- Izquierda -->
-                                <div class="text-start" style="margin-top:-60%; margin-left:3em;">
-                                    <p class="text-xs dark:text-gray-300">
-                                        @{{ chart.values.leads_won_value_sum }}
-                                    </p>
-                                </div>
+                            class="border border-gray-200 rounded-lg">
 
-                                <!-- Centro -->
-                                <div class="text-center" style="margin-top:-80%;">
-                                    <p class="text-xxs dark:text-gray-300">
-                                        @{{ chart.values.value_goal }}
-                                    </p>
-                                </div>
+                               <div>
+                                    <div class="flex justify-between items-center" >
+                                        <div class="text-center dark:text-gray-300">
+                                            @{{ chart.values.userFullName }}
+                                        </div>
+                                        <!-- Alineación de los 3 elementos: izquierda, centro y derecha -->
+                                        <div :id="'chart-container-' + chartIndex" class="text-xs dark:text-gray-300"></div>
+                                        <!-- Izquierda -->
+                                        <div class="text-start" style="margin-top:-60%; margin-left:3em;">
+                                            <p class="text-xs dark:text-gray-300">
+                                                @{{ chart.values.leads_won_value_sum }}
+                                            </p>
+                                        </div>
 
-                                <!-- Derecha -->
-                                <div class="text-end" style="margin-top:-60%; margin-right:3em">
-                                    <p class="text-xs dark:text-gray-300">
-                                        @{{ chart.values.value_goal - chart.values.leads_won_value_sum }}
-                                    </p>
-                                </div>
-                            </div>
+                                        <!-- Centro -->
+                                        <div class="text-center" style="margin-top:-80%;">
+                                            <p class="text-xxs dark:text-gray-300">
+                                                @{{ chart.values.value_goal }}
+                                            </p>
+                                        </div>
+
+                                        <!-- Derecha -->
+                                        <div class="text-end" style="margin-top:-60%; margin-right:3em">
+                                            <p class="text-xs dark:text-gray-300">
+                                                @{{ chart.values.value_goal - chart.values.leads_won_value_sum }}
+                                            </p>
+                                        </div>
+                                    </div>
+                               </div>
                         </div>
                     </div>
                 </div>
@@ -119,8 +121,8 @@
                         '#03A9F4'
                     ],
                     isLoading: true,
-                    charts: [], // Array para almacenar instancias de gráficos
-                    chartConfigs: [] // Array para configuraciones de gráficos
+                    charts: [],
+                    chartConfigs: []
                 }
             },
 
@@ -136,10 +138,8 @@
             },
 
             updated() {
-                // Inicializar gráficos cuando los datos estén disponibles
                 if (!this.isLoading && this.report.statistics && this.report.statistics.length) {
                     this.$nextTick(() => {
-                        // Solo renderizar gráficos si hay configuraciones
                         if (this.chartConfigs.length > 0) {
                             this.renderAllCharts();
                         }
@@ -148,7 +148,6 @@
             },
 
             beforeUnmount() {
-                // Limpiar todas las instancias de gráficos
                 this.destroyAllCharts();
                 this.$emitter.off('reporting-filter-updated', this.getStats);
             },
@@ -156,34 +155,23 @@
             methods: {
                 getStats(filters) {
                     this.isLoading = true;
-
-                    // Destruir gráficos existentes antes de cargar nuevos datos
                     this.destroyAllCharts();
-                    // Reiniciar configuraciones de gráficos
                     this.chartConfigs = [];
-
                     var filters = Object.assign({}, filters);
                     filters.type = 'user-proccess-states';
-
                     const url = "{{ route('admin.dashboard.stats') }}";
-
                     this.$axios.get(url, {
                         params: filters
                     }).then(response => {
                         this.report = response.data;
-
+                        console.log(this.report);
                         if (!Array.isArray(this.report.statistics)) {
                             this.report.statistics = Object.values(this.report.statistics.original?.data ||
                             {});
                         }
-
                         this.extendColors(this.report.statistics.length);
-                        // Preparar configuraciones de gráficos basadas en los datos
                         this.prepareChartConfigs(this.report.statistics);
-
                         this.isLoading = false;
-
-                        // Renderizar gráficos en el siguiente tick
                         this.$nextTick(() => {
                             this.renderAllCharts();
                         });
@@ -201,51 +189,55 @@
                     }
                 },
 
-                // Preparar configuraciones de gráficos basadas en los datos
                 prepareChartConfigs(statistics) {
                     if (!statistics || !statistics.length) {
                         return;
                     }
-
-                    // Limpiar configuraciones anteriores
                     this.chartConfigs = [];
-
-                    // Crear configuraciones para cada usuario
                     statistics.forEach(item => {
-                        const stats = item.original.statistics;
-                        this.chartConfigs.push({
-                            title: stats.userFullName,
-                            type: "donut",
-                            series: [stats.percentage_achieved, stats.missing_percentage],
-                            labels: ['Completado', 'Faltante'],
-                            colors: ['#33D970', '#EF4444'],
-                            values: {
-                                leads_won_value_sum: stats.leads_won_value_sum,
-                                missing_percentage: stats.missing_percentage,
-                                name: stats.name,
-                                percentage_achieved: stats.percentage_achieved,
-                                userFullName: stats.userFullName,
-                                value_goal: stats.value_goal,
-                            }
-                        });
+                        const graphics = item.original.statistics;
+                        const charts = [];
+                        graphics.forEach(stats => {
+                            charts.push({
+                                title: stats.userFullName,
+                                type: "donut",
+                                series: [stats.percentage_achieved, stats
+                                    .missing_percentage
+                                ],
+                                labels: ['Completado', 'Faltante'],
+                                colors: ['#33D970', '#EF4444'],
+                                values: {
+                                    leads_won_value_sum: stats.leads_won_value_sum,
+                                    missing_percentage: stats.missing_percentage,
+                                    name: stats.name,
+                                    percentage_achieved: stats.percentage_achieved,
+                                    userFullName: stats.userFullName,
+                                    value_goal: stats.value_goal,
+                                    date_goal: stats.date_goal
+                                }
+                            });
+                        })
+                        this.chartConfigs.push(charts);
                     });
                 },
 
                 renderAllCharts() {
                     this.destroyAllCharts();
-                    this.chartConfigs.forEach((config, index) => {
-                        const containerId = `chart-container-${index}`;
-                        const container = document.getElementById(containerId);
-                        if (container) {
-                            const options = this.getChartOptions(config);
-                            try {
-                                const chart = new ApexCharts(container, options);
-                                chart.render();
-                                this.charts.push(chart);
-                            } catch (error) {
-                                console.log(`Error al renderizar gráfico ${index}:`, error);
+                    this.chartConfigs.forEach(charts => {
+                        charts.forEach((config, index) => {
+                            const containerId = `chart-container-${index}`;
+                            const container = document.getElementById(containerId);
+                            if (container) {
+                                const options = this.getChartOptions(config);
+                                try {
+                                    const chart = new ApexCharts(container, options);
+                                    chart.render();
+                                    this.charts.push(chart);
+                                } catch (error) {
+                                    console.log(`Error al renderizar gráfico ${index}:`, error);
+                                }
                             }
-                        }
+                        });
                     });
                 },
 
