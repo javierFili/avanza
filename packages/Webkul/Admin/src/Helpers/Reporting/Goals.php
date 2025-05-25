@@ -57,6 +57,8 @@ class Goals extends AbstractReporting
             $statistics = [];
             foreach($goals as $goal){
                 $valueGoal = $goal->target_value;
+                $date_start = $goal->start_date;
+                $date_end = $goal->end_date;
                 $leadsWonValueSum = $this->leadReporting->getTotalWonLeadValueForPipelineAndUserId($pipelineId, $userId, $date_start, $date_end);
                 $percentageAchieved = $valueGoal > 0 ? ((float) $leadsWonValueSum * 100) / $valueGoal : 0;
                 $missingPercentage = $percentageAchieved >= 100 ? 0 : 100 - $percentageAchieved;

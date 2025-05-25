@@ -1706,6 +1706,10 @@ return [
         'index'=> [
             'title'         => 'Metas',
             'target_amount' => 'Monto objetivo',
+            'simpleTitle' => 'Meta',
+            'missing' => "Faltate",
+            "completed" => "Completado",
+            "user_goals" => "Objetivos de los usuarios"
         ],
         'edit'=> [
             'title'    => 'Editar Metas',
