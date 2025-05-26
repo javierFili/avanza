@@ -232,22 +232,26 @@ class LeadController extends Controller
     public function update(LeadForm $request, int $id): RedirectResponse|JsonResponse
     {
         Event::dispatch('lead.update.before', $id);
-
         $data = $request->all();
-
-        if (isset($data['lead_pipeline_stage_id'])) {
-            $stage = $this->stageRepository->findOrFail($data['lead_pipeline_stage_id']);
-
-            $data['lead_pipeline_id'] = $stage->lead_pipeline_id;
-        } else {
-            $pipeline = $this->pipelineRepository->getDefaultPipeline();
-
-            $stage = $pipeline->stages()->first();
-
-            $data['lead_pipeline_id'] = $pipeline->id;
-
+          if (isset($data['lead_pipeline_id'])) {
+            $stage = $this->stageRepository
+                ->where("lead_pipeline_id", $data['lead_pipeline_id'])
+                ->where('sort_order', 1)->firstOrFail();
             $data['lead_pipeline_stage_id'] = $stage->id;
         }
+        // if (isset($data['lead_pipeline_stage_id'])) {
+        //     $stage = $this->stageRepository->findOrFail($data['lead_pipeline_stage_id']);
+
+        //     $data['lead_pipeline_id'] = $stage->lead_pipeline_id;
+        // } else {
+        //     $pipeline = $this->pipelineRepository->getDefaultPipeline();
+
+        //     $stage = $pipeline->stages()->first();
+
+        //     $data['lead_pipeline_id'] = $pipeline->id;
+
+        //     $data['lead_pipeline_stage_id'] = $stage->id;
+        // }
 
         $lead = $this->leadRepository->update($data, $id);
 
@@ -274,7 +278,12 @@ class LeadController extends Controller
     public function updateAttributes(int $id)
     {
         $data = request()->all();
-
+        if (isset($data['lead_pipeline_id'])) {
+            $stage = $this->stageRepository
+                ->where("lead_pipeline_id", $data['lead_pipeline_id'])
+                ->where('sort_order', 1)->firstOrFail();
+            $data['lead_pipeline_stage_id'] = $stage->id;
+        }
         $attributes = $this->attributeRepository->findWhere([
             'entity_type' => 'leads',
             ['code', 'NOTIN', ['title', 'description']],
@@ -489,8 +498,8 @@ class LeadController extends Controller
          * Fetching on the basis of column options.
          */
         return app($column['filterable_options']['repository'])
-            ->select([$column['filterable_options']['column']['label'].' as label', $column['filterable_options']['column']['value'].' as value'])
-            ->where($column['filterable_options']['column']['label'], 'LIKE', '%'.$params['search'].'%')
+            ->select([$column['filterable_options']['column']['label'] . ' as label', $column['filterable_options']['column']['value'] . ' as value'])
+            ->where($column['filterable_options']['column']['label'], 'LIKE', '%' . $params['search'] . '%')
             ->get()
             ->map
             ->only('label', 'value');
@@ -668,7 +677,7 @@ class LeadController extends Controller
     {
         $validator = Validator::make(
             ['file' => $file],
-            ['file' => 'required|extensions:'.str_replace(' ', '', self::SUPPORTED_TYPES)]
+            ['file' => 'required|extensions:' . str_replace(' ', '', self::SUPPORTED_TYPES)]
         );
 
         if ($validator->fails()) {

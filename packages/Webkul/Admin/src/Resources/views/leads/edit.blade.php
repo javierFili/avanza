@@ -45,7 +45,7 @@
                 </div>
             </div>
 
-            <input type="hidden" id="lead_pipeline_stage_id" name="lead_pipeline_stage_id" value="{{ $lead->lead_pipeline_stage_id }}" />
+            {{-- <input type="hidden" id="lead_pipeline_stage_id" name="lead_pipeline_stage_id" value="{{ $lead->lead_pipeline_stage_id }}" /> --}}
 
             <!-- Lead Edit Component -->
             <v-lead-edit :lead="{{ json_encode($lead) }}">
