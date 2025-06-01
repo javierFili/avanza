@@ -53,8 +53,10 @@ class PipelineController extends Controller
         ]);
 
         Event::dispatch('settings.pipeline.create.before');
-
-        $pipeline = $this->pipelineRepository->create($request->all());
+        $data = $request->all();
+        $data['stages']['stage_99']['code']='won';
+        $data['stages']['stage_100']['code'] = 'lost';
+        $pipeline = $this->pipelineRepository->create($data);
 
         Event::dispatch('settings.pipeline.create.after', $pipeline);
 
