@@ -115,7 +115,7 @@ class Importer extends AbstractImporter
     }
 
     /**
-     * Validates row.
+     * Validates row - VERSIÓN CORREGIDA COMPLETA
      */
     public function validateRow(array $rowData, int $rowNumber): bool
     {
@@ -134,30 +134,45 @@ class Importer extends AbstractImporter
          * If import action is delete than no need for further validation.
          */
         if ($this->import->action == Import::ACTION_DELETE) {
-            foreach ($rowData['emails'] as $email) {
-                if (! $this->isEmailExist($email['value'])) {
-                    $this->skipRow($rowNumber, self::ERROR_EMAIL_NOT_FOUND_FOR_DELETE, 'email');
-
-                    return false;
+            // Verificar que emails sea un array y no esté vacío
+            if (is_array($rowData['emails']) && !empty($rowData['emails'])) {
+                foreach ($rowData['emails'] as $email) {
+                    if (! $this->isEmailExist($email['value'])) {
+                        $this->skipRow($rowNumber, self::ERROR_EMAIL_NOT_FOUND_FOR_DELETE, 'email');
+                        return false;
+                    }
                 }
-
                 return true;
+            } else {
+                $this->skipRow($rowNumber, self::ERROR_EMAIL_NOT_FOUND_FOR_DELETE, 'email');
+                return false;
             }
+        }
+
+        // Preparar datos para validación - extraer valores de los arrays
+        $validationData = $rowData;
+
+        // Extraer email del formato JSON para validación
+        $validationData['emails'] = '';
+        if (is_array($rowData['emails']) && !empty($rowData['emails']) && isset($rowData['emails'][0]['value'])) {
+            $validationData['emails'] = $rowData['emails'][0]['value'];
+        }
+
+        // Extraer teléfono del formato JSON para validación
+        $validationData['contact_numbers'] = '';
+        if (is_array($rowData['contact_numbers']) && !empty($rowData['contact_numbers']) && isset($rowData['contact_numbers'][0]['value'])) {
+            $validationData['contact_numbers'] = $rowData['contact_numbers'][0]['value'];
         }
 
         /**
          * Validate row data.
          */
-        $validator = Validator::make($rowData, [
-            ...$this->getValidationRules('persons', $rowData),
-            'organization_id'         => 'required|exists:organizations,id',
+        $validator = Validator::make($validationData, [
+            ...$this->getValidationRules('persons', $validationData),
+            'organization_id'         => 'nullable',
             'user_id'                 => 'required|exists:users,id',
-            'contact_numbers'         => 'required|array',
-            'contact_numbers.*.value' => 'required|numeric',
-            'contact_numbers.*.label' => 'required|in:home,work',
-            'emails'                  => 'required|array',
-            'emails.*.value'          => 'required|email',
-            'emails.*.label'          => 'required|in:home,work',
+            'emails'                  => 'required|email',
+            'contact_numbers'         => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -167,44 +182,6 @@ class Importer extends AbstractImporter
                 $errorCode = array_key_first($failedAttributes[$attributeCode] ?? []);
 
                 $this->skipRow($rowNumber, $errorCode, $attributeCode, current($message));
-            }
-        }
-
-        /**
-         * Check if email is unique.
-         */
-        if (! empty($emails = $rowData['emails'])) {
-            foreach ($emails as $email) {
-                if (! in_array($email['value'], $this->emails)) {
-                    $this->emails[] = $email['value'];
-                } else {
-                    $message = sprintf(
-                        trans($this->messages[self::ERROR_DUPLICATE_EMAIL]),
-                        $email['value']
-                    );
-
-                    $this->skipRow($rowNumber, self::ERROR_DUPLICATE_EMAIL, 'email', $message);
-                }
-            }
-        }
-
-        /**
-         * Check if phone(s) are unique.
-         */
-        if (! empty($rowData['contact_numbers'])) {
-            foreach ($rowData['contact_numbers'] as $phone) {
-                if (! in_array($phone['value'], $this->phones)) {
-                    if (! empty($phone['value'])) {
-                        $this->phones[] = $phone['value'];
-                    }
-                } else {
-                    $message = sprintf(
-                        trans($this->messages[self::ERROR_DUPLICATE_PHONE]),
-                        $phone['value']
-                    );
-
-                    $this->skipRow($rowNumber, self::ERROR_DUPLICATE_PHONE, 'phone', $message);
-                }
             }
         }
 
@@ -243,21 +220,17 @@ class Importer extends AbstractImporter
     }
 
     /**
-     * Delete persons from current batch.
+     * Delete persons from current batch - CORREGIDO
      */
     protected function deletePersons(ImportBatchContract $batch): bool
     {
         /**
          * Load person storage with batch emails.
          */
-        $emails = collect(Arr::pluck($batch->data, 'emails'))
-            ->map(function ($emails) {
-                $emails = json_decode($emails, true);
-
-                foreach ($emails as $email) {
-                    return $email['value'];
-                }
-            });
+        $emails = collect($batch->data)->map(function ($row) {
+            $parsedRow = $this->parsedRowData($row);
+            return collect($parsedRow['emails'])->pluck('value')->toArray();
+        })->flatten()->filter()->unique();
 
         $this->personStorage->load($emails->toArray());
 
@@ -266,40 +239,38 @@ class Importer extends AbstractImporter
         foreach ($batch->data as $rowData) {
             $rowData = $this->parsedRowData($rowData);
 
-            foreach ($rowData['emails'] as $email) {
-                if (! $this->isEmailExist($email['value'])) {
-                    continue;
+            if (is_array($rowData['emails'])) {
+                foreach ($rowData['emails'] as $email) {
+                    if ($this->isEmailExist($email['value'])) {
+                        $idsToDelete[] = $this->personStorage->get($email['value']);
+                    }
                 }
-
-                $idsToDelete[] = $this->personStorage->get($email['value']);
             }
         }
 
-        $idsToDelete = array_unique($idsToDelete);
+        $idsToDelete = array_unique(array_filter($idsToDelete));
 
         $this->deletedItemsCount = count($idsToDelete);
 
-        $this->personRepository->deleteWhere([['id', 'IN', $idsToDelete]]);
+        if (!empty($idsToDelete)) {
+            $this->personRepository->deleteWhere([['id', 'IN', $idsToDelete]]);
+        }
 
         return true;
     }
 
     /**
-     * Save person from current batch.
+     * Save person from current batch - CORREGIDO
      */
     protected function savePersonData(ImportBatchContract $batch): bool
     {
         /**
          * Load person storage with batch email.
          */
-        $emails = collect(Arr::pluck($batch->data, 'emails'))
-            ->map(function ($emails) {
-                $emails = json_decode($emails, true);
-
-                foreach ($emails as $email) {
-                    return $email['value'];
-                }
-            });
+        $emails = collect($batch->data)->map(function ($row) {
+            $parsedRow = $this->parsedRowData($row);
+            return collect($parsedRow['emails'])->pluck('value')->toArray();
+        })->flatten()->filter()->unique();
 
         $this->personStorage->load($emails->toArray());
 
@@ -318,28 +289,29 @@ class Importer extends AbstractImporter
     }
 
     /**
-     * Prepare persons from current batch.
+     * Prepare persons from current batch - CORREGIDO
      */
     public function preparePersons(array $rowData, array &$persons): void
     {
-        $emails = collect($rowData['emails'])
-            ->map(function ($emails) {
-                $emails = json_decode($emails, true);
+        $rowData = $this->parsedRowData($rowData);
 
-                foreach ($emails as $email) {
-                    return $email['value'];
-                }
-            });
+        // Verificar que emails sea un array y no esté vacío
+        if (!is_array($rowData['emails']) || empty($rowData['emails'])) {
+            return;
+        }
 
-        foreach ($emails as $email) {
-            $contactNumber = json_decode($rowData['contact_numbers'], true);
+        foreach ($rowData['emails'] as $email) {
+            $contactNumber = null;
+            if (is_array($rowData['contact_numbers']) && !empty($rowData['contact_numbers'])) {
+                $contactNumber = $rowData['contact_numbers'][0]['value'] ?? null;
+            }
 
-            $rowData['unique_id'] = "{$rowData['user_id']}|{$rowData['organization_id']}|{$email}|{$contactNumber[0]['value']}";
+            $rowData['unique_id'] = "{$rowData['user_id']}|{$rowData['organization_id']}|{$email['value']}|{$contactNumber}";
 
-            if ($this->isEmailExist($email)) {
-                $persons['update'][$email] = $rowData;
+            if ($this->isEmailExist($email['value'])) {
+                $persons['update'][$email['value']] = $rowData;
             } else {
-                $persons['insert'][$email] = [
+                $persons['insert'][$email['value']] = [
                     ...$rowData,
                     'created_at' => $rowData['created_at'] ?? now(),
                     'updated_at' => $rowData['updated_at'] ?? now(),
@@ -378,13 +350,29 @@ class Importer extends AbstractImporter
     }
 
     /**
-     * Get parsed email and phone.
+     * Get parsed email and phone - VERSIÓN CORREGIDA COMPLETA
      */
     private function parsedRowData(array $rowData): array
     {
-        $rowData['emails'] = json_decode($rowData['emails'], true);
+        // Asegurar que emails siempre sea un array
+        if (!isset($rowData['emails'])) {
+            $rowData['emails'] = [];
+        } elseif (is_string($rowData['emails'])) {
+            $email = trim($rowData['emails']);
+            $rowData['emails'] = !empty($email) ? [['value' => $email, 'label' => 'work']] : [];
+        } elseif (!is_array($rowData['emails'])) {
+            $rowData['emails'] = [];
+        }
 
-        $rowData['contact_numbers'] = json_decode($rowData['contact_numbers'], true);
+        // Asegurar que contact_numbers siempre sea un array
+        if (!isset($rowData['contact_numbers'])) {
+            $rowData['contact_numbers'] = [];
+        } elseif (is_string($rowData['contact_numbers'])) {
+            $phone = trim($rowData['contact_numbers']);
+            $rowData['contact_numbers'] = !empty($phone) ? [['value' => $phone, 'label' => 'work']] : [];
+        } elseif (!is_array($rowData['contact_numbers'])) {
+            $rowData['contact_numbers'] = [];
+        }
 
         return $rowData;
     }
