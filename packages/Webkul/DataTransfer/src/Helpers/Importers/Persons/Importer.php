@@ -2,7 +2,6 @@
 
 namespace Webkul\DataTransfer\Helpers\Importers\Persons;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Validator;
 use Webkul\Attribute\Repositories\AttributeRepository;
@@ -135,16 +134,19 @@ class Importer extends AbstractImporter
          */
         if ($this->import->action == Import::ACTION_DELETE) {
             // Verificar que emails sea un array y no esté vacío
-            if (is_array($rowData['emails']) && !empty($rowData['emails'])) {
+            if (is_array($rowData['emails']) && ! empty($rowData['emails'])) {
                 foreach ($rowData['emails'] as $email) {
                     if (! $this->isEmailExist($email['value'])) {
                         $this->skipRow($rowNumber, self::ERROR_EMAIL_NOT_FOUND_FOR_DELETE, 'email');
+
                         return false;
                     }
                 }
+
                 return true;
             } else {
                 $this->skipRow($rowNumber, self::ERROR_EMAIL_NOT_FOUND_FOR_DELETE, 'email');
+
                 return false;
             }
         }
@@ -154,13 +156,13 @@ class Importer extends AbstractImporter
 
         // Extraer email del formato JSON para validación
         $validationData['emails'] = '';
-        if (is_array($rowData['emails']) && !empty($rowData['emails']) && isset($rowData['emails'][0]['value'])) {
+        if (is_array($rowData['emails']) && ! empty($rowData['emails']) && isset($rowData['emails'][0]['value'])) {
             $validationData['emails'] = $rowData['emails'][0]['value'];
         }
 
         // Extraer teléfono del formato JSON para validación
         $validationData['contact_numbers'] = '';
-        if (is_array($rowData['contact_numbers']) && !empty($rowData['contact_numbers']) && isset($rowData['contact_numbers'][0]['value'])) {
+        if (is_array($rowData['contact_numbers']) && ! empty($rowData['contact_numbers']) && isset($rowData['contact_numbers'][0]['value'])) {
             $validationData['contact_numbers'] = $rowData['contact_numbers'][0]['value'];
         }
 
@@ -229,6 +231,7 @@ class Importer extends AbstractImporter
          */
         $emails = collect($batch->data)->map(function ($row) {
             $parsedRow = $this->parsedRowData($row);
+
             return collect($parsedRow['emails'])->pluck('value')->toArray();
         })->flatten()->filter()->unique();
 
@@ -252,7 +255,7 @@ class Importer extends AbstractImporter
 
         $this->deletedItemsCount = count($idsToDelete);
 
-        if (!empty($idsToDelete)) {
+        if (! empty($idsToDelete)) {
             $this->personRepository->deleteWhere([['id', 'IN', $idsToDelete]]);
         }
 
@@ -269,6 +272,7 @@ class Importer extends AbstractImporter
          */
         $emails = collect($batch->data)->map(function ($row) {
             $parsedRow = $this->parsedRowData($row);
+
             return collect($parsedRow['emails'])->pluck('value')->toArray();
         })->flatten()->filter()->unique();
 
@@ -296,13 +300,13 @@ class Importer extends AbstractImporter
         $rowData = $this->parsedRowData($rowData);
 
         // Verificar que emails sea un array y no esté vacío
-        if (!is_array($rowData['emails']) || empty($rowData['emails'])) {
+        if (! is_array($rowData['emails']) || empty($rowData['emails'])) {
             return;
         }
 
         foreach ($rowData['emails'] as $email) {
             $contactNumber = null;
-            if (is_array($rowData['contact_numbers']) && !empty($rowData['contact_numbers'])) {
+            if (is_array($rowData['contact_numbers']) && ! empty($rowData['contact_numbers'])) {
                 $contactNumber = $rowData['contact_numbers'][0]['value'] ?? null;
             }
 
@@ -355,22 +359,22 @@ class Importer extends AbstractImporter
     private function parsedRowData(array $rowData): array
     {
         // Asegurar que emails siempre sea un array
-        if (!isset($rowData['emails'])) {
+        if (! isset($rowData['emails'])) {
             $rowData['emails'] = [];
         } elseif (is_string($rowData['emails'])) {
             $email = trim($rowData['emails']);
-            $rowData['emails'] = !empty($email) ? [['value' => $email, 'label' => 'work']] : [];
-        } elseif (!is_array($rowData['emails'])) {
+            $rowData['emails'] = ! empty($email) ? [['value' => $email, 'label' => 'work']] : [];
+        } elseif (! is_array($rowData['emails'])) {
             $rowData['emails'] = [];
         }
 
         // Asegurar que contact_numbers siempre sea un array
-        if (!isset($rowData['contact_numbers'])) {
+        if (! isset($rowData['contact_numbers'])) {
             $rowData['contact_numbers'] = [];
         } elseif (is_string($rowData['contact_numbers'])) {
             $phone = trim($rowData['contact_numbers']);
-            $rowData['contact_numbers'] = !empty($phone) ? [['value' => $phone, 'label' => 'work']] : [];
-        } elseif (!is_array($rowData['contact_numbers'])) {
+            $rowData['contact_numbers'] = ! empty($phone) ? [['value' => $phone, 'label' => 'work']] : [];
+        } elseif (! is_array($rowData['contact_numbers'])) {
             $rowData['contact_numbers'] = [];
         }
 
