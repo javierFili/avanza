@@ -291,6 +291,7 @@ class Importer extends AbstractImporter
 
         return true;
     }
+
     /**
      * Prepare persons from current batch - VERSION CORREGIDA
      */
@@ -313,7 +314,7 @@ class Importer extends AbstractImporter
 
             // Validar que organization_id existe si se proporciona
             $organizationId = null;
-            if (!empty($rowData['organization_id'])) {
+            if (! empty($rowData['organization_id'])) {
                 $orgId = (int) $rowData['organization_id'];
                 // Verificar si la organización existe
                 if (\DB::table('organizations')->where('id', $orgId)->exists()) {
@@ -325,14 +326,14 @@ class Importer extends AbstractImporter
 
             // CORREGIDO: Incluir entity_type y otros campos requeridos
             $personData = [
-                'name' => $rowData['name'] ?? '',
-                'job_title' => $rowData['job_title'] ?? null,
+                'name'            => $rowData['name'] ?? '',
+                'job_title'       => $rowData['job_title'] ?? null,
                 'organization_id' => $organizationId,
-                'user_id' => (int) $rowData['user_id'],
-                'emails' => [$email], // Array - el repositorio lo convertirá a JSON
+                'user_id'         => (int) $rowData['user_id'],
+                'emails'          => [$email], // Array - el repositorio lo convertirá a JSON
                 'contact_numbers' => $rowData['contact_numbers'] ?? [], // Array - el repositorio lo convertirá a JSON
-                'unique_id' => "{$rowData['user_id']}|{$organizationId}|{$email['value']}|{$contactNumber}",
-                'entity_type' => 'persons', // Requerido por el sistema de atributos
+                'unique_id'       => "{$rowData['user_id']}|{$organizationId}|{$email['value']}|{$contactNumber}",
+                'entity_type'     => 'persons', // Requerido por el sistema de atributos
             ];
 
             // Determinar si es actualización o inserción
@@ -352,8 +353,8 @@ class Importer extends AbstractImporter
         try {
             // Debug: Log datos antes de guardar
             \Log::info('Saving persons data:', [
-                'update_count' => count($persons['update'] ?? []),
-                'insert_count' => count($persons['insert'] ?? []),
+                'update_count'  => count($persons['update'] ?? []),
+                'insert_count'  => count($persons['insert'] ?? []),
                 'sample_insert' => isset($persons['insert'][0]) ? $persons['insert'][0] : null,
             ]);
 
@@ -382,19 +383,20 @@ class Importer extends AbstractImporter
                         if (is_array($personData['emails']) && is_array($personData['contact_numbers'])) {
 
                             // Validación adicional: verificar que user_id existe
-                            if (!\DB::table('users')->where('id', $personData['user_id'])->exists()) {
+                            if (! \DB::table('users')->where('id', $personData['user_id'])->exists()) {
                                 \Log::error("User ID {$personData['user_id']} does not exist, skipping person creation");
+
                                 continue;
                             }
 
                             \Log::info('Creating person with data:', [
-                                'name' => $personData['name'],
-                                'organization_id' => $personData['organization_id'],
-                                'user_id' => $personData['user_id'],
-                                'entity_type' => $personData['entity_type'],
-                                'emails_count' => count($personData['emails']),
+                                'name'                  => $personData['name'],
+                                'organization_id'       => $personData['organization_id'],
+                                'user_id'               => $personData['user_id'],
+                                'entity_type'           => $personData['entity_type'],
+                                'emails_count'          => count($personData['emails']),
                                 'contact_numbers_count' => count($personData['contact_numbers']),
-                                'unique_id' => $personData['unique_id'],
+                                'unique_id'             => $personData['unique_id'],
                             ]);
 
                             // Crear usando el repositorio (que maneja la conversión JSON automáticamente)
@@ -407,32 +409,33 @@ class Importer extends AbstractImporter
 
                         } else {
                             \Log::warning('Invalid person data format:', [
-                                'emails_type' => gettype($personData['emails']),
+                                'emails_type'          => gettype($personData['emails']),
                                 'contact_numbers_type' => gettype($personData['contact_numbers']),
-                                'data' => $personData
+                                'data'                 => $personData,
                             ]);
                         }
                     } catch (\Illuminate\Database\QueryException $e) {
                         \Log::error('Database error creating person:', [
-                            'error_code' => $e->getCode(),
+                            'error_code'    => $e->getCode(),
                             'error_message' => $e->getMessage(),
-                            'data' => $personData,
+                            'data'          => $personData,
                         ]);
 
                         // Si es error de foreign key, continuar con el siguiente
                         if (strpos($e->getMessage(), 'foreign key constraint') !== false) {
                             \Log::warning('Skipping person due to foreign key constraint');
+
                             continue;
                         }
 
                         throw $e;
                     } catch (\Exception $e) {
                         \Log::error('General error creating person:', [
-                            'data' => $personData,
+                            'data'  => $personData,
                             'error' => $e->getMessage(),
-                            'file' => $e->getFile(),
-                            'line' => $e->getLine(),
-                            'trace' => $e->getTraceAsString()
+                            'file'  => $e->getFile(),
+                            'line'  => $e->getLine(),
+                            'trace' => $e->getTraceAsString(),
                         ]);
 
                         // Si el error es sobre entity_type, intentar con más contexto
@@ -442,10 +445,10 @@ class Importer extends AbstractImporter
                             // Intentar crear con datos mínimos para debugging
                             try {
                                 $minimalData = [
-                                    'name' => $personData['name'],
-                                    'user_id' => $personData['user_id'],
-                                    'entity_type' => 'persons',
-                                    'emails' => $personData['emails'],
+                                    'name'            => $personData['name'],
+                                    'user_id'         => $personData['user_id'],
+                                    'entity_type'     => 'persons',
+                                    'emails'          => $personData['emails'],
                                     'contact_numbers' => $personData['contact_numbers'],
                                 ];
 
@@ -457,8 +460,8 @@ class Importer extends AbstractImporter
                             } catch (\Exception $minimalError) {
                                 \Log::error('Even minimal person creation failed:', [
                                     'error' => $minimalError->getMessage(),
-                                    'file' => $minimalError->getFile(),
-                                    'line' => $minimalError->getLine(),
+                                    'file'  => $minimalError->getFile(),
+                                    'line'  => $minimalError->getLine(),
                                 ]);
                             }
                         } else {
@@ -469,16 +472,17 @@ class Importer extends AbstractImporter
             }
 
         } catch (\Exception $e) {
-            \Log::error('Error saving persons: ' . $e->getMessage(), [
+            \Log::error('Error saving persons: '.$e->getMessage(), [
                 'persons_update_count' => count($persons['update'] ?? []),
                 'persons_insert_count' => count($persons['insert'] ?? []),
-                'error' => $e->getTraceAsString(),
-                'sample_data' => isset($persons['insert'][0]) ? $persons['insert'][0] : null,
+                'error'                => $e->getTraceAsString(),
+                'sample_data'          => isset($persons['insert'][0]) ? $persons['insert'][0] : null,
             ]);
 
             throw $e;
         }
     }
+
     /**
      * Check if email exists.
      */
