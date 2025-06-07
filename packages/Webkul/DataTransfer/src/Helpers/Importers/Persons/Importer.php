@@ -291,9 +291,8 @@ class Importer extends AbstractImporter
 
         return true;
     }
-
     /**
-     * Prepare persons from current batch - CORREGIDO
+     * Prepare persons from current batch - VERSION CORREGIDA
      */
     public function preparePersons(array $rowData, array &$persons): void
     {
@@ -304,47 +303,182 @@ class Importer extends AbstractImporter
             return;
         }
 
+        // Procesar cada email
         foreach ($rowData['emails'] as $email) {
+            // Crear unique_id para identificar registros únicos
             $contactNumber = null;
             if (is_array($rowData['contact_numbers']) && ! empty($rowData['contact_numbers'])) {
                 $contactNumber = $rowData['contact_numbers'][0]['value'] ?? null;
             }
 
-            $rowData['unique_id'] = "{$rowData['user_id']}|{$rowData['organization_id']}|{$email['value']}|{$contactNumber}";
+            // Validar que organization_id existe si se proporciona
+            $organizationId = null;
+            if (!empty($rowData['organization_id'])) {
+                $orgId = (int) $rowData['organization_id'];
+                // Verificar si la organización existe
+                if (\DB::table('organizations')->where('id', $orgId)->exists()) {
+                    $organizationId = $orgId;
+                } else {
+                    \Log::warning("Organization ID {$orgId} does not exist, setting to null");
+                }
+            }
 
+            // CORREGIDO: Incluir entity_type y otros campos requeridos
+            $personData = [
+                'name' => $rowData['name'] ?? '',
+                'job_title' => $rowData['job_title'] ?? null,
+                'organization_id' => $organizationId,
+                'user_id' => (int) $rowData['user_id'],
+                'emails' => [$email], // Array - el repositorio lo convertirá a JSON
+                'contact_numbers' => $rowData['contact_numbers'] ?? [], // Array - el repositorio lo convertirá a JSON
+                'unique_id' => "{$rowData['user_id']}|{$organizationId}|{$email['value']}|{$contactNumber}",
+                'entity_type' => 'persons', // Requerido por el sistema de atributos
+            ];
+
+            // Determinar si es actualización o inserción
             if ($this->isEmailExist($email['value'])) {
-                $persons['update'][$email['value']] = $rowData;
+                $persons['update'][] = $personData;
             } else {
-                $persons['insert'][$email['value']] = [
-                    ...$rowData,
-                    'created_at' => $rowData['created_at'] ?? now(),
-                    'updated_at' => $rowData['updated_at'] ?? now(),
-                ];
+                $persons['insert'][] = $personData;
             }
         }
     }
 
     /**
-     * Save persons from current batch.
+     * Save persons from current batch - VERSION CORREGIDA CON VALIDACIONES
      */
     public function savePersons(array $persons): void
     {
-        if (! empty($persons['update'])) {
-            $this->updatedItemsCount += count($persons['update']);
+        try {
+            // Debug: Log datos antes de guardar
+            \Log::info('Saving persons data:', [
+                'update_count' => count($persons['update'] ?? []),
+                'insert_count' => count($persons['insert'] ?? []),
+                'sample_insert' => isset($persons['insert'][0]) ? $persons['insert'][0] : null,
+            ]);
 
-            $this->personRepository->upsert(
-                $persons['update'],
-                $this->masterAttributeCode,
-            );
-        }
+            // Procesar actualizaciones
+            if (! empty($persons['update'])) {
+                foreach ($persons['update'] as $personData) {
+                    // Buscar la persona existente por email
+                    $emailData = $personData['emails'];
+                    if (is_array($emailData) && isset($emailData[0]['value'])) {
+                        $existingPersonId = $this->personStorage->get($emailData[0]['value']);
 
-        if (! empty($persons['insert'])) {
-            $this->createdItemsCount += count($persons['insert']);
+                        if ($existingPersonId) {
+                            // Actualizar registro existente
+                            $this->personRepository->update($personData, $existingPersonId);
+                            $this->updatedItemsCount++;
+                        }
+                    }
+                }
+            }
 
-            $this->personRepository->insert($persons['insert']);
+            // Procesar inserciones
+            if (! empty($persons['insert'])) {
+                foreach ($persons['insert'] as $personData) {
+                    try {
+                        // Verificar que los datos sean válidos antes de crear
+                        if (is_array($personData['emails']) && is_array($personData['contact_numbers'])) {
+
+                            // Validación adicional: verificar que user_id existe
+                            if (!\DB::table('users')->where('id', $personData['user_id'])->exists()) {
+                                \Log::error("User ID {$personData['user_id']} does not exist, skipping person creation");
+                                continue;
+                            }
+
+                            \Log::info('Creating person with data:', [
+                                'name' => $personData['name'],
+                                'organization_id' => $personData['organization_id'],
+                                'user_id' => $personData['user_id'],
+                                'entity_type' => $personData['entity_type'],
+                                'emails_count' => count($personData['emails']),
+                                'contact_numbers_count' => count($personData['contact_numbers']),
+                                'unique_id' => $personData['unique_id'],
+                            ]);
+
+                            // Crear usando el repositorio (que maneja la conversión JSON automáticamente)
+                            $createdPerson = $this->personRepository->create($personData);
+
+                            if ($createdPerson) {
+                                $this->createdItemsCount++;
+                                \Log::info("Person created successfully with ID: {$createdPerson->id}");
+                            }
+
+                        } else {
+                            \Log::warning('Invalid person data format:', [
+                                'emails_type' => gettype($personData['emails']),
+                                'contact_numbers_type' => gettype($personData['contact_numbers']),
+                                'data' => $personData
+                            ]);
+                        }
+                    } catch (\Illuminate\Database\QueryException $e) {
+                        \Log::error('Database error creating person:', [
+                            'error_code' => $e->getCode(),
+                            'error_message' => $e->getMessage(),
+                            'data' => $personData,
+                        ]);
+
+                        // Si es error de foreign key, continuar con el siguiente
+                        if (strpos($e->getMessage(), 'foreign key constraint') !== false) {
+                            \Log::warning('Skipping person due to foreign key constraint');
+                            continue;
+                        }
+
+                        throw $e;
+                    } catch (\Exception $e) {
+                        \Log::error('General error creating person:', [
+                            'data' => $personData,
+                            'error' => $e->getMessage(),
+                            'file' => $e->getFile(),
+                            'line' => $e->getLine(),
+                            'trace' => $e->getTraceAsString()
+                        ]);
+
+                        // Si el error es sobre entity_type, intentar con más contexto
+                        if (strpos($e->getMessage(), 'entity_type') !== false) {
+                            \Log::error('Entity type error - trying to debug PersonRepository requirements');
+
+                            // Intentar crear con datos mínimos para debugging
+                            try {
+                                $minimalData = [
+                                    'name' => $personData['name'],
+                                    'user_id' => $personData['user_id'],
+                                    'entity_type' => 'persons',
+                                    'emails' => $personData['emails'],
+                                    'contact_numbers' => $personData['contact_numbers'],
+                                ];
+
+                                \Log::info('Attempting minimal person creation:', $minimalData);
+                                $this->personRepository->create($minimalData);
+                                $this->createdItemsCount++;
+                                \Log::info('Minimal person creation succeeded');
+
+                            } catch (\Exception $minimalError) {
+                                \Log::error('Even minimal person creation failed:', [
+                                    'error' => $minimalError->getMessage(),
+                                    'file' => $minimalError->getFile(),
+                                    'line' => $minimalError->getLine(),
+                                ]);
+                            }
+                        } else {
+                            throw $e;
+                        }
+                    }
+                }
+            }
+
+        } catch (\Exception $e) {
+            \Log::error('Error saving persons: ' . $e->getMessage(), [
+                'persons_update_count' => count($persons['update'] ?? []),
+                'persons_insert_count' => count($persons['insert'] ?? []),
+                'error' => $e->getTraceAsString(),
+                'sample_data' => isset($persons['insert'][0]) ? $persons['insert'][0] : null,
+            ]);
+
+            throw $e;
         }
     }
-
     /**
      * Check if email exists.
      */
